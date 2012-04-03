@@ -2,56 +2,56 @@ package optitask.util;
 
 import java.io.Serializable;
 
-
 public final class Settings implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 7131951061036321184L;
-	private long breakTime = 300000;
-	private int incrementInterval = 4;
-	private long pomodoroTime = 1500000;
-	private long incrementValue = 30000;
-	private boolean willIncrement = true;
-	
+	private long shortBreak;
+	private long longBreak;
+	private int incrementInterval;
+	private long pomodoroTime;
+	private boolean willLongBreak;
+
 	public Settings() {
-		this(300000, 4, 1500000, 300000, true);
+		this(300000, 900000, 4, 1500000, true);
 	}
-	
-	public Settings(long breakTime, int itrVal, long pomoTime, long incrVal, boolean increment) {
-		this.breakTime = breakTime;
+
+	public Settings(long shrtBrk, long lngBrk, int itrVal, long pomoTime,
+			boolean willLongBreak) {
+		shortBreak = shrtBrk;
+		longBreak = lngBrk;
 		incrementInterval = itrVal;
 		pomodoroTime = pomoTime;
-		incrementValue = incrVal;
-		willIncrement = increment;
+		this.willLongBreak = willLongBreak;
 	}
 
 	/**
 	 * @return the willIncrement
 	 */
-	public boolean isWillIncrement() {
-		return willIncrement;
+	public boolean isWillLongBreak() {
+		return willLongBreak;
 	}
 
 	/**
-	 * @param willIncrement the willIncrement to set
+	 * @param willIncrement
+	 *            the willIncrement to set
 	 */
-	public void setWillIncrement(boolean willIncrement) {
-		this.willIncrement = willIncrement;
+	public void setWillLongBreak(boolean willLongBreak) {
+		this.willLongBreak = willLongBreak;
 	}
 
 	/**
 	 * @return the breakTime
 	 */
-	public long getBreakTime() {
-		return breakTime;
+	public long getShortBreak() {
+		return shortBreak;
 	}
 
 	/**
-	 * @param breakTime the breakTime to set
+	 * @param breakTime
+	 *            the breakTime to set
 	 */
-	public void setBreakTime(long breakTime) {
-		this.breakTime = breakTime;
+	public void setShortBreak(long breakTime) {
+		this.shortBreak = breakTime;
 	}
 
 	/**
@@ -62,7 +62,8 @@ public final class Settings implements Serializable {
 	}
 
 	/**
-	 * @param incrementInterval the incrementInterval to set
+	 * @param incrementInterval
+	 *            the incrementInterval to set
 	 */
 	public void setIncrementInterval(int incrementInterval) {
 		this.incrementInterval = incrementInterval;
@@ -76,23 +77,25 @@ public final class Settings implements Serializable {
 	}
 
 	/**
-	 * @param pomodoroTime the pomodoroTime to set
+	 * @param pomodoroTime
+	 *            the pomodoroTime to set
 	 */
 	public void setPomodoroTime(long pomodoroTime) {
 		this.pomodoroTime = pomodoroTime;
 	}
 
 	/**
-	 * @return the incrementValue
+	 * @return the longBreak
 	 */
-	public long getIncrementValue() {
-		return incrementValue;
+	public long getLongBreak() {
+		return longBreak;
 	}
 
 	/**
-	 * @param incrementValue the incrementValue to set
+	 * @param longBreak
+	 *            the longBreak to set
 	 */
-	public void setIncrementValue(long incrementValue) {
-		this.incrementValue = incrementValue;
+	public void setLongBreak(long longBreak) {
+		this.longBreak = longBreak;
 	}
 }
