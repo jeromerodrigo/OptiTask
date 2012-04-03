@@ -2,7 +2,6 @@ package optitask.util;
 
 import java.io.Serializable;
 
-
 public final class Statistics implements Serializable {
 	/**
 	 * 
@@ -13,11 +12,13 @@ public final class Statistics implements Serializable {
 	private long timeWasted = 0;
 	private long totalBreakTime = 0;
 	private int numInterrupts = 0;
+
 	public Statistics() {
 		this(0, 0, 0, 0, 0);
 	}
-	
-	public Statistics(int pomoDone, long usageTime, long wasted, long breakTime, int interrupts) {
+
+	public Statistics(int pomoDone, long usageTime, long wasted,
+			long breakTime, int interrupts) {
 		pomodorosDone = pomoDone;
 		totalUsageTime = usageTime;
 		timeWasted = wasted;
@@ -33,7 +34,8 @@ public final class Statistics implements Serializable {
 	}
 
 	/**
-	 * @param pomodorosDone the pomodorosDone to set
+	 * @param pomodorosDone
+	 *            the pomodorosDone to set
 	 */
 	public void setPomodorosDone(int pomodorosDone) {
 		this.pomodorosDone = pomodorosDone;
@@ -47,7 +49,8 @@ public final class Statistics implements Serializable {
 	}
 
 	/**
-	 * @param totalUsageTime the totalUsageTime to set
+	 * @param totalUsageTime
+	 *            the totalUsageTime to set
 	 */
 	public void setTotalUsageTime(long totalUsageTime) {
 		this.totalUsageTime = totalUsageTime;
@@ -61,7 +64,8 @@ public final class Statistics implements Serializable {
 	}
 
 	/**
-	 * @param timeWasted the timeWasted to set
+	 * @param timeWasted
+	 *            the timeWasted to set
 	 */
 	public void setTimeWasted(long timeWasted) {
 		this.timeWasted = timeWasted;
@@ -75,7 +79,8 @@ public final class Statistics implements Serializable {
 	}
 
 	/**
-	 * @param totalBreakTime the totalBreakTime to set
+	 * @param totalBreakTime
+	 *            the totalBreakTime to set
 	 */
 	public void setTotalBreakTime(long totalBreakTime) {
 		this.totalBreakTime = totalBreakTime;
@@ -89,7 +94,8 @@ public final class Statistics implements Serializable {
 	}
 
 	/**
-	 * @param numInterrupts the numInterrupts to set
+	 * @param numInterrupts
+	 *            the numInterrupts to set
 	 */
 	public void setNumInterrupts(int numInterrupts) {
 		this.numInterrupts = numInterrupts;

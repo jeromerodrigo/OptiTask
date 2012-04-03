@@ -2,7 +2,6 @@ package optitask.ui;
 
 import javax.swing.JDialog;
 
-
 public class StatsDialog extends JDialog {
 	/**
 	 * 
@@ -12,8 +11,8 @@ public class StatsDialog extends JDialog {
 	public StatsDialog(optitask.store.AppPersistence model) {
 		initialize();
 	}
-	
+
 	private void initialize() {
-	
+
 	}
 }
