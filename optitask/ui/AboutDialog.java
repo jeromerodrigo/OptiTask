@@ -11,7 +11,7 @@ import javax.swing.WindowConstants;
  * AboutDialog.java <br />
  * Purpose: Displays some information about the application.
  * @author Jerome
- * @version 0.8
+ * @version 0.8.1
  * @since 0.8
  */
 
@@ -21,6 +21,8 @@ public class AboutDialog extends JDialog {
      * The serial version UID.
      */
     private static final long serialVersionUID = 5686802784165414690L;
+
+    private static final String VERSION_NUMBER = "0.8.1";
 
     /**
      * Create the dialog.
@@ -48,7 +50,7 @@ public class AboutDialog extends JDialog {
         getContentPane().add(lblCopy);
 
         JLabel lblVersion = new JLabel(
-                "<html>\r\n<b>Version:</b> 0.8\r\n</html>");
+                "<html>\r\n<b>Version:</b> " + VERSION_NUMBER + "\r\n</html>");
         lblVersion.setBounds(10, 86, 324, 14);
         getContentPane().add(lblVersion);
 

@@ -16,7 +16,7 @@ import optitask.store.AppPersistence;
  * TimerBar.java <br />
  * Purpose: Provides a controllable timer in a form of a {@link JProgressBar}.
  * @author Jerome
- * @version 0.8
+ * @version 0.8.1
  * @since 0.8
  */
 
