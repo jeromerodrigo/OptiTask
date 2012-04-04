@@ -13,138 +13,238 @@ import javax.swing.Timer;
 import optitask.store.AppPersistence;
 
 /**
+ * TimerBar.java <br />
+ * Purpose: Provides a controllable timer in a form of a {@link JProgressBar}.
  * @author Jerome
- * 
+ * @version 0.8
+ * @since 0.8
  */
+
 public class TimerBar extends JProgressBar implements ActionListener {
 
-	private static final long serialVersionUID = -2250979200884046826L;
-	private AppPersistence model;
-	private static long pomodoroTime = 0;
-	private static long breakTime = 0;
-	private static long ePomodoroTime = 0; // Elapsed time for pomodoroTime
-	private static long eBreakTime = 0; // Elapsed time for breakTime
-	private static int currentCycle = 0; // Determine the current iteration
-	// before increment is added
-	private static boolean isLongBreakNow = false;
-	private static Timer timer;
-	private static CurrentTaskPanel taskPanel;
+    /**
+     * The serial version UID.
+     */
+    private static final long serialVersionUID = -2250979200884046826L;
 
-	public TimerBar() {
-	}
+    /**
+     * The application persistence module.
+     * @see AppPersistence
+     */
+    private AppPersistence model;
 
-	public TimerBar(AppPersistence model, CurrentTaskPanel taskPanel) {
-		super(SwingConstants.HORIZONTAL, 0, 0);
-		TimerBar.taskPanel = taskPanel;
-		this.model = model;
-		timer = new Timer(1000, this);
-	}
+    /**
+     * The pomodoro time.
+     * The timer will begin counting down, starting at this value.
+     */
+    private static long pomodoroTime = 0;
 
-	public void start() {
-		resetTimer();
-		timer.start();
-		setStringPainted(true);
-	}
+    /**
+     * The break time.
+     * The timer will begin counting up to this value.
+     */
+    private static long breakTime = 0;
 
-	public void stop() {
-		setStringPainted(false);
-		timer.stop();
-		resetTimer();
-		taskPanel.setStatus(CurrentTaskPanel.NULL);
-	}
+    /**
+     * The elapsed pomodoro time.
+     */
+    private static long ePomodoroTime = 0;
 
-	private void resetTimer() {
-		TimerBar.pomodoroTime = model.getSettings().getPomodoroTime() / 1000;
+    /**
+     * The elapsed break time.
+     */
+    private static long eBreakTime = 0;
 
-		if(isLongBreakNow)
-			TimerBar.breakTime = model.getSettings().getLongBreak() / 1000;
-		else
-			TimerBar.breakTime = model.getSettings().getShortBreak() / 1000;
+    /**
+     * This variable determines how many times the timer has iterated,
+     * or completed its cycle.
+     */
+    private static int currentCycle = 0;
 
-		setValue((int) pomodoroTime);
-		ePomodoroTime = pomodoroTime; // reset time
-		eBreakTime = 0;
-		setMaximum((int) pomodoroTime);
-	}
+    /**
+     * Flag whether the current cycle is a long break cycle.
+     */
+    private static boolean isLongBreakNow = false;
 
-	private String getElapsedTime(long elapsedTime) {
-		String format = String.format("%%0%dd", 2);
-		return String.format(format, elapsedTime / 3600) + ":"
-		+ String.format(format, (elapsedTime % 3600) / 60) + ":"
-		+ String.format(format, elapsedTime % 60);
-	}
+    /**
+     * The swing timer.
+     */
+    private static Timer timer;
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (ePomodoroTime == pomodoroTime) {
-			taskPanel.setStatus(CurrentTaskPanel.WORKING);
-		}
+    /**
+     * The current task panel.
+     */
+    private static CurrentTaskPanel taskPanel;
 
-		if (eBreakTime == 0) {
-			setString(getElapsedTime(ePomodoroTime));
-			setValue((int) ePomodoroTime);
-			ePomodoroTime--;
-		}
+    /**
+     * The constant for number of seconds in 1 hour.
+     */
+    private static final int HOUR_MULT = 3600;
 
-		if (ePomodoroTime == -1) {
-			setString(getElapsedTime(eBreakTime));
-			setValue((int) eBreakTime);
-			eBreakTime++;
-		}
+    /**
+     * The constant for number of seconds in 1 minute.
+     */
+    private static final int MIN_MULT = 60;
 
-		if (eBreakTime == 1) {
-			playSound();
-			setMaximum((int) breakTime);
-			if(isLongBreakNow)
-				taskPanel.setStatus(CurrentTaskPanel.LONGBREAK);
-			else
-				taskPanel.setStatus(CurrentTaskPanel.SHORTBREAK);
-		}
+    /**
+     * The constant for number of milliseconds in 1 second.
+     */
+    private static final int MILLI_MULT = 1000;
 
-		if (eBreakTime >= breakTime + 1) {
-			timer.stop();
-			playSound();
-			setString("Done!");
-			taskPanel.markAsDone(); // Tell the task panel that the current task
-			// is completed
-			taskPanel.setStatus(CurrentTaskPanel.NULL);
+    /**
+     * Default constructor.
+     * <B>Not used</B>.
+     */
 
-			// Enables a long break after an interval
-			if (model.getSettings().isWillLongBreak()) {
-				if (currentCycle >= model.getSettings().getIncrementInterval()-1) {
-					isLongBreakNow = true;
-					currentCycle = 0; // Reset the cycle
-				} else {
-					isLongBreakNow = false;
-					currentCycle++;
-				}
-			}
-		}
-	}
+    public TimerBar() {
+    }
 
-	/*
-	 * Java sound playing method provided by Pek Source:
-	 * http://stackoverflow.com/questions/26305/how-can-i-play-sound-in-java
-	 */
+    /**
+     * Creates the progress bar.
+     * @param mdl     the persistence module
+     * @param tskPnl the current task panel
+     */
 
-	private static synchronized void playSound() {
-		final String url = "/optitask/assests/notify.wav";
-		new Thread(new Runnable() {
+    public TimerBar(final AppPersistence mdl,
+            final CurrentTaskPanel tskPnl) {
+        super(SwingConstants.HORIZONTAL, 0, 0);
+        taskPanel = tskPnl;
+        model = mdl;
+        timer = new Timer(MILLI_MULT, this);
+    }
 
-			@Override
-			public void run() {
-				try {
-					Clip clip = AudioSystem.getClip();
-					AudioInputStream inputStream = AudioSystem
-							.getAudioInputStream(TimerBar.class
-									.getResourceAsStream(url));
-					clip.open(inputStream);
-					clip.start();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+    /**
+     * Starts the timer.
+     */
 
-		}).start();
-	}
+    public final void start() {
+        resetTimer();
+        timer.start();
+        setStringPainted(true);
+    }
+
+    /**
+     * Stops the timer.
+     */
+
+    public final void stop() {
+        setStringPainted(false);
+        timer.stop();
+        resetTimer();
+        taskPanel.setStatus(CurrentTaskPanel.NULL);
+    }
+
+    /**
+     * Method to reset the timer.
+     * Refreshes all the timer constants from the data file.
+     * @see #start()
+     * @see #stop()
+     */
+
+    private void resetTimer() {
+        TimerBar.pomodoroTime = model.getSettings()
+                .getPomodoroTime() / MILLI_MULT;
+
+        if (isLongBreakNow) {
+            TimerBar.breakTime = model.getSettings()
+                    .getLongBreak() / MILLI_MULT;
+        } else {
+            TimerBar.breakTime = model.getSettings()
+                    .getShortBreak() / MILLI_MULT;
+        }
+
+        setValue((int) pomodoroTime);
+        ePomodoroTime = pomodoroTime; // reset time
+        eBreakTime = 0;
+        setMaximum((int) pomodoroTime);
+    }
+
+    /**
+     * Method to get a formatted time stamp.
+     * @param elapsedTime the value of time in seconds
+     * @return a {@link String} representation of the time
+     */
+
+    private String getElapsedTime(final long elapsedTime) {
+        String format = String.format("%%0%dd", 2);
+        return String.format(format, elapsedTime / HOUR_MULT) + ":"
+        + String.format(format, (elapsedTime % HOUR_MULT) / MIN_MULT) + ":"
+        + String.format(format, elapsedTime % MIN_MULT);
+    }
+
+    @Override
+    public final void actionPerformed(final ActionEvent e) {
+        if (ePomodoroTime == pomodoroTime) {
+            taskPanel.setStatus(CurrentTaskPanel.WORKING);
+        }
+
+        if (eBreakTime == 0) {
+            setString(getElapsedTime(ePomodoroTime));
+            setValue((int) ePomodoroTime);
+            ePomodoroTime--;
+        }
+
+        if (ePomodoroTime == -1) {
+            setString(getElapsedTime(eBreakTime));
+            setValue((int) eBreakTime);
+            eBreakTime++;
+        }
+
+        if (eBreakTime == 1) {
+            playSound();
+            setMaximum((int) breakTime);
+            if (isLongBreakNow) {
+                taskPanel.setStatus(CurrentTaskPanel.LONG_BREAK);
+            } else {
+                taskPanel.setStatus(CurrentTaskPanel.SHORT_BREAK);
+            }
+        }
+
+        if (eBreakTime >= breakTime + 1) {
+            timer.stop();
+            playSound();
+            setString("Done!");
+            taskPanel.markAsDone(); // Tell the task panel that the current task
+            // is completed
+            taskPanel.setStatus(CurrentTaskPanel.NULL);
+
+            // Enables a long break after an interval
+            if (model.getSettings().isWillLongBreak()) {
+                if (currentCycle >= model.getSettings()
+                        .getIncrementInterval() - 1) {
+                    isLongBreakNow = true;
+                    currentCycle = 0; // Reset the cycle
+                } else {
+                    isLongBreakNow = false;
+                    currentCycle++;
+                }
+            }
+        }
+    }
+
+    /**
+     * Plays a sound file.
+     */
+
+    private static synchronized void playSound() {
+        final String url = "/optitask/assests/notify.wav";
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    Clip clip = AudioSystem.getClip();
+                    //FIXME thread does not terminate after done playing
+                    AudioInputStream inputStream = AudioSystem
+                            .getAudioInputStream(TimerBar.class
+                                    .getResourceAsStream(url));
+                    clip.open(inputStream);
+                    clip.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }).start();
+    }
 }

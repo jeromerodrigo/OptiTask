@@ -11,112 +11,203 @@ import javax.swing.border.TitledBorder;
 import optitask.store.AppPersistence;
 import optitask.util.Task;
 
+/**
+ * CurrentTaskPanel.java <br />
+ * Purpose: Displays the current task, and status of the task.
+ * @author Jerome
+ * @version 0.8
+ * @since 0.8
+ */
+
 public class CurrentTaskPanel extends JPanel {
 
-	private static final long serialVersionUID = -2030419465797237653L;
-	private JLabel lblTask;
-	private static LinkedList<Task> tasks;
-	private static int currentIdx;
-	private static AppPersistence model;
-	private JLabel lblStatus;
+    /**
+     * The serial version UID.
+     */
+    private static final long serialVersionUID = -2030419465797237653L;
 
-	public static final int NULL = 0;
-	public static final int SHORTBREAK = 1;
-	public static final int WORKING = 2;
-	public static final int LONGBREAK = 3;
+    /**
+     * Label to display the current task.
+     */
+    private JLabel lblTask;
 
-	/**
-	 * Create the panel.
-	 */
-	public CurrentTaskPanel() {
-		initialize();
-	}
+    /**
+     * The list of tasks.
+     * @see Task
+     */
+    private static LinkedList<Task> tasks;
 
-	public CurrentTaskPanel(AppPersistence model) {
-		tasks = model.getTasks();
-		CurrentTaskPanel.model = model;
-		currentIdx = 0;
-		initialize();
-		nextTask();
-	}
+    /**
+     * Stores the current index. Used in {@link #tasks}.
+     */
+    private static int currentIdx;
 
-	private void initialize() {
-		setSize(320, 100);
-		setLayout(null);
+    /**
+     * Stores a reference to the persistence module.
+     * @see AppPersistence
+     */
+    private static AppPersistence model;
 
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "Current Task",
-				TitledBorder.CENTER, TitledBorder.TOP, null, null));
-		panel.setBounds(9, 4, 302, 63);
-		add(panel);
-		panel.setLayout(null);
+    /**
+     * Label to display the status of the task.
+     */
+    private JLabel lblStatus;
 
-		lblTask = new JLabel("");
-		lblTask.setBounds(20, 16, 272, 36);
-		panel.add(lblTask);
+    /**
+     * A constant used to set the status label to display nothing.
+     * @see #setStatus(int)
+     */
+    public static final int NULL = 0;
 
-		lblStatus = new JLabel("");
-		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
-		lblStatus.setBounds(10, 75, 300, 14);
-		add(lblStatus);
-	}
+    /**
+     * A constant used to set the status label to display short break message.
+     * @see #setStatus(int)
+     */
+    public static final int SHORT_BREAK = 1;
 
-	public void nextTask() {
-		if (currentIdx >= tasks.size()) {
-			lblTask.setText("No tasks available...");
-			return;
-		}
+    /**
+     * A constant used to set the status label to display the working message.
+     * @see #setStatus(int)
+     */
+    public static final int WORKING = 2;
 
-		if (tasks.get(currentIdx).isDone()) {
-			currentIdx++;
-			nextTask();
-		} else {
-			lblTask.setText(tasks.get(currentIdx).getTaskDesc());
-		}
-	}
+    /**
+     * A constant used to set the status label to display long break message.
+     * @see #setStatus(int)
+     */
+    public static final int LONG_BREAK = 3;
 
-	public void refresh() {
-		tasks = model.getTasks();
-		currentIdx = 0;
-		nextTask();
-	}
+    /**
+     * Create the panel.
+     * <B>Not used</B>.
+     */
+    public CurrentTaskPanel() {
+        initialize();
+    }
 
-	public void markAsDone() {
-		Task task = new Task();
-		try {
-			task = tasks.get(currentIdx);
-		} catch (IndexOutOfBoundsException e) {
-			return; // Do nothing
-		}
-		task.setDone(true);
-		tasks.set(currentIdx, task);
-		model.saveTasks(tasks);
+    /**
+     * Creates the panel and initialises the tasks.
+     * @param mdl the persistence module
+     */
 
-		lblTask.setText(lblTask.getText() + " [DONE]");
-	}
+    public CurrentTaskPanel(final AppPersistence mdl) {
+        tasks = mdl.getTasks();
+        model = mdl;
+        currentIdx = 0;
+        initialize();
+        nextTask();
+    }
 
-	public void setStatus(int status) {
-		switch (status) {
-		case NULL:
-			lblStatus.setText(getHtmlColoredString("black", "Idle"));
-			break;
-		case SHORTBREAK:
-			lblStatus.setText(getHtmlColoredString("green", "Short Break"));
-			break;
-		case LONGBREAK:
-			lblStatus.setText(getHtmlColoredString("green", "Long Break"));
-			break;
-		case WORKING:
-			lblStatus.setText(getHtmlColoredString("red", "Working"));
-			break;
-		default:
-			lblStatus.setText(null);
-		}
-	}
+    /**
+     * Creates the user interface components.
+     */
 
-	private final String getHtmlColoredString(String color, String text) {
-		return "<html><b><font color=\"" + color + "\"> " + text
-				+ "</font></b></html>";
-	}
+    private void initialize() {
+        setSize(320, 100);
+        setLayout(null);
+
+        JPanel panel = new JPanel();
+        panel.setBorder(new TitledBorder(UIManager
+                .getBorder("TitledBorder.border"), "Current Task",
+                TitledBorder.CENTER, TitledBorder.TOP, null, null));
+        panel.setBounds(9, 4, 302, 63);
+        add(panel);
+        panel.setLayout(null);
+
+        lblTask = new JLabel("");
+        lblTask.setBounds(20, 16, 272, 36);
+        panel.add(lblTask);
+
+        lblStatus = new JLabel("");
+        lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
+        lblStatus.setBounds(10, 75, 300, 14);
+        add(lblStatus);
+    }
+
+    /**
+     * A recursive method to iterate to the next available task
+     * and display it on the {@link #lblTask}.
+     */
+
+    public final void nextTask() {
+        if (currentIdx >= tasks.size()) {
+            lblTask.setText("No tasks available...");
+            return;
+        }
+
+        if (tasks.get(currentIdx).isDone()) {
+            currentIdx++;
+            nextTask();
+        } else {
+            lblTask.setText(tasks.get(currentIdx).getTaskDesc());
+        }
+    }
+
+    /**
+     * Updates the {@link #tasks} with data from the file.
+     * Also sets the {@link #currentIdx} to 0.
+     */
+
+    public final void refresh() {
+        tasks = model.getTasks();
+        currentIdx = 0;
+        nextTask();
+    }
+
+    /**
+     * Gets the current {@link Task} and sets its
+     * state to 'done'.
+     */
+
+    public final void markAsDone() {
+        Task task = new Task();
+        try {
+            task = tasks.get(currentIdx);
+        } catch (IndexOutOfBoundsException e) {
+            return; // Do nothing
+        }
+        task.setDone(true);
+        tasks.set(currentIdx, task);
+        model.saveTasks(tasks);
+
+        lblTask.setText(lblTask.getText() + " [DONE]");
+    }
+
+    /**
+     * Sets the status of the current task to be displayed.
+     * @param status the status constant
+     */
+
+    public final void setStatus(final int status) {
+        switch (status) {
+        case NULL:
+            lblStatus.setText(getHtmlColoredString("black", "Idle"));
+            break;
+        case SHORT_BREAK:
+            lblStatus.setText(getHtmlColoredString("green", "Short Break"));
+            break;
+        case LONG_BREAK:
+            lblStatus.setText(getHtmlColoredString("green", "Long Break"));
+            break;
+        case WORKING:
+            lblStatus.setText(getHtmlColoredString("red", "Working"));
+            break;
+        default:
+            lblStatus.setText(null);
+        }
+    }
+
+    /**
+     * Returns a HTML marked-up string.
+     * @param colour the colour of the text
+     * @param text  the text string
+     * @return a HTML marked-up string
+     * @see #setStatus(int)
+     */
+
+    private String getHtmlColoredString(final String colour,
+            final String text) {
+        return "<html><b><font color=\"" + colour + "\"> " + text
+                + "</font></b></html>";
+    }
 }

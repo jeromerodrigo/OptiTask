@@ -16,217 +16,319 @@ import optitask.AppController;
 import optitask.store.AppPersistence;
 import optitask.util.Task;
 
+/**
+ * TasksDialog.java <br />
+ * Purpose: Displays a dialog for the user to manage the tasks.
+ * @author Jerome
+ * @version 0.8
+ * @since 0.8
+ */
+
 public class TasksDialog extends JDialog {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8887671607735089782L;
 
-	private LinkedList<Task> tasks;
-	private JTable tasksTable;
-	private AppController controller;
+    /**
+     * The serial version UID.
+     */
+    private static final long serialVersionUID = 8887671607735089782L;
 
-	private class TasksDataModel extends AbstractTableModel {
+    /**
+     * The list of tasks.
+     * @see Task
+     */
+    private LinkedList<Task> tasks;
 
-		private static final long serialVersionUID = -2642740868251152662L;
-		private final String[] columnNames = { "Task", "Description", "Done" };
+    /**
+     * The tasks table.
+     */
+    private JTable tasksTable;
 
-		@Override
-		public int getColumnCount() {
-			return columnNames.length;
-		}
+    /**
+     * The application controller.
+     * @see AppController
+     */
+    private AppController controller;
 
-		@Override
-		public String getColumnName(int col) {
-			return columnNames[col];
-		}
+    /**
+     * The data model for the tasks table.
+     * @author Jerome
+     * @since 0.8
+     * @see TasksDialog#tasksTable
+     */
 
-		@Override
-		public int getRowCount() {
-			return tasks.size();
-		}
+    private class TasksDataModel extends AbstractTableModel {
 
-		@Override
-		public Class<?> getColumnClass(int c) {
-			return getValueAt(0, c).getClass();
-		}
+        /**
+         * The serial version UID.
+         */
+        private static final long serialVersionUID = -2642740868251152662L;
 
-		@Override
-		public boolean isCellEditable(int row, int col) {
-			if (col > 0 && col < 3)
-				return true;
-			else
-				return false;
-		}
+        /**
+         * The names for each column.
+         */
+        private final String[] columnNames = { "Task", "Description", "Done" };
 
-		@Override
-		public Object getValueAt(int row, int col) {
-			switch (col) {
-			case 0:
-				return row + 1;
-			case 1:
-				return tasks.get(row).getTaskDesc();
-			case 2:
-				return tasks.get(row).isDone();
-			default:
-				return null;
-			}
-		}
+        @Override
+        public int getColumnCount() {
+            return columnNames.length;
+        }
 
-		@Override
-		public void setValueAt(Object value, int row, int col) {
-			assert (col > 0 && col < 3);
-			Task task = tasks.get(row);
+        @Override
+        public String getColumnName(final int col) {
+            return columnNames[col];
+        }
 
-			switch (col) {
-			case 1:
-				task.setTaskDesc((String) value);
-				break;
-			case 2:
-				task.setDone((Boolean) value);
-				break;
-			default:
-				return;
-			}
+        @Override
+        public int getRowCount() {
+            return tasks.size();
+        }
 
-			tasks.set(row, task);
-			fireTableCellUpdated(row, col);
-		}
+        @Override
+        public Class<?> getColumnClass(final int c) {
+            return getValueAt(0, c).getClass();
+        }
 
-	};
+        @Override
+        public boolean isCellEditable(final int row, final int col) {
+            return col > 0 && col < columnNames.length;
+        }
 
-	public TasksDialog() {
-		initialize();
-	}
+        @Override
+        public Object getValueAt(final int row, final int col) {
+            switch (col) {
+            case 0:
+                return row + 1;
+            case 1:
+                return tasks.get(row).getTaskDesc();
+            case 2:
+                return tasks.get(row).isDone();
+            default:
+                return null;
+            }
+        }
 
-	public TasksDialog(AppPersistence model, AppController controller) {
-		this.controller = controller;
-		tasks = model.getTasks();
-		initialize();
-	}
+        @Override
+        public void setValueAt(final Object value,
+                final int row, final int col) {
+            assert (col > 0 && col < columnNames.length);
+            Task task = tasks.get(row);
 
-	private void initialize() {
-		setTitle("Tasks");
-		setSize(515, 300);
-		setModal(true);
-		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				TasksDialog.class.getResource("/optitask/assests/pencil.gif")));
-		getContentPane().setLayout(null);
+            switch (col) {
+            case 1:
+                task.setTaskDesc((String) value);
+                break;
+            case 2:
+                task.setDone((Boolean) value);
+                break;
+            default:
+                return;
+            }
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 444, 227);
-		getContentPane().add(scrollPane);
+            tasks.set(row, task);
+            fireTableCellUpdated(row, col);
+        }
 
-		tasksTable = new JTable(new TasksDataModel());
+    };
 
-		// Configure jTable parameters
-		tasksTable.setFillsViewportHeight(true);
-		tasksTable.setRowSelectionAllowed(true);
-		tasksTable.setColumnSelectionAllowed(false);
-		tasksTable
-				.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    /**
+     * Constant for the width of the first column.
+     */
+    private static final int COL1_WIDTH = 50;
 
-		// Set the column widths
-		setColumnWidths();
+    /**
+     * Constant for the width of the second column.
+     */
+    private static final int COL2_WIDTH = 70;
 
-		// Configure jTable selection colours
-		tasksTable.setSelectionBackground(Color.ORANGE);
-		tasksTable.setSelectionForeground(Color.WHITE);
+    /**
+     * Constant for the width of the third column.
+     */
+    private static final int COL3_WIDTH = 50;
 
-		scrollPane.setViewportView(tasksTable);
+    /**
+     * Creates the dialog.
+     * <B>Not used</B>.
+     */
 
-		JButton btnAdd = new JButton("Add");
-		btnAdd.setActionCommand("Add Task");
-		btnAdd.addActionListener(controller);
-		btnAdd.setBounds(10, 238, 89, 23);
-		getContentPane().add(btnAdd);
+    public TasksDialog() {
+        initialize();
+    }
 
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setActionCommand("Delete Task");
-		btnDelete.addActionListener(controller);
-		btnDelete.setBounds(109, 238, 89, 23);
-		getContentPane().add(btnDelete);
+    /**
+     * Creates and initialises the dialog.
+     * @param model      the persistence module
+     * @param cntrller   the application controller
+     */
 
-		JButton btnSave = new JButton("Save");
-		btnSave.setActionCommand("Save Tasks");
-		btnSave.addActionListener(controller);
-		btnSave.setBounds(208, 238, 89, 23);
-		getContentPane().add(btnSave);
+    public TasksDialog(final AppPersistence model,
+            final AppController cntrller) {
+        controller = cntrller;
+        tasks = model.getTasks();
+        initialize();
+    }
 
-		JButton btnMoveUp = new JButton("");
-		btnMoveUp.setIcon(new ImageIcon(TasksDialog.class
-				.getResource("/optitask/assests/upArrow.gif")));
-		btnMoveUp.setActionCommand("Move Up");
-		btnMoveUp.addActionListener(controller);
-		btnMoveUp.setBounds(454, 11, 40, 40);
-		getContentPane().add(btnMoveUp);
+    /**
+     * Creates the user interface components.
+     */
 
-		JButton btnMoveDown = new JButton("");
-		btnMoveDown.setIcon(new ImageIcon(TasksDialog.class
-				.getResource("/optitask/assests/downArrow.gif")));
-		btnMoveDown.setActionCommand("Move Down");
-		btnMoveDown.addActionListener(controller);
-		btnMoveDown.setBounds(454, 62, 40, 40);
-		getContentPane().add(btnMoveDown);
+    private void initialize() {
+        setTitle("Tasks");
+        setSize(515, 300);
+        setModal(true);
+        setResizable(false);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(
+                TasksDialog.class.getResource("/optitask/assests/pencil.gif")));
+        getContentPane().setLayout(null);
 
-	}
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(0, 0, 444, 227);
+        getContentPane().add(scrollPane);
 
-	private void setColumnWidths() {
-		for (int i = 0; i < 3; i++) {
-			if (i == 1)
-				continue;
-			tasksTable.getColumnModel().getColumn(i).setMinWidth(50);
-			tasksTable.getColumnModel().getColumn(i).setPreferredWidth(55);
-			tasksTable.getColumnModel().getColumn(i).setMaxWidth(60);
-		}
+        tasksTable = new JTable(new TasksDataModel());
 
-	}
+        // Configure jTable parameters
+        tasksTable.setFillsViewportHeight(true);
+        tasksTable.setRowSelectionAllowed(true);
+        tasksTable.setColumnSelectionAllowed(false);
+        tasksTable
+        .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-	public void addTask() {
-		Task newTask = new Task();
-		tasks.add(newTask);
-		tasksTable.repaint();
-	}
+        // Set the column widths
+        setColumnWidths(COL1_WIDTH, COL2_WIDTH, COL3_WIDTH);
 
-	public void deleteTask() {
-		int row = -1;
-		try {
-			row = tasksTable.getSelectedRow();
-			tasks.remove(row);
-		} catch (IndexOutOfBoundsException e) {
-			JOptionPane.showMessageDialog(tasksTable, "Please select a task!",
-					"No Task", JOptionPane.INFORMATION_MESSAGE);
-			return;
-		}
+        // Configure jTable selection colours
+        tasksTable.setSelectionBackground(Color.ORANGE);
+        tasksTable.setSelectionForeground(Color.WHITE);
 
-		tasksTable.repaint();
-	}
+        scrollPane.setViewportView(tasksTable);
 
-	public LinkedList<Task> getTasks() {
-		return tasks;
-	}
+        JButton btnAdd = new JButton("Add");
+        btnAdd.setActionCommand("Add Task");
+        btnAdd.addActionListener(controller);
+        btnAdd.setBounds(10, 238, 89, 23);
+        getContentPane().add(btnAdd);
 
-	public void moveUp() {
-		swapItems(tasksTable.getSelectedRow(), tasksTable.getSelectedRow() - 1);
-	}
+        JButton btnDelete = new JButton("Delete");
+        btnDelete.setActionCommand("Delete Task");
+        btnDelete.addActionListener(controller);
+        btnDelete.setBounds(109, 238, 89, 23);
+        getContentPane().add(btnDelete);
 
-	public void moveDown() {
-		swapItems(tasksTable.getSelectedRow(), tasksTable.getSelectedRow() + 1);
-	}
+        JButton btnSave = new JButton("Save");
+        btnSave.setActionCommand("Save Tasks");
+        btnSave.addActionListener(controller);
+        btnSave.setBounds(208, 238, 89, 23);
+        getContentPane().add(btnSave);
 
-	private void swapItems(int selectedIdx, int nextIdx) {
-		Task temp = new Task();
-		try {
-			temp = tasks.get(selectedIdx); // Stores selected task
-			tasks.set(selectedIdx, tasks.get(nextIdx));
-			tasks.set(nextIdx, temp);
-			tasksTable.repaint();
-		} catch (IndexOutOfBoundsException e) {
-			JOptionPane.showMessageDialog(getParent(), "No row to move to!",
-					"Error", JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-		tasksTable.changeSelection(nextIdx, 0, false, false);
-	}
+        JButton btnMoveUp = new JButton("");
+        btnMoveUp.setIcon(new ImageIcon(TasksDialog.class
+                .getResource("/optitask/assests/upArrow.gif")));
+        btnMoveUp.setActionCommand("Move Up");
+        btnMoveUp.addActionListener(controller);
+        btnMoveUp.setBounds(454, 11, 40, 40);
+        getContentPane().add(btnMoveUp);
+
+        JButton btnMoveDown = new JButton("");
+        btnMoveDown.setIcon(new ImageIcon(TasksDialog.class
+                .getResource("/optitask/assests/downArrow.gif")));
+        btnMoveDown.setActionCommand("Move Down");
+        btnMoveDown.addActionListener(controller);
+        btnMoveDown.setBounds(454, 62, 40, 40);
+        getContentPane().add(btnMoveDown);
+
+    }
+
+    /**
+     * Sets the widths of the columns.
+     * @param col1 the first column
+     * @param col2 the second column
+     * @param col3 the third column
+     */
+
+    private void setColumnWidths(final int col1,
+            final int col2, final int col3) {
+        for (int i = 0; i < tasksTable.getColumnCount(); i++) {
+            if (i == 1) {
+                continue;
+            }
+            tasksTable.getColumnModel().getColumn(i).setMinWidth(col1);
+            tasksTable.getColumnModel().getColumn(i).setPreferredWidth(col2);
+            tasksTable.getColumnModel().getColumn(i).setMaxWidth(col3);
+        }
+
+    }
+
+    /**
+     * Adds a new task with default values.
+     */
+
+    public final void addTask() {
+        Task newTask = new Task();
+        tasks.add(newTask);
+        tasksTable.repaint();
+    }
+
+    /**
+     * Deletes the selected task from the table.
+     */
+
+    public final void deleteTask() {
+        int row = -1;
+        try {
+            row = tasksTable.getSelectedRow();
+            tasks.remove(row);
+        } catch (IndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(tasksTable, "Please select a task!",
+                    "No Task", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        tasksTable.repaint();
+    }
+
+    /**
+     * Gets the list of tasks.
+     * @return list of {@link Task}s
+     */
+
+    public final LinkedList<Task> getTasks() {
+        return tasks;
+    }
+
+    /**
+     * Moves a table item upwards.
+     */
+
+    public final void moveUp() {
+        swapItems(tasksTable.getSelectedRow(), tasksTable.getSelectedRow() - 1);
+    }
+
+    /**
+     * Moves a table item downwards.
+     */
+
+    public final void moveDown() {
+        swapItems(tasksTable.getSelectedRow(), tasksTable.getSelectedRow() + 1);
+    }
+
+    /**
+     * Method to swap two task items in the {@link #tasks} list.
+     * @param selectedIdx the index of the selected item
+     * @param nextIdx     the index of the item to be swapped
+     */
+
+    private void swapItems(final int selectedIdx, final int nextIdx) {
+        Task temp = new Task();
+        try {
+            temp = tasks.get(selectedIdx); // Temporarily stores selected task
+            tasks.set(selectedIdx, tasks.get(nextIdx));
+            tasks.set(nextIdx, temp);
+            tasksTable.repaint();
+        } catch (IndexOutOfBoundsException e) {
+            //FIXME the way this is done should be avoided if possible
+            JOptionPane.showMessageDialog(getParent(), "No row to move to!",
+                    "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        tasksTable.changeSelection(nextIdx, 0, false, false);
+    }
 }

@@ -2,102 +2,145 @@ package optitask.util;
 
 import java.io.Serializable;
 
+/**
+ * Statistics.java <br />
+ * Purpose: Stores the statistics of the application.
+ * @author Jerome
+ * @version 0.8
+ * @since 0.8
+ */
+
 public final class Statistics implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 647827585331411770L;
-	private int pomodorosDone = 0;
-	private long totalUsageTime = 0;
-	private long timeWasted = 0;
-	private long totalBreakTime = 0;
-	private int numInterrupts = 0;
 
-	public Statistics() {
-		this(0, 0, 0, 0, 0);
-	}
+    /**
+     * The serial version UID.
+     */
+    private static final long serialVersionUID = 647827585331411770L;
 
-	public Statistics(int pomoDone, long usageTime, long wasted,
-			long breakTime, int interrupts) {
-		pomodorosDone = pomoDone;
-		totalUsageTime = usageTime;
-		timeWasted = wasted;
-		totalBreakTime = breakTime;
-		numInterrupts = interrupts;
-	}
+    /**
+     * The total pomodoros done throughout the usage of the application.
+     * @serial
+     */
+    private int pomodorosDone;
 
-	/**
-	 * @return the pomodorosDone
-	 */
-	public int getPomodorosDone() {
-		return pomodorosDone;
-	}
+    /**
+     * The total usage time.
+     * @serial
+     */
+    private long totalUsageTime;
 
-	/**
-	 * @param pomodorosDone
-	 *            the pomodorosDone to set
-	 */
-	public void setPomodorosDone(int pomodorosDone) {
-		this.pomodorosDone = pomodorosDone;
-	}
+    /**
+     * The time wasted by not doing anything while the application is open.
+     * @serial
+     */
+    private long timeWasted;
 
-	/**
-	 * @return the totalUsageTime
-	 */
-	public long getTotalUsageTime() {
-		return totalUsageTime;
-	}
+    /**
+     * The total break time accumulated when using the application.
+     * @serial
+     */
+    private long totalBreakTime;
 
-	/**
-	 * @param totalUsageTime
-	 *            the totalUsageTime to set
-	 */
-	public void setTotalUsageTime(long totalUsageTime) {
-		this.totalUsageTime = totalUsageTime;
-	}
+    /**
+     * The total number of interruptions occurred.
+     * @serial
+     */
+    private int numInterrupts;
 
-	/**
-	 * @return the timeWasted
-	 */
-	public long getTimeWasted() {
-		return timeWasted;
-	}
+    /**
+     * Creates and initialises the statistics object to zero.
+     */
 
-	/**
-	 * @param timeWasted
-	 *            the timeWasted to set
-	 */
-	public void setTimeWasted(long timeWasted) {
-		this.timeWasted = timeWasted;
-	}
+    public Statistics() {
+        this(0, 0, 0, 0, 0);
+    }
 
-	/**
-	 * @return the totalBreakTime
-	 */
-	public long getTotalBreakTime() {
-		return totalBreakTime;
-	}
+    /**
+     * Creates the statistics object.
+     * @param pomoDone    number of pomodoros completed
+     * @param usageTime   total usage time of the application
+     * @param wasted      total time wasted
+     * @param breakTime   total time used on breaks
+     * @param interrupts  total number of interruptions
+     */
 
-	/**
-	 * @param totalBreakTime
-	 *            the totalBreakTime to set
-	 */
-	public void setTotalBreakTime(long totalBreakTime) {
-		this.totalBreakTime = totalBreakTime;
-	}
+    public Statistics(final int pomoDone, final long usageTime,
+            final long wasted, final long breakTime,
+            final int interrupts) {
+        pomodorosDone = pomoDone;
+        totalUsageTime = usageTime;
+        timeWasted = wasted;
+        totalBreakTime = breakTime;
+        numInterrupts = interrupts;
+    }
 
-	/**
-	 * @return the numInterrupts
-	 */
-	public int getNumInterrupts() {
-		return numInterrupts;
-	}
+    /**
+     * @return the pomodorosDone
+     */
+    public int getPomodorosDone() {
+        return pomodorosDone;
+    }
 
-	/**
-	 * @param numInterrupts
-	 *            the numInterrupts to set
-	 */
-	public void setNumInterrupts(int numInterrupts) {
-		this.numInterrupts = numInterrupts;
-	}
+    /**
+     * @param pomDone the pomodorosDone to set
+     */
+    public void setPomodorosDone(final int pomDone) {
+        pomodorosDone = pomDone;
+    }
+
+    /**
+     * @return the totalUsageTime
+     */
+    public long getTotalUsageTime() {
+        return totalUsageTime;
+    }
+
+    /**
+     * @param totUseTime the totalUsageTime to set
+     */
+    public void setTotalUsageTime(final long totUseTime) {
+        totalUsageTime = totUseTime;
+    }
+
+    /**
+     * @return the timeWasted
+     */
+    public long getTimeWasted() {
+        return timeWasted;
+    }
+
+    /**
+     * @param timeWstd the timeWasted to set
+     */
+    public void setTimeWasted(final long timeWstd) {
+        timeWasted = timeWstd;
+    }
+
+    /**
+     * @return the totalBreakTime
+     */
+    public long getTotalBreakTime() {
+        return totalBreakTime;
+    }
+
+    /**
+     * @param totBrkTime the totalBreakTime to set
+     */
+    public void setTotalBreakTime(final long totBrkTime) {
+        totalBreakTime = totBrkTime;
+    }
+
+    /**
+     * @return the numInterrupts
+     */
+    public int getNumInterrupts() {
+        return numInterrupts;
+    }
+
+    /**
+     * @param numInts the numInterrupts to set
+     */
+    public void setNumInterrupts(final int numInts) {
+        this.numInterrupts = numInts;
+    }
 }

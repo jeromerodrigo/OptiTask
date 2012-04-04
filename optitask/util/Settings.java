@@ -2,100 +2,171 @@ package optitask.util;
 
 import java.io.Serializable;
 
+/**
+ * Settings.java <br />
+ * Purpose: Stores the settings of the application.
+ * @author Jerome
+ * @version 0.8
+ * @since 0.8
+ */
+
 public final class Settings implements Serializable {
 
-	private static final long serialVersionUID = 7131951061036321184L;
-	private long shortBreak;
-	private long longBreak;
-	private int incrementInterval;
-	private long pomodoroTime;
-	private boolean willLongBreak;
+    /**
+     * The serial version UID.
+     */
+    private static final long serialVersionUID = 7131951061036321184L;
 
-	public Settings() {
-		this(300000, 900000, 4, 1500000, true);
-	}
+    /**
+     * Stores the duration of a short break in milliseconds.
+     * @serial
+     */
+    private long shortBreak;
 
-	public Settings(long shrtBrk, long lngBrk, int itrVal, long pomoTime,
-			boolean willLongBreak) {
-		shortBreak = shrtBrk;
-		longBreak = lngBrk;
-		incrementInterval = itrVal;
-		pomodoroTime = pomoTime;
-		this.willLongBreak = willLongBreak;
-	}
+    /**
+     * Stores the duration of a long break in milliseconds.
+     * @serial
+     */
+    private long longBreak;
 
-	/**
-	 * @return the willIncrement
-	 */
-	public boolean isWillLongBreak() {
-		return willLongBreak;
-	}
+    /**
+     * Stores the value of the interval between long breaks.
+     * @serial
+     */
+    private int incrementInterval;
 
-	/**
-	 * @param willIncrement
-	 *            the willIncrement to set
-	 */
-	public void setWillLongBreak(boolean willLongBreak) {
-		this.willLongBreak = willLongBreak;
-	}
+    /**
+     * Stores the duration of a pomodoro in milliseconds.
+     * @serial
+     */
+    private long pomodoroTime;
 
-	/**
-	 * @return the breakTime
-	 */
-	public long getShortBreak() {
-		return shortBreak;
-	}
+    /**
+     * Stores a flag whether a long break will occur.
+     * @serial
+     */
+    private boolean willLongBreak;
 
-	/**
-	 * @param breakTime
-	 *            the breakTime to set
-	 */
-	public void setShortBreak(long breakTime) {
-		this.shortBreak = breakTime;
-	}
+    /**
+     * The default constant for a short break.
+     */
+    private static final long SHORT_BREAK_TIME = 300000;
 
-	/**
-	 * @return the incrementInterval
-	 */
-	public int getIncrementInterval() {
-		return incrementInterval;
-	}
+    /**
+     * The default constant for a long break.
+     */
+    private static final long LONG_BREAK_TIME = 900000;
 
-	/**
-	 * @param incrementInterval
-	 *            the incrementInterval to set
-	 */
-	public void setIncrementInterval(int incrementInterval) {
-		this.incrementInterval = incrementInterval;
-	}
+    /**
+     * The default constant for the increment interval.
+     */
+    private static final int INC_INTERVAL = 4;
 
-	/**
-	 * @return the pomodoroTime
-	 */
-	public long getPomodoroTime() {
-		return pomodoroTime;
-	}
+    /**
+     * The default constant for a pomodoro duration.
+     */
+    private static final long POMODORO_TIME = 1500000;
 
-	/**
-	 * @param pomodoroTime
-	 *            the pomodoroTime to set
-	 */
-	public void setPomodoroTime(long pomodoroTime) {
-		this.pomodoroTime = pomodoroTime;
-	}
+    /**
+     * The default constant for if a long break shall occur.
+     */
+    private static final boolean WILL_LONG_BREAK = true;
 
-	/**
-	 * @return the longBreak
-	 */
-	public long getLongBreak() {
-		return longBreak;
-	}
+    /**
+     * Creates and initialises the settings object with some default values.
+     */
 
-	/**
-	 * @param longBreak
-	 *            the longBreak to set
-	 */
-	public void setLongBreak(long longBreak) {
-		this.longBreak = longBreak;
-	}
+    public Settings() {
+        this(SHORT_BREAK_TIME, LONG_BREAK_TIME, INC_INTERVAL,
+                POMODORO_TIME, WILL_LONG_BREAK);
+    }
+
+    /**
+     * Creates the settings object.
+     * @param shrtBrk       duration of a short break
+     * @param lngBrk        duration of a long break
+     * @param itrVal        value of cycles until a long break
+     * @param pomoTime      duration of a pomodoro
+     * @param willLngBrk    a flag whether a long break will occur
+     */
+
+    public Settings(final long shrtBrk, final long lngBrk,
+            final int itrVal, final long pomoTime,
+            final boolean willLngBrk) {
+        shortBreak = shrtBrk;
+        longBreak = lngBrk;
+        incrementInterval = itrVal;
+        pomodoroTime = pomoTime;
+        willLongBreak = willLngBrk;
+    }
+
+    /**
+     * @return the willIncrement
+     */
+    public boolean isWillLongBreak() {
+        return willLongBreak;
+    }
+
+    /**
+     * @param willLngBrk the willLongBreak to set
+     */
+    public void setWillLongBreak(final boolean willLngBrk) {
+        willLongBreak = willLngBrk;
+    }
+
+    /**
+     * @return the breakTime
+     */
+    public long getShortBreak() {
+        return shortBreak;
+    }
+
+    /**
+     * @param breakTime the breakTime to set
+     */
+    public void setShortBreak(final long breakTime) {
+        shortBreak = breakTime;
+    }
+
+    /**
+     * @return the incrementInterval
+     */
+    public int getIncrementInterval() {
+        return incrementInterval;
+    }
+
+    /**
+     * @param incInt the incrementInterval to set
+     */
+    public void setIncrementInterval(final int incInt) {
+        incrementInterval = incInt;
+    }
+
+    /**
+     * @return the pomodoroTime
+     */
+    public long getPomodoroTime() {
+        return pomodoroTime;
+    }
+
+    /**
+     * @param pomTime the pomodoroTime to set
+     */
+    public void setPomodoroTime(final long pomTime) {
+        pomodoroTime = pomTime;
+    }
+
+    /**
+     * @return the longBreak
+     */
+    public long getLongBreak() {
+        return longBreak;
+    }
+
+    /**
+     * @param lngBrk the longBreak to set
+     */
+    public void setLongBreak(final long lngBrk) {
+        longBreak = lngBrk;
+    }
 }
