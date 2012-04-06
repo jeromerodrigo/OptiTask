@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -227,25 +229,70 @@ public class TimerBar extends JProgressBar implements ActionListener {
      * Plays a sound file.
      */
 
-    private static synchronized void playSound() {
-        final String url = "/optitask/assests/notify.wav";
-        new Thread(new Runnable() {
+    private static void playSound() {
+        new SoundPlayer().run();
+    }
 
-            @Override
-            public void run() {
-                try {
-                    Clip clip = AudioSystem.getClip();
-                    //FIXME thread does not terminate after done playing
-                    AudioInputStream inputStream = AudioSystem
-                            .getAudioInputStream(TimerBar.class
-                                    .getResourceAsStream(url));
-                    clip.open(inputStream);
-                    clip.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    /**
+     * SoundPlayer. <br />
+     * Purpose: Plays a sound file (.wav) at the specified URL string
+     * @author Jerome
+     * @version 0.8.2
+     * @since 0.8.2
+     */
+
+    private static final class SoundPlayer extends Thread implements Runnable {
+
+        /**
+         * The sound file path.
+         */
+        private static String notifyUrl;
+
+        /**
+         * The sound clip.
+         */
+        private static Clip clip;
+
+        /**
+         * Creates the SoundPlayer with the default sound.
+         */
+
+        public SoundPlayer() {
+            this("/optitask/assests/notify.wav");
+        }
+
+        /**
+         * Creates the SoundPlayer with the specified sound file path.
+         * @param url the path to the sound file
+         */
+
+        public SoundPlayer(final String url) {
+            notifyUrl = url;
+        }
+
+        @Override
+        public void run() {
+            try {
+                clip = AudioSystem.getClip();
+                AudioInputStream inputStream = AudioSystem
+                        .getAudioInputStream(TimerBar.class
+                                .getResourceAsStream(notifyUrl));
+                clip.open(inputStream);
+                clip.start();
+                clip.addLineListener(new LineListener() {
+
+                    @Override
+                    public void update(final LineEvent e) {
+                        if (e.getType() == LineEvent.Type.STOP) {
+                            e.getLine().close();
+                        }
+                    }
+
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        }
 
-        }).start();
     }
 }
