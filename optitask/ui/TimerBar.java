@@ -121,6 +121,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
         resetTimer();
         timer.start();
         setStringPainted(true);
+        playSound();
     }
 
     /**
