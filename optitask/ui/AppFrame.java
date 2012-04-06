@@ -101,7 +101,7 @@ public class AppFrame extends JFrame {
         separator.setBounds(0, 70, 300, 2);
         getContentPane().add(separator);
 
-        JButton btnManageTasks = new JButton("Manage Tasks");
+        JButton btnManageTasks = new JButton("To Do List");
         btnManageTasks.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/pencil.gif")));
         btnManageTasks.setActionCommand("Open Manage Tasks");

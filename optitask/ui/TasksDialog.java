@@ -171,7 +171,7 @@ public class TasksDialog extends JDialog {
      */
 
     private void initialize() {
-        setTitle("Tasks");
+        setTitle("To Do List");
         setSize(515, 300);
         setModal(true);
         setResizable(false);
