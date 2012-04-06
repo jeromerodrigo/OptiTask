@@ -324,7 +324,6 @@ public class TasksDialog extends JDialog {
             tasks.set(nextIdx, temp);
             tasksTable.repaint();
         } catch (IndexOutOfBoundsException e) {
-            //FIXME the way this is done should be avoided if possible
             JOptionPane.showMessageDialog(getParent(), "No row to move to!",
                     "Error", JOptionPane.WARNING_MESSAGE);
             return;
