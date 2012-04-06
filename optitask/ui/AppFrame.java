@@ -137,6 +137,15 @@ public class AppFrame extends JFrame {
     }
 
     /**
+     * Resets the current cycle.
+     * @see TimerPanel
+     */
+
+    public final void resetCycle() {
+        timerPanel.resetCycle();
+    }
+
+    /**
      * Centering frame method provided by Vipin Kumar Rajput, 2010.
      * <a href="http://www.esblog.in/2010/09/
      * centering-a-swing-window-on-screen/">

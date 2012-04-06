@@ -69,6 +69,11 @@ public class TimerBar extends JProgressBar implements ActionListener {
     private static boolean isLongBreakNow = false;
 
     /**
+     * Flag if the long break should be skipped once.
+     */
+    private static boolean skipLongBreak = false;
+
+    /**
      * The swing timer.
      */
     private static Timer timer;
@@ -138,6 +143,19 @@ public class TimerBar extends JProgressBar implements ActionListener {
     }
 
     /**
+     * Resets the current cycle to zero.
+     * This method is only called when the Task Manager dialog is closed.
+     * The reason for this is to avoid the long break being used on a task
+     * which has been moved elsewhere.
+     */
+
+    public final void resetCycle() {
+        skipLongBreak = true;
+        System.out.println("Cycle reset!");
+        resetBreaks();
+    }
+
+    /**
      * Method to reset the timer.
      * Refreshes all the timer constants from the data file.
      * @see #start()
@@ -145,21 +163,50 @@ public class TimerBar extends JProgressBar implements ActionListener {
      */
 
     private void resetTimer() {
-        TimerBar.pomodoroTime = model.getSettings()
-                .getPomodoroTime() / MILLI_MULT;
-
-        if (isLongBreakNow) {
-            TimerBar.breakTime = model.getSettings()
-                    .getLongBreak() / MILLI_MULT;
-        } else {
-            TimerBar.breakTime = model.getSettings()
-                    .getShortBreak() / MILLI_MULT;
-        }
+        resetBreaks();
 
         setValue((int) pomodoroTime);
         ePomodoroTime = pomodoroTime; // reset time
         eBreakTime = 0;
         setMaximum((int) pomodoroTime);
+    }
+
+    /**
+     * Refreshes the {@link #breakTime} value.
+     */
+
+    private void resetBreaks() {
+        TimerBar.pomodoroTime = model.getSettings()
+                .getPomodoroTime() / MILLI_MULT;
+
+        if (isLongBreakNow) {
+            if (skipLongBreak) {
+                initShortBreak();
+                skipLongBreak = false;
+            } else {
+                initLongBreak();
+            }
+        } else {
+            initShortBreak();
+        }
+    }
+
+    /**
+     * Sets the {@link #breakTime} with the long break value.
+     */
+
+    private void initLongBreak() {
+        TimerBar.breakTime = model.getSettings()
+                .getLongBreak() / MILLI_MULT;
+    }
+
+    /**
+     * Sets the {@link #breakTime} with the short break value.
+     */
+
+    private void initShortBreak() {
+        TimerBar.breakTime = model.getSettings()
+                .getShortBreak() / MILLI_MULT;
     }
 
     /**
@@ -196,7 +243,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
         if (eBreakTime == 1) {
             playSound();
             setMaximum((int) breakTime);
-            if (isLongBreakNow) {
+            if (breakTime == model.getSettings().getLongBreak() / MILLI_MULT) {
                 taskPanel.setStatus(CurrentTaskPanel.LONG_BREAK);
             } else {
                 taskPanel.setStatus(CurrentTaskPanel.SHORT_BREAK);

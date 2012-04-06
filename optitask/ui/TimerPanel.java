@@ -120,4 +120,13 @@ public class TimerPanel extends JPanel {
         btnStart.setActionCommand("Start");
         currentTaskPanel.refresh();
     }
+
+    /**
+     * Resets the current cycle to zero.
+     * @see TimerBar
+     */
+
+    public final void resetCycle() {
+        timer.resetCycle();
+    }
 }

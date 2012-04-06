@@ -190,6 +190,7 @@ public class AppController implements ActionListener {
         } else if (actionCommand.equalsIgnoreCase("Delete Task")) {
 
             tasksDialog.deleteTask();
+            view.resetCycle();
 
         } else if (actionCommand.equalsIgnoreCase("Save Tasks")) {
 
@@ -200,10 +201,12 @@ public class AppController implements ActionListener {
         } else if (actionCommand.equalsIgnoreCase("Move Up")) {
 
             tasksDialog.moveUp();
+            view.resetCycle();
 
         } else if (actionCommand.equalsIgnoreCase("Move Down")) {
 
             tasksDialog.moveDown();
+            view.resetCycle();
 
         } else if (actionCommand.equalsIgnoreCase("Open About")) {
 
