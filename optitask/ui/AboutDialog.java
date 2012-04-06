@@ -22,6 +22,9 @@ public class AboutDialog extends JDialog {
      */
     private static final long serialVersionUID = 5686802784165414690L;
 
+    /**
+     * The current version number.
+     */
     private static final String VERSION_NUMBER = "0.8.1";
 
     /**
