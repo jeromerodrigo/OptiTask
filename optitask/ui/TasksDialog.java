@@ -26,7 +26,7 @@ import optitask.util.Task;
  * TasksDialog.java <br />
  * Purpose: Displays a dialog for the user to manage the tasks.
  * @author Jerome
- * @version 0.8
+ * @version 0.8.2
  * @since 0.8
  */
 
@@ -101,6 +101,10 @@ public class TasksDialog extends JDialog {
 
         @Override
         public boolean isCellEditable(final int row, final int col) {
+            // If the task is done, the disable changing the assigned pomodoros
+            if (tasks.get(row).isDone() && col == 3) {
+                return false;
+            }
             return col > 0 && col < columnNames.length && col != 2;
         }
 
@@ -134,6 +138,13 @@ public class TasksDialog extends JDialog {
                 break;
             case 4:
                 task.setDone((Boolean) value);
+
+                // If a task is 'undone' then reset the current pomodoros
+                if (!(Boolean) value) {
+                    task.setCurrentPomodoro(0);
+                    tasksTable.repaint(); // Refresh the table
+                }
+
                 break;
             case 3:
                 task.setAssignedPomodoros((Integer) value);
