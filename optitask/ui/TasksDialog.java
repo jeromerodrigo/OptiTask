@@ -65,7 +65,7 @@ public class TasksDialog extends JDialog {
         /**
          * The names for each column.
          */
-        private final String[] columnNames = { "Task", "Description", "Done" };
+        private final String[] columnNames = { "Task", "Description", "Current", "Assigned", "Done" };
 
         @Override
         public int getColumnCount() {
@@ -89,7 +89,7 @@ public class TasksDialog extends JDialog {
 
         @Override
         public boolean isCellEditable(final int row, final int col) {
-            return col > 0 && col < columnNames.length;
+            return col > 0 && col < columnNames.length && col != 2;
         }
 
         @Override
@@ -99,8 +99,12 @@ public class TasksDialog extends JDialog {
                 return row + 1;
             case 1:
                 return tasks.get(row).getTaskDesc();
-            case 2:
+            case 4:
                 return tasks.get(row).isDone();
+            case 2:
+                return tasks.get(row).getCurrentPomodoro();
+            case 3:
+                return tasks.get(row).getAssignedPomodoros();
             default:
                 return null;
             }
@@ -116,8 +120,11 @@ public class TasksDialog extends JDialog {
             case 1:
                 task.setTaskDesc((String) value);
                 break;
-            case 2:
+            case 4:
                 task.setDone((Boolean) value);
+                break;
+            case 3:
+                task.setAssignedPomodoros((Integer) value);
                 break;
             default:
                 return;
@@ -132,17 +139,17 @@ public class TasksDialog extends JDialog {
     /**
      * Constant for the width of the first column.
      */
-    private static final int COL1_WIDTH = 50;
+    private static final int MIN_WIDTH = 60;
 
     /**
      * Constant for the width of the second column.
      */
-    private static final int COL2_WIDTH = 70;
+    private static final int PREF_WIDTH = 70;
 
     /**
      * Constant for the width of the third column.
      */
-    private static final int COL3_WIDTH = 50;
+    private static final int MAX_WIDTH = 100;
 
     /**
      * Creates the dialog.
@@ -193,7 +200,7 @@ public class TasksDialog extends JDialog {
         .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         // Set the column widths
-        setColumnWidths(COL1_WIDTH, COL2_WIDTH, COL3_WIDTH);
+        setColumnWidths(MIN_WIDTH, PREF_WIDTH, MAX_WIDTH);
 
         // Configure jTable selection colours
         tasksTable.setSelectionBackground(Color.ORANGE);
@@ -239,20 +246,20 @@ public class TasksDialog extends JDialog {
 
     /**
      * Sets the widths of the columns.
-     * @param col1 the first column
-     * @param col2 the second column
-     * @param col3 the third column
+     * @param min the minimum width
+     * @param pref the preferred width
+     * @param max the maximum width
      */
 
-    private void setColumnWidths(final int col1,
-            final int col2, final int col3) {
+    private void setColumnWidths(final int min,
+            final int pref, final int max) {
         for (int i = 0; i < tasksTable.getColumnCount(); i++) {
             if (i == 1) {
                 continue;
             }
-            tasksTable.getColumnModel().getColumn(i).setMinWidth(col1);
-            tasksTable.getColumnModel().getColumn(i).setPreferredWidth(col2);
-            tasksTable.getColumnModel().getColumn(i).setMaxWidth(col3);
+            tasksTable.getColumnModel().getColumn(i).setMinWidth(min);
+            tasksTable.getColumnModel().getColumn(i).setPreferredWidth(pref);
+            tasksTable.getColumnModel().getColumn(i).setMaxWidth(max);
         }
 
     }
