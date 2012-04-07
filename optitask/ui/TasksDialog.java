@@ -18,6 +18,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 
+import net.miginfocom.swing.MigLayout;
 import optitask.AppController;
 import optitask.store.AppPersistence;
 import optitask.util.Task;
@@ -277,11 +278,12 @@ public class TasksDialog extends JDialog {
         setResizable(false);
         setIconImage(Toolkit.getDefaultToolkit().getImage(
                 TasksDialog.class.getResource("/optitask/assests/pencil.gif")));
-        getContentPane().setLayout(null);
+        getContentPane().setLayout(new MigLayout("",
+                "[][10px][][][10px][236px][40px]",
+                "[51px][11px][165px][23px]"));
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(0, 0, 444, 227);
-        getContentPane().add(scrollPane);
+        getContentPane().add(scrollPane, "cell 0 0 6 3,grow");
 
         tasksTable = new JTable(new TasksDataModel());
 
@@ -293,7 +295,8 @@ public class TasksDialog extends JDialog {
         .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         //Set the appropriate editor for the assigned pomodoros
-        tasksTable.getColumnModel().getColumn(3).setCellEditor(new PomNumberEditor());
+        tasksTable.getColumnModel().getColumn(3)
+        .setCellEditor(new PomNumberEditor());
 
         //Set the row height
         tasksTable.setRowHeight(30);
@@ -310,36 +313,31 @@ public class TasksDialog extends JDialog {
         JButton btnAdd = new JButton("Add");
         btnAdd.setActionCommand("Add Task");
         btnAdd.addActionListener(controller);
-        btnAdd.setBounds(10, 238, 89, 23);
-        getContentPane().add(btnAdd);
+        getContentPane().add(btnAdd, "cell 0 3,growx,aligny top");
 
         JButton btnDelete = new JButton("Delete");
         btnDelete.setActionCommand("Delete Task");
         btnDelete.addActionListener(controller);
-        btnDelete.setBounds(109, 238, 89, 23);
-        getContentPane().add(btnDelete);
+        getContentPane().add(btnDelete, "cell 2 3,growx,aligny top");
 
         JButton btnSave = new JButton("Save");
         btnSave.setActionCommand("Save Tasks");
         btnSave.addActionListener(controller);
-        btnSave.setBounds(208, 238, 89, 23);
-        getContentPane().add(btnSave);
+        getContentPane().add(btnSave, "cell 3 3,growx,aligny top");
 
         JButton btnMoveUp = new JButton("");
         btnMoveUp.setIcon(new ImageIcon(TasksDialog.class
                 .getResource("/optitask/assests/upArrow.gif")));
         btnMoveUp.setActionCommand("Move Up");
         btnMoveUp.addActionListener(controller);
-        btnMoveUp.setBounds(454, 11, 40, 40);
-        getContentPane().add(btnMoveUp);
+        getContentPane().add(btnMoveUp, "cell 6 0,growx,aligny bottom");
 
         JButton btnMoveDown = new JButton("");
         btnMoveDown.setIcon(new ImageIcon(TasksDialog.class
                 .getResource("/optitask/assests/downArrow.gif")));
         btnMoveDown.setActionCommand("Move Down");
         btnMoveDown.addActionListener(controller);
-        btnMoveDown.setBounds(454, 62, 40, 40);
-        getContentPane().add(btnMoveDown);
+        getContentPane().add(btnMoveDown, "cell 6 2,growx,aligny top");
 
     }
 

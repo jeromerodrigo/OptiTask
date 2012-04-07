@@ -16,6 +16,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
+import net.miginfocom.swing.MigLayout;
 import optitask.AppController;
 import optitask.store.AppPersistence;
 import optitask.util.Settings;
@@ -129,105 +130,93 @@ public class SettingsDialog extends JDialog {
         setIconImage(Toolkit.getDefaultToolkit().getImage(
                 SettingsDialog.class
                 .getResource("/optitask/assests/settings.gif")));
-        setSize(320, 340);
+        setSize(320, 300);
         setModal(true);
         setResizable(false);
         setTitle("Settings");
-        getContentPane().setLayout(null);
+        getContentPane().setLayout(new MigLayout("",
+                "[135px][53px][50px][64px]",
+                "[26px][26px][151px][2px][39px]"));
 
         JLabel lblShortBreak = new JLabel("Short Break Time:");
-        lblShortBreak.setBounds(10, 13, 125, 25);
-        getContentPane().add(lblShortBreak);
+        getContentPane().add(lblShortBreak, "cell 0 0,grow");
 
         shortBreakTimeSpinner = new JSpinner();
         lblShortBreak.setLabelFor(shortBreakTimeSpinner);
         shortBreakTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 30, 1));
-        shortBreakTimeSpinner.setBounds(188, 14, 50, 25);
         preventKeyboardInputJSpinner(shortBreakTimeSpinner);
-        getContentPane().add(shortBreakTimeSpinner);
+        getContentPane().add(shortBreakTimeSpinner, "cell 2 0,grow");
 
         JPanel longBreakTimePanel = new JPanel();
         longBreakTimePanel.setBorder(new TitledBorder(UIManager
                 .getBorder("TitledBorder.border"), "Long Break Settings",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        longBreakTimePanel.setBounds(6, 81, 296, 151);
-        getContentPane().add(longBreakTimePanel);
-        longBreakTimePanel.setLayout(null);
+        getContentPane().add(longBreakTimePanel, "cell 0 2 4 1,grow");
+        longBreakTimePanel.setLayout(new MigLayout("",
+                "[137.00px][50px][69px]",
+                "[26px][26px][25px]"));
 
         lblLongBreakAfter = new JLabel("Long Break After:");
-        lblLongBreakAfter.setBounds(25, 37, 116, 25);
-        longBreakTimePanel.add(lblLongBreakAfter);
+        longBreakTimePanel.add(lblLongBreakAfter, "cell 0 0,grow");
         lblLongBreakAfter.setLabelFor(longBreakAfterSpinner);
 
         longBreakAfterSpinner = new JSpinner();
-        longBreakAfterSpinner.setBounds(153, 38, 50, 25);
-        longBreakTimePanel.add(longBreakAfterSpinner);
+        longBreakTimePanel.add(longBreakAfterSpinner, "cell 1 0,grow");
         longBreakAfterSpinner.setModel(new SpinnerNumberModel(1, 1, 10, 1));
         preventKeyboardInputJSpinner(longBreakAfterSpinner);
 
         lblLongBreak = new JLabel("Long Break Time:");
-        lblLongBreak.setBounds(25, 75, 116, 25);
-        longBreakTimePanel.add(lblLongBreak);
+        longBreakTimePanel.add(lblLongBreak, "cell 0 1,grow");
         lblLongBreak.setLabelFor(longBreakTimeSpinner);
 
         longBreakTimeSpinner = new JSpinner();
         longBreakTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 60, 1));
-        longBreakTimeSpinner.setBounds(153, 76, 50, 25);
-        longBreakTimePanel.add(longBreakTimeSpinner);
+        longBreakTimePanel.add(longBreakTimeSpinner, "cell 1 1,grow");
         preventKeyboardInputJSpinner(longBreakTimeSpinner);
 
         JLabel lblToggleLongBreak = new JLabel("Toggle Long Break:");
-        lblToggleLongBreak.setBounds(25, 113, 116, 25);
-        longBreakTimePanel.add(lblToggleLongBreak);
+        longBreakTimePanel.add(lblToggleLongBreak, "cell 0 2,grow");
 
         willLongBreakCheckBox = new JCheckBox("");
         willLongBreakCheckBox.setActionCommand("Toggle Increment");
         willLongBreakCheckBox.addActionListener(controller);
-        willLongBreakCheckBox.setBounds(217, 115, 50, 23);
-        longBreakTimePanel.add(willLongBreakCheckBox);
+        longBreakTimePanel.add(willLongBreakCheckBox,
+                "cell 2 2,growx,aligny bottom");
 
         JLabel lblMinutes3 = new JLabel("minutes");
-        lblMinutes3.setBounds(215, 79, 52, 16);
-        longBreakTimePanel.add(lblMinutes3);
+        longBreakTimePanel.add(lblMinutes3,
+                "cell 2 1,alignx left,aligny center");
 
         JLabel lblCycles = new JLabel("pomodoros");
-        lblCycles.setBounds(215, 41, 69, 16);
-        longBreakTimePanel.add(lblCycles);
+        longBreakTimePanel.add(lblCycles, "cell 2 0,growx,aligny center");
 
         JLabel lblTaskDuration = new JLabel("Pomodoro Time:");
-        lblTaskDuration.setBounds(10, 46, 125, 25);
-        getContentPane().add(lblTaskDuration);
+        getContentPane().add(lblTaskDuration, "cell 0 1,grow");
 
         pomodoroTimeSpinner = new JSpinner();
         lblTaskDuration.setLabelFor(pomodoroTimeSpinner);
         pomodoroTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 60, 1));
-        pomodoroTimeSpinner.setBounds(188, 47, 50, 25);
         preventKeyboardInputJSpinner(pomodoroTimeSpinner);
-        getContentPane().add(pomodoroTimeSpinner);
+        getContentPane().add(pomodoroTimeSpinner, "cell 2 1,grow");
 
         JButton btnDefault = new JButton("Default");
         btnDefault.setActionCommand("Default Settings");
         btnDefault.addActionListener(controller);
-        btnDefault.setBounds(10, 260, 95, 39);
-        getContentPane().add(btnDefault);
+        getContentPane().add(btnDefault, "cell 2 4,alignx center,growy");
 
         JButton btnSave = new JButton("Save");
         btnSave.setActionCommand("Save Settings");
         btnSave.addActionListener(controller);
-        btnSave.setBounds(207, 260, 95, 39);
-        getContentPane().add(btnSave);
+        getContentPane().add(btnSave, "cell 3 4,alignx center,growy");
 
         JSeparator separator = new JSeparator();
-        separator.setBounds(0, 245, 314, 2);
-        getContentPane().add(separator);
+        getContentPane().add(separator, "cell 0 3 4 1,growx,aligny top");
 
         JLabel lblMinutes1 = new JLabel("minutes");
-        lblMinutes1.setBounds(250, 17, 52, 16);
-        getContentPane().add(lblMinutes1);
+        getContentPane().add(lblMinutes1, "cell 3 0,growx,aligny center");
 
         JLabel lblMinutes2 = new JLabel("minutes");
-        lblMinutes2.setBounds(250, 52, 52, 16);
-        getContentPane().add(lblMinutes2);
+        getContentPane().add(lblMinutes2, "cell 3 1,growx,aligny center");
 
         setSettings(model.getSettings());
     }

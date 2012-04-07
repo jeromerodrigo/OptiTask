@@ -8,6 +8,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import net.miginfocom.swing.MigLayout;
 import optitask.store.AppPersistence;
 import optitask.util.Task;
 
@@ -112,24 +113,21 @@ public class CurrentTaskPanel extends JPanel {
 
     private void initialize() {
         setSize(320, 100);
-        setLayout(null);
+        setLayout(new MigLayout("", "[302px]", "[63px][14px]"));
 
         JPanel panel = new JPanel();
         panel.setBorder(new TitledBorder(UIManager
                 .getBorder("TitledBorder.border"), "Current Task",
                 TitledBorder.CENTER, TitledBorder.TOP, null, null));
-        panel.setBounds(9, 4, 302, 63);
-        add(panel);
-        panel.setLayout(null);
+        add(panel, "cell 0 0,grow");
+        panel.setLayout(new MigLayout("", "[272px]", "[36px]"));
 
         lblTask = new JLabel("");
-        lblTask.setBounds(20, 16, 272, 36);
-        panel.add(lblTask);
+        panel.add(lblTask, "cell 0 0,grow");
 
         lblStatus = new JLabel("");
         lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
-        lblStatus.setBounds(10, 75, 300, 14);
-        add(lblStatus);
+        add(lblStatus, "cell 0 1,grow");
     }
 
     /**

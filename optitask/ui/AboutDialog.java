@@ -1,11 +1,12 @@
 package optitask.ui;
 
-import java.awt.Font;
 import java.awt.Toolkit;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * AboutDialog.java <br />
@@ -36,34 +37,30 @@ public class AboutDialog extends JDialog {
         setModal(true);
         setResizable(false);
         setTitle("About OptiTask");
-        setBounds(100, 100, 350, 200);
+        setSize(350, 210);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        getContentPane().setLayout(null);
+        getContentPane().setLayout(new MigLayout("", "[324px]",
+                "[28px][14px][14px][50px]"));
 
-        JLabel lblTitle = new JLabel("OptiTask Pomodoro Timer");
-        lblTitle.setFont(new Font("Times New Roman", lblTitle.getFont()
-                .getStyle() | Font.BOLD, lblTitle.getFont().getSize() + 4));
-        lblTitle.setBounds(10, 11, 324, 28);
-        getContentPane().add(lblTitle);
+        JLabel lblTitle = new JLabel("<html><h1>OptiTask Pomodoro Timer</h1>"
+                + "<hr /></html>");
+        getContentPane().add(lblTitle, "cell 0 0,grow");
 
         JLabel lblCopy = new JLabel(
                 "<html>\r\nCopyright &copy; 2012 "
                         + "by Jerome Rodrigo.\r\n</html>");
-        lblCopy.setBounds(10, 61, 324, 14);
-        getContentPane().add(lblCopy);
+        getContentPane().add(lblCopy, "cell 0 1,growx,aligny top");
 
         JLabel lblVersion = new JLabel(
                 "<html>\r\n<b>Version:</b> " + VERSION_NUMBER + "\r\n</html>");
-        lblVersion.setBounds(10, 86, 324, 14);
-        getContentPane().add(lblVersion);
+        getContentPane().add(lblVersion, "cell 0 2,growx,aligny top");
 
         JLabel lblCredit = new JLabel(
                 "<html>\r\nDeveloped based on the Pomodoro Technique &reg;"
                         + " <br />\r\nby Francesco Cirillo <br />"
                         + "\r\n<a href=\"http://www.pomodorotechnique.com/\">"
                         + "http://www.pomodorotechnique.com/</a>\r\n</html>");
-        lblCredit.setBounds(10, 111, 324, 50);
-        getContentPane().add(lblCredit);
+        getContentPane().add(lblCredit, "cell 0 3,grow");
 
     }
 }

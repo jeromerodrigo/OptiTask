@@ -3,6 +3,7 @@ package optitask.ui;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
 import optitask.AppController;
 import optitask.store.AppPersistence;
 
@@ -11,7 +12,7 @@ import optitask.store.AppPersistence;
  * Purpose: Displays the timer-related components and allows the user to
  * control it.
  * @author Jerome
- * @version 0.8
+ * @version 0.8.2
  * @since 0.8
  */
 
@@ -77,24 +78,20 @@ public class TimerPanel extends JPanel {
      */
 
     private void initialize() {
-        setLayout(null);
-        setSize(340, 185);
+        setSize(330, 180);
 
         btnStart = new JButton("Start");
         btnStart.setActionCommand("Start");
-        btnStart.setBounds(10, 10, 70, 50);
         btnStart.addActionListener(controller);
-        add(btnStart);
+        setLayout(new MigLayout("", "[70px][240px]", "[50px][110px]"));
+        add(btnStart, "cell 0 0,grow");
 
         currentTaskPanel = new CurrentTaskPanel(model);
-        currentTaskPanel.setBounds(10, 71, 320, 110);
         currentTaskPanel.setStatus(CurrentTaskPanel.NULL);
-        add(currentTaskPanel);
+        add(currentTaskPanel, "cell 0 1 2 1,grow");
 
         timer = new TimerBar(model, currentTaskPanel);
-        timer.setSize(240, 50);
-        timer.setLocation(90, 10);
-        add(timer);
+        add(timer, "cell 1 0,grow");
 
     }
 

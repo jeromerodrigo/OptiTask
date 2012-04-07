@@ -11,6 +11,7 @@ import javax.swing.JSeparator;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import net.miginfocom.swing.MigLayout;
 import optitask.AppController;
 import optitask.store.AppPersistence;
 
@@ -76,7 +77,6 @@ public class AppFrame extends JFrame {
      */
 
     private void initialize() {
-        getContentPane().setLayout(null);
         setTitle("OptiTask");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(350, 265);
@@ -84,38 +84,36 @@ public class AppFrame extends JFrame {
         centerThisFrame(this);
         setIconImage(Toolkit.getDefaultToolkit().getImage(
                 AppFrame.class.getResource("/optitask/assests/appIcon.gif")));
+        getContentPane().setLayout(new MigLayout("",
+                "[40px][10px][30px][10px][254px]",
+                "[185px][][30px]"));
 
         timerPanel = new TimerPanel(model, controller);
-        timerPanel.setBounds(0, 0, 344, 185);
-        getContentPane().add(timerPanel);
+        getContentPane().add(timerPanel, "cell 0 0 5 1,grow");
 
         JButton btnSettings = new JButton("");
         btnSettings.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/settings.gif")));
         btnSettings.setActionCommand("Open Settings");
         btnSettings.addActionListener(controller);
-        btnSettings.setBounds(10, 196, 30, 30);
-        getContentPane().add(btnSettings);
+        getContentPane().add(btnSettings, "cell 0 2,grow");
 
         JSeparator separator = new JSeparator();
-        separator.setBounds(0, 70, 300, 2);
-        getContentPane().add(separator);
+        getContentPane().add(separator, "cell 0 1 5 1,growx,aligny center");
 
         JButton btnManageTasks = new JButton("To Do List");
         btnManageTasks.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/pencil.gif")));
         btnManageTasks.setActionCommand("Open Manage Tasks");
         btnManageTasks.addActionListener(controller);
-        btnManageTasks.setBounds(90, 196, 160, 30);
-        getContentPane().add(btnManageTasks);
+        getContentPane().add(btnManageTasks, "cell 4 2,alignx left,growy");
 
         JButton btnAbout = new JButton("");
         btnAbout.setActionCommand("Open About");
         btnAbout.addActionListener(controller);
         btnAbout.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/star.gif")));
-        btnAbout.setBounds(50, 196, 30, 30);
-        getContentPane().add(btnAbout);
+        getContentPane().add(btnAbout, "cell 2 2,grow");
     }
 
     /**
