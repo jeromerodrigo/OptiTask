@@ -15,7 +15,7 @@ import optitask.util.Task;
  * CurrentTaskPanel.java <br />
  * Purpose: Displays the current task, and status of the task.
  * @author Jerome
- * @version 0.8
+ * @version 0.8.2
  * @since 0.8
  */
 
@@ -159,7 +159,7 @@ public class CurrentTaskPanel extends JPanel {
      * state to 'done'.
      */
 
-    public final void markAsDone() {
+    private void markAsDone() {
         Task task = new Task();
         try {
             task = tasks.get(currentIdx);
@@ -171,6 +171,28 @@ public class CurrentTaskPanel extends JPanel {
         model.saveTasks(tasks);
 
         lblTask.setText(lblTask.getText() + " [DONE]");
+    }
+
+    /**
+     * Increments the pomodoro number of the current task.
+     * If the current pomodoro matches the assigned pomodoros,
+     * then the task is marked as done.
+     */
+
+    public final void incrementPomodoro() {
+        Task task = new Task();
+        try {
+            task = tasks.get(currentIdx);
+        } catch (IndexOutOfBoundsException e) {
+            return; // Do nothing
+        }
+        task.setCurrentPomodoro(task.getCurrentPomodoro() + 1);
+        tasks.set(currentIdx, task);
+        model.saveTasks(tasks);
+
+        if (task.getCurrentPomodoro() == task.getAssignedPomodoros()) {
+            markAsDone();
+        }
     }
 
     /**

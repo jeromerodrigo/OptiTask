@@ -18,7 +18,7 @@ import optitask.store.AppPersistence;
  * TimerBar.java <br />
  * Purpose: Provides a controllable timer in a form of a {@link JProgressBar}.
  * @author Jerome
- * @version 0.8.1
+ * @version 0.8.2
  * @since 0.8
  */
 
@@ -67,11 +67,6 @@ public class TimerBar extends JProgressBar implements ActionListener {
      * Flag whether the current cycle is a long break cycle.
      */
     private static boolean isLongBreakNow = false;
-
-    /**
-     * Flag if the long break should be skipped once.
-     */
-    private static boolean skipLongBreak = false;
 
     /**
      * The swing timer.
@@ -144,15 +139,10 @@ public class TimerBar extends JProgressBar implements ActionListener {
 
     /**
      * Resets the current cycle to zero.
-     * This method is only called when the Task Manager dialog is closed.
-     * The reason for this is to avoid the long break being used on a task
-     * which has been moved elsewhere.
      */
 
     public final void resetCycle() {
-        skipLongBreak = true;
-        System.out.println("Cycle reset!");
-        resetBreaks();
+        currentCycle = 0;
     }
 
     /**
@@ -180,12 +170,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
                 .getPomodoroTime() / MILLI_MULT;
 
         if (isLongBreakNow) {
-            if (skipLongBreak) {
-                initShortBreak();
-                skipLongBreak = false;
-            } else {
-                initLongBreak();
-            }
+            initLongBreak();
         } else {
             initShortBreak();
         }
@@ -254,8 +239,10 @@ public class TimerBar extends JProgressBar implements ActionListener {
             timer.stop();
             playSound();
             setString("Done!");
-            taskPanel.markAsDone(); // Tell the task panel that the current task
-            // is completed
+
+            // Increments the current pomodoro value
+            taskPanel.incrementPomodoro();
+
             taskPanel.setStatus(CurrentTaskPanel.NULL);
 
             // Enables a long break after an interval
