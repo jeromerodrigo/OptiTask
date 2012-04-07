@@ -71,9 +71,13 @@ public class TasksDialog extends JDialog {
         /**
          * The names for each column.
          */
-        private final String[] columnNames = { "Task", "Description", "Current", "Assigned", "Done" };
+        private final String[] columnNames = { "Task", "Description",
+                "Current", "Assigned", "Done" };
 
-        private final int TOO_MANY_POMS = 6;
+        /**
+         * The limit where assigned pomodoros is considered as 'too many'.
+         */
+        private static final int TOO_MANY_POMS = 6;
 
         @Override
         public int getColumnCount() {
@@ -135,9 +139,10 @@ public class TasksDialog extends JDialog {
                 task.setAssignedPomodoros((Integer) value);
 
                 if ((Integer) value > TOO_MANY_POMS) {
-                    JOptionPane.showMessageDialog(getParent(),  "Too many pomodoros assigned.\n"
-                            + "Consider breaking down your tasks!",
-                            "Warning", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(getParent(),
+                            "Too many pomodoros assigned.\n"
+                                    + "Consider breaking down your tasks!",
+                                    "Warning", JOptionPane.WARNING_MESSAGE);
                 }
 
                 break;
@@ -151,15 +156,35 @@ public class TasksDialog extends JDialog {
 
     };
 
-    private static class PomNumberEditor extends AbstractCellEditor implements TableCellEditor {
+    /**
+     * Pomodoro Number Editor class. <br />
+     * Purpose: Provides a {@link JSpinner} based
+     * number editor for a  table cell.
+     * @author Jerome
+     * @since 0.8.2
+     */
+
+    private static class PomNumberEditor extends AbstractCellEditor
+    implements TableCellEditor {
 
         /**
-         * 
+         * The serial version UID.
          */
         private static final long serialVersionUID = -871596321699148434L;
-        private final JSpinner spinner = new JSpinner();
-        private final int MAX = 15;
 
+        /**
+         * The JSpinner.
+         */
+        private final JSpinner spinner = new JSpinner();
+
+        /**
+         * The maximum value for the JSpinner.
+         */
+        private static final int MAX = 15;
+
+        /**
+         * Creates the number editor.
+         */
         public PomNumberEditor() {
             spinner.setModel(new SpinnerNumberModel(1, 1, MAX, 1));
             preventKeyboardInputJSpinner(spinner);
@@ -171,19 +196,21 @@ public class TasksDialog extends JDialog {
         }
 
         @Override
-        public Component getTableCellEditorComponent(JTable table,
-                Object value, boolean isSelected, int row, int column) {
+        public Component getTableCellEditorComponent(final JTable table,
+                final Object value, final boolean isSelected,
+                final int row, final int column) {
             spinner.setValue(value);
             return spinner;
         }
 
         /**
          * Prevents keyboard input for a {@link JSpinner}.
-         * @param spinner the JSpinner
+         * @param spinr the JSpinner
          */
 
-        private void preventKeyboardInputJSpinner(final JSpinner spinner) {
-            JFormattedTextField tf = ((JSpinner.DefaultEditor) spinner.getEditor())
+        private void preventKeyboardInputJSpinner(final JSpinner spinr) {
+            JFormattedTextField tf = (
+                    (JSpinner.DefaultEditor) spinr.getEditor())
                     .getTextField();
             tf.setEditable(false);
             tf.setBackground(Color.WHITE);
