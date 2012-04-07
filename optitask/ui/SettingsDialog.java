@@ -25,7 +25,7 @@ import optitask.util.Settings;
  * SettingsDialog.java <br />
  * Purpose: Displays a dialog for users to edit the application settings.
  * @author Jerome
- * @version 0.8.1
+ * @version 0.8.2
  * @since 0.8
  */
 
