@@ -1,16 +1,22 @@
 package optitask.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.util.LinkedList;
 
+import javax.swing.AbstractCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellEditor;
 
 import optitask.AppController;
 import optitask.store.AppPersistence;
@@ -136,6 +142,46 @@ public class TasksDialog extends JDialog {
 
     };
 
+    private static class PomNumberEditor extends AbstractCellEditor implements TableCellEditor {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -871596321699148434L;
+        private final JSpinner spinner = new JSpinner();
+        private final int MAX = 15;
+
+        public PomNumberEditor() {
+            spinner.setModel(new SpinnerNumberModel(1, 1, MAX, 1));
+            preventKeyboardInputJSpinner(spinner);
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return spinner.getValue();
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table,
+                Object value, boolean isSelected, int row, int column) {
+            spinner.setValue(value);
+            return spinner;
+        }
+
+        /**
+         * Prevents keyboard input for a {@link JSpinner}.
+         * @param spinner the JSpinner
+         */
+
+        private void preventKeyboardInputJSpinner(final JSpinner spinner) {
+            JFormattedTextField tf = ((JSpinner.DefaultEditor) spinner.getEditor())
+                    .getTextField();
+            tf.setEditable(false);
+            tf.setBackground(Color.WHITE);
+        }
+
+    }
+
     /**
      * Constant for the width of the first column.
      */
@@ -198,6 +244,12 @@ public class TasksDialog extends JDialog {
         tasksTable.setColumnSelectionAllowed(false);
         tasksTable
         .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        //Set the appropriate editor for the assigned pomodoros
+        tasksTable.getColumnModel().getColumn(3).setCellEditor(new PomNumberEditor());
+
+        //Set the row height
+        tasksTable.setRowHeight(30);
 
         // Set the column widths
         setColumnWidths(MIN_WIDTH, PREF_WIDTH, MAX_WIDTH);
