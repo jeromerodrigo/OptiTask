@@ -210,7 +210,11 @@ public class TimerBar extends JProgressBar implements ActionListener {
     @Override
     public final void actionPerformed(final ActionEvent e) {
         if (ePomodoroTime == pomodoroTime) {
-            taskPanel.setStatus(CurrentTaskPanel.WORKING);
+            if (isLongBreakNow) {
+                taskPanel.setStatus(CurrentTaskPanel.WORKING_THEN_LBRK);
+            } else {
+                taskPanel.setStatus(CurrentTaskPanel.WORKING_THEN_SBRK);
+            }
         }
 
         if (eBreakTime == 0) {

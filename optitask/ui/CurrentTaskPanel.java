@@ -66,10 +66,18 @@ public class CurrentTaskPanel extends JPanel {
     public static final int SHORT_BREAK = 1;
 
     /**
-     * A constant used to set the status label to display the working message.
+     * A constant used to set the status label to display the working message
+     * before a short break.
      * @see #setStatus(int)
      */
-    public static final int WORKING = 2;
+    public static final int WORKING_THEN_SBRK = 2;
+
+    /**
+     * A constant used to set the status label to display the working message
+     * before a long break.
+     * @see #setStatus(int)
+     */
+    public static final int WORKING_THEN_LBRK = 4;
 
     /**
      * A constant used to set the status label to display long break message.
@@ -203,16 +211,26 @@ public class CurrentTaskPanel extends JPanel {
     public final void setStatus(final int status) {
         switch (status) {
         case NULL:
-            lblStatus.setText(getHtmlColoredString("black", "Idle"));
+            lblStatus.setText(wrapWithHtml(
+                    getHtmlColoredString("Black", "Idle")));
             break;
         case SHORT_BREAK:
-            lblStatus.setText(getHtmlColoredString("green", "Short Break"));
+            lblStatus.setText(wrapWithHtml(
+                    getHtmlColoredString("Green", "Short Break")));
             break;
         case LONG_BREAK:
-            lblStatus.setText(getHtmlColoredString("green", "Long Break"));
+            lblStatus.setText(wrapWithHtml(
+                    getHtmlColoredString("Green", "Long Break")));
             break;
-        case WORKING:
-            lblStatus.setText(getHtmlColoredString("red", "Working"));
+        case WORKING_THEN_SBRK:
+            lblStatus.setText(wrapWithHtml(
+                    getHtmlColoredString("red", "Working") + " --> "
+                            + getHtmlColoredString("Green", "Short Break")));
+            break;
+        case WORKING_THEN_LBRK:
+            lblStatus.setText(wrapWithHtml(
+                    getHtmlColoredString("red", "Working") + " --> "
+                            + getHtmlColoredString("Green", "Long Break")));
             break;
         default:
             lblStatus.setText(null);
@@ -229,7 +247,17 @@ public class CurrentTaskPanel extends JPanel {
 
     private String getHtmlColoredString(final String colour,
             final String text) {
-        return "<html><b><font color=\"" + colour + "\"> " + text
-                + "</font></b></html>";
+        return "<b><font color=\"" + colour + "\"> " + text
+                + "</font></b>";
+    }
+
+    /**
+     * Wraps a string with HTML tags.
+     * @param str the string
+     * @return a string wrapped with HTML tags
+     */
+
+    private String wrapWithHtml(final String str) {
+        return "<html>" + str + "</html>";
     }
 }
