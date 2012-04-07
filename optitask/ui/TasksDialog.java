@@ -73,6 +73,8 @@ public class TasksDialog extends JDialog {
          */
         private final String[] columnNames = { "Task", "Description", "Current", "Assigned", "Done" };
 
+        private final int TOO_MANY_POMS = 6;
+
         @Override
         public int getColumnCount() {
             return columnNames.length;
@@ -131,6 +133,13 @@ public class TasksDialog extends JDialog {
                 break;
             case 3:
                 task.setAssignedPomodoros((Integer) value);
+
+                if ((Integer) value > TOO_MANY_POMS) {
+                    JOptionPane.showMessageDialog(getParent(),  "Too many pomodoros assigned.\n"
+                            + "Consider breaking down your tasks!",
+                            "Warning", JOptionPane.WARNING_MESSAGE);
+                }
+
                 break;
             default:
                 return;
