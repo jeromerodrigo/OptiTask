@@ -53,7 +53,8 @@ public final class Task implements Serializable {
      * @param cPom  the current pomodoro
      */
 
-    public Task(final String desc, final boolean done, int aPoms, int cPom) {
+    public Task(final String desc, final boolean done,
+            final int aPoms, final int cPom) {
         taskDesc = desc;
         isDone = done;
         assignedPomodoros = aPoms;
@@ -96,10 +97,10 @@ public final class Task implements Serializable {
     }
 
     /**
-     * @param assignedPomodoros the assignedPomodoros to set
+     * @param poms the assignedPomodoros to set
      */
-    public void setAssignedPomodoros(int assignedPomodoros) {
-        this.assignedPomodoros = assignedPomodoros;
+    public void setAssignedPomodoros(final int poms) {
+        this.assignedPomodoros = poms;
     }
 
     /**
@@ -110,10 +111,10 @@ public final class Task implements Serializable {
     }
 
     /**
-     * @param currentPomodoro the currentPomodoro to set
+     * @param poms the currentPomodoro to set
      */
-    public void setCurrentPomodoro(int currentPomodoro) {
-        this.currentPomodoro = currentPomodoro;
+    public void setCurrentPomodoro(final int poms) {
+        this.currentPomodoro = poms;
     }
 
     @Override
