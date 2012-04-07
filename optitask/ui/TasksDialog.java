@@ -1,16 +1,22 @@
 package optitask.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.util.LinkedList;
 
+import javax.swing.AbstractCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellEditor;
 
 import optitask.AppController;
 import optitask.store.AppPersistence;
@@ -65,7 +71,13 @@ public class TasksDialog extends JDialog {
         /**
          * The names for each column.
          */
-        private final String[] columnNames = { "Task", "Description", "Done" };
+        private final String[] columnNames = { "Task", "Description",
+                "Current", "Assigned", "Done" };
+
+        /**
+         * The limit where assigned pomodoros is considered as 'too many'.
+         */
+        private static final int TOO_MANY_POMS = 6;
 
         @Override
         public int getColumnCount() {
@@ -89,7 +101,7 @@ public class TasksDialog extends JDialog {
 
         @Override
         public boolean isCellEditable(final int row, final int col) {
-            return col > 0 && col < columnNames.length;
+            return col > 0 && col < columnNames.length && col != 2;
         }
 
         @Override
@@ -99,8 +111,12 @@ public class TasksDialog extends JDialog {
                 return row + 1;
             case 1:
                 return tasks.get(row).getTaskDesc();
-            case 2:
+            case 4:
                 return tasks.get(row).isDone();
+            case 2:
+                return tasks.get(row).getCurrentPomodoro();
+            case 3:
+                return tasks.get(row).getAssignedPomodoros();
             default:
                 return null;
             }
@@ -116,8 +132,19 @@ public class TasksDialog extends JDialog {
             case 1:
                 task.setTaskDesc((String) value);
                 break;
-            case 2:
+            case 4:
                 task.setDone((Boolean) value);
+                break;
+            case 3:
+                task.setAssignedPomodoros((Integer) value);
+
+                if ((Integer) value > TOO_MANY_POMS) {
+                    JOptionPane.showMessageDialog(getParent(),
+                            "Too many pomodoros assigned.\n"
+                                    + "Consider breaking down your tasks!",
+                                    "Warning", JOptionPane.WARNING_MESSAGE);
+                }
+
                 break;
             default:
                 return;
@@ -130,19 +157,81 @@ public class TasksDialog extends JDialog {
     };
 
     /**
+     * Pomodoro Number Editor class. <br />
+     * Purpose: Provides a {@link JSpinner} based
+     * number editor for a  table cell.
+     * @author Jerome
+     * @since 0.8.2
+     */
+
+    private static class PomNumberEditor extends AbstractCellEditor
+    implements TableCellEditor {
+
+        /**
+         * The serial version UID.
+         */
+        private static final long serialVersionUID = -871596321699148434L;
+
+        /**
+         * The JSpinner.
+         */
+        private final JSpinner spinner = new JSpinner();
+
+        /**
+         * The maximum value for the JSpinner.
+         */
+        private static final int MAX = 15;
+
+        /**
+         * Creates the number editor.
+         */
+        public PomNumberEditor() {
+            spinner.setModel(new SpinnerNumberModel(1, 1, MAX, 1));
+            preventKeyboardInputJSpinner(spinner);
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return spinner.getValue();
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(final JTable table,
+                final Object value, final boolean isSelected,
+                final int row, final int column) {
+            spinner.setValue(value);
+            return spinner;
+        }
+
+        /**
+         * Prevents keyboard input for a {@link JSpinner}.
+         * @param spinr the JSpinner
+         */
+
+        private void preventKeyboardInputJSpinner(final JSpinner spinr) {
+            JFormattedTextField tf = (
+                    (JSpinner.DefaultEditor) spinr.getEditor())
+                    .getTextField();
+            tf.setEditable(false);
+            tf.setBackground(Color.WHITE);
+        }
+
+    }
+
+    /**
      * Constant for the width of the first column.
      */
-    private static final int COL1_WIDTH = 50;
+    private static final int MIN_WIDTH = 60;
 
     /**
      * Constant for the width of the second column.
      */
-    private static final int COL2_WIDTH = 70;
+    private static final int PREF_WIDTH = 70;
 
     /**
      * Constant for the width of the third column.
      */
-    private static final int COL3_WIDTH = 50;
+    private static final int MAX_WIDTH = 100;
 
     /**
      * Creates the dialog.
@@ -192,8 +281,14 @@ public class TasksDialog extends JDialog {
         tasksTable
         .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
+        //Set the appropriate editor for the assigned pomodoros
+        tasksTable.getColumnModel().getColumn(3).setCellEditor(new PomNumberEditor());
+
+        //Set the row height
+        tasksTable.setRowHeight(30);
+
         // Set the column widths
-        setColumnWidths(COL1_WIDTH, COL2_WIDTH, COL3_WIDTH);
+        setColumnWidths(MIN_WIDTH, PREF_WIDTH, MAX_WIDTH);
 
         // Configure jTable selection colours
         tasksTable.setSelectionBackground(Color.ORANGE);
@@ -239,20 +334,20 @@ public class TasksDialog extends JDialog {
 
     /**
      * Sets the widths of the columns.
-     * @param col1 the first column
-     * @param col2 the second column
-     * @param col3 the third column
+     * @param min the minimum width
+     * @param pref the preferred width
+     * @param max the maximum width
      */
 
-    private void setColumnWidths(final int col1,
-            final int col2, final int col3) {
+    private void setColumnWidths(final int min,
+            final int pref, final int max) {
         for (int i = 0; i < tasksTable.getColumnCount(); i++) {
             if (i == 1) {
                 continue;
             }
-            tasksTable.getColumnModel().getColumn(i).setMinWidth(col1);
-            tasksTable.getColumnModel().getColumn(i).setPreferredWidth(col2);
-            tasksTable.getColumnModel().getColumn(i).setMaxWidth(col3);
+            tasksTable.getColumnModel().getColumn(i).setMinWidth(min);
+            tasksTable.getColumnModel().getColumn(i).setPreferredWidth(pref);
+            tasksTable.getColumnModel().getColumn(i).setMaxWidth(max);
         }
 
     }

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Task.java <br />
  * Purpose: Stores the details pertaining to a data unit of a Task.
  * @author Jerome
- * @version 0.8
+ * @version 0.8.2
  * @since 0.8
  */
 
@@ -28,22 +28,36 @@ public final class Task implements Serializable {
     private boolean isDone;
 
     /**
+     * The total number of pomodoros needed to complete the task.
+     */
+    private int assignedPomodoros;
+
+    /**
+     * The current pomodoro.
+     */
+    private int currentPomodoro;
+
+    /**
      * Creates and initialises a Task with the default values.
      */
 
     public Task() {
-        this("NULL", false);
+        this("NULL", false, 1, 0);
     }
 
     /**
      * Creates a Task.
-     * @param desc the description of a task
-     * @param done a flag if the task is complete
+     * @param desc  the description of a task
+     * @param done  a flag if the task is complete
+     * @param aPoms the assigned pomodoros
+     * @param cPom  the current pomodoro
      */
 
-    public Task(final String desc, final boolean done) {
+    public Task(final String desc, final boolean done, int aPoms, int cPom) {
         taskDesc = desc;
         isDone = done;
+        assignedPomodoros = aPoms;
+        currentPomodoro = cPom;
     }
 
     /**
@@ -74,8 +88,39 @@ public final class Task implements Serializable {
         taskDesc = tskDsc;
     }
 
+    /**
+     * @return the assignedPomodoros
+     */
+    public int getAssignedPomodoros() {
+        return assignedPomodoros;
+    }
+
+    /**
+     * @param assignedPomodoros the assignedPomodoros to set
+     */
+    public void setAssignedPomodoros(int assignedPomodoros) {
+        this.assignedPomodoros = assignedPomodoros;
+    }
+
+    /**
+     * @return the currentPomodoro
+     */
+    public int getCurrentPomodoro() {
+        return currentPomodoro;
+    }
+
+    /**
+     * @param currentPomodoro the currentPomodoro to set
+     */
+    public void setCurrentPomodoro(int currentPomodoro) {
+        this.currentPomodoro = currentPomodoro;
+    }
+
     @Override
     public String toString() {
-        return "Description: " + taskDesc + "Is Done: " + isDone;
+        return "Description: " + taskDesc
+                + " Is Done: " + isDone
+                + " Assigned Pomodoros: " + assignedPomodoros
+                + " Current: " + currentPomodoro;
     }
 }
