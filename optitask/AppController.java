@@ -166,9 +166,17 @@ public class AppController implements ActionListener {
 
         } else if (actionCommand.equalsIgnoreCase("Save Settings")) {
 
-            saveSettings(settingsDialog.getSettings());
-            JOptionPane.showMessageDialog(settingsDialog, "Settings saved!",
-                    "Notification", JOptionPane.INFORMATION_MESSAGE);
+            if (settingsDialog.getSettings() == null) {
+                JOptionPane.showMessageDialog(settingsDialog,
+                        "Long break must not be equal "
+                                + "or less than short break!",
+                                "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+                saveSettings(settingsDialog.getSettings());
+                JOptionPane.showMessageDialog(settingsDialog, "Settings saved!",
+                        "Notification", JOptionPane.INFORMATION_MESSAGE);
+            }
+
 
         } else if (actionCommand.equalsIgnoreCase("Default Settings")) {
 

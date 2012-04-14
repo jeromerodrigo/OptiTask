@@ -236,7 +236,13 @@ public class SettingsDialog extends JDialog {
         set.setPomodoroTime(minutesToMilliseconds((Integer) pomodoroTimeSpinner
                 .getValue()));
         set.setWillLongBreak(willLongBreakCheckBox.isSelected());
-        return set;
+
+        // Long break value cannot be equal or less than short break
+        if (set.getLongBreak() > set.getShortBreak()) {
+            return set;
+        } else {
+            return null;
+        }
     }
 
     /**
