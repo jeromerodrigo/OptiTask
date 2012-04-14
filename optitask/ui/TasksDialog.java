@@ -308,6 +308,9 @@ public class TasksDialog extends JDialog {
         tasksTable.setSelectionBackground(Color.ORANGE);
         tasksTable.setSelectionForeground(Color.WHITE);
 
+        // Add table model listener to the task table
+        tasksTable.getModel().addTableModelListener(controller);
+
         scrollPane.setViewportView(tasksTable);
 
         JButton btnAdd = new JButton("Add");
@@ -319,11 +322,6 @@ public class TasksDialog extends JDialog {
         btnDelete.setActionCommand("Delete Task");
         btnDelete.addActionListener(controller);
         getContentPane().add(btnDelete, "cell 2 3,growx,aligny top");
-
-        JButton btnSave = new JButton("Save");
-        btnSave.setActionCommand("Save Tasks");
-        btnSave.addActionListener(controller);
-        getContentPane().add(btnSave, "cell 3 3,growx,aligny top");
 
         JButton btnMoveUp = new JButton("");
         btnMoveUp.setIcon(new ImageIcon(TasksDialog.class

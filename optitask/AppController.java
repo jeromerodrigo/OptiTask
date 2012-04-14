@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 import optitask.ui.AboutDialog;
 import optitask.ui.SettingsDialog;
@@ -21,7 +23,7 @@ import optitask.util.Task;
  * @since 0.8
  */
 
-public class AppController implements ActionListener {
+public class AppController implements ActionListener, TableModelListener {
 
     /** Stores the reference to the application persistence module. */
     private final optitask.store.AppPersistence model;
@@ -148,6 +150,14 @@ public class AppController implements ActionListener {
         aboutDialog.setVisible(true);
     }
 
+    /**
+     * Saves the current tasks in the tasks dialog table.
+     */
+
+    private void saveTasks() {
+        saveTasks(tasksDialog.getTasks());
+    }
+
     @Override
     public final void actionPerformed(final ActionEvent e) {
         String actionCommand = e.getActionCommand();
@@ -194,26 +204,24 @@ public class AppController implements ActionListener {
         } else if (actionCommand.equalsIgnoreCase("Add Task")) {
 
             tasksDialog.addTask();
+            saveTasks();
 
         } else if (actionCommand.equalsIgnoreCase("Delete Task")) {
 
             tasksDialog.deleteTask();
+            saveTasks();
             view.resetCycle();
-
-        } else if (actionCommand.equalsIgnoreCase("Save Tasks")) {
-
-            saveTasks(tasksDialog.getTasks());
-            JOptionPane.showMessageDialog(tasksDialog, "Tasks saved!",
-                    "Notification", JOptionPane.INFORMATION_MESSAGE);
 
         } else if (actionCommand.equalsIgnoreCase("Move Up")) {
 
             tasksDialog.moveUp();
+            saveTasks();
             view.resetCycle();
 
         } else if (actionCommand.equalsIgnoreCase("Move Down")) {
 
             tasksDialog.moveDown();
+            saveTasks();
             view.resetCycle();
 
         } else if (actionCommand.equalsIgnoreCase("Open About")) {
@@ -221,5 +229,10 @@ public class AppController implements ActionListener {
             openAbout();
 
         }
+    }
+
+    @Override
+    public final void tableChanged(final TableModelEvent e) {
+        saveTasks();
     }
 }
