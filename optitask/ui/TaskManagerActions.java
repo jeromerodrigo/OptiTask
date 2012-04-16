@@ -7,7 +7,7 @@ import optitask.util.Task;
 /**
  * Interface for task manager actions.
  * @author Jerome
- * @version 0.8.3
+ * @since 0.8.3
  */
 
 public interface TaskManagerActions {
