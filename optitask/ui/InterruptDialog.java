@@ -27,7 +27,13 @@ public class InterruptDialog extends JDialog {
      */
     private static final long serialVersionUID = -4306038905970650449L;
 
-    private static AppController controller;
+    private AppController controller;
+
+    public static final String INT_PANEL = "intPanel";
+
+    public static final String EXT_PANEL = "extPanel";
+
+    private JPanel interruptPanel;
 
     /**
      * Create the dialog.
@@ -39,11 +45,13 @@ public class InterruptDialog extends JDialog {
     public InterruptDialog(AppController cntrllr) {
         controller = cntrllr;
         initialize();
+        switchCard("blank");
     }
 
     private void initialize() {
         setResizable(false);
         setTitle("Interrupt Task");
+        setModal(true);
         setBounds(100, 100, 300, 170);
         getContentPane().setLayout(new MigLayout(
                 "", "[grow][grow]", "[][grow]"));
@@ -52,17 +60,19 @@ public class InterruptDialog extends JDialog {
         getContentPane().add(lblInterruptionType, "cell 0 0,alignx leading");
 
         JComboBox<String> interruptTypeComboBox = new JComboBox<String>();
+        interruptTypeComboBox.setActionCommand("Change Interruption Type");
         interruptTypeComboBox.addActionListener(controller);
         interruptTypeComboBox.setModel(new DefaultComboBoxModel<String>(
                 new String[] {"Internal", "External"}));
+        interruptTypeComboBox.setSelectedIndex(-1);
         getContentPane().add(interruptTypeComboBox, "cell 1 0,growx");
 
-        JPanel interruptPanel = new JPanel();
+        interruptPanel = new JPanel();
         getContentPane().add(interruptPanel, "cell 0 1 2 1,grow");
         interruptPanel.setLayout(new CardLayout(0, 0));
 
         JPanel externalPanel = new JPanel();
-        interruptPanel.add(externalPanel, "name_21028651393001");
+        interruptPanel.add(externalPanel, EXT_PANEL);
         externalPanel.setLayout(new MigLayout("", "[]", "[]"));
 
         JButton btnStopCurrentTask = new JButton("Stop Current Task");
@@ -71,7 +81,7 @@ public class InterruptDialog extends JDialog {
         externalPanel.add(btnStopCurrentTask, "cell 0 0");
 
         JPanel internalPanel = new JPanel();
-        interruptPanel.add(internalPanel, "name_21043212372761");
+        interruptPanel.add(internalPanel, INT_PANEL);
         internalPanel.setLayout(new MigLayout("", "[]", "[][][]"));
 
         JButton btnAddNewTask = new JButton("Add New Task");
@@ -89,6 +99,14 @@ public class InterruptDialog extends JDialog {
         btnContinueTaskLater.addActionListener(controller);
         internalPanel.add(btnContinueTaskLater, "cell 0 2,growx");
 
+        JPanel blankPanel = new JPanel();
+        interruptPanel.add(blankPanel, "blank");
+
+    }
+
+    public void switchCard(String card) {
+        CardLayout cl = (CardLayout) interruptPanel.getLayout();
+        cl.show(interruptPanel, card);
     }
 
 }
