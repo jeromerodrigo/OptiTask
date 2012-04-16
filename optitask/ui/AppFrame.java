@@ -79,24 +79,16 @@ public class AppFrame extends JFrame {
     private void initialize() {
         setTitle("OptiTask");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(350, 265);
+        setSize(350, 310);
         setResizable(false);
         centerThisFrame(this);
         setIconImage(Toolkit.getDefaultToolkit().getImage(
                 AppFrame.class.getResource("/optitask/assests/appIcon.gif")));
-        getContentPane().setLayout(new MigLayout("",
-                "[40px][10px][30px][10px][254px]",
-                "[185px][][30px]"));
+        getContentPane().setLayout(new MigLayout(
+                "", "[40px][10px][30px][][10px]", "[185px][][30px][]"));
 
         timerPanel = new TimerPanel(model, controller);
         getContentPane().add(timerPanel, "cell 0 0 5 1,grow");
-
-        JButton btnSettings = new JButton("");
-        btnSettings.setIcon(new ImageIcon(AppFrame.class
-                .getResource("/optitask/assests/settings.gif")));
-        btnSettings.setActionCommand("Open Settings");
-        btnSettings.addActionListener(controller);
-        getContentPane().add(btnSettings, "cell 0 2,grow");
 
         JSeparator separator = new JSeparator();
         getContentPane().add(separator, "cell 0 1 5 1,growx,aligny center");
@@ -106,14 +98,26 @@ public class AppFrame extends JFrame {
                 .getResource("/optitask/assests/pencil.gif")));
         btnManageTasks.setActionCommand("Open Manage Tasks");
         btnManageTasks.addActionListener(controller);
-        getContentPane().add(btnManageTasks, "cell 4 2,alignx left,growy");
+
+        JButton btnInterrupt = new JButton("Interrupt");
+        btnInterrupt.setActionCommand("Open Interrupt Dialog");
+        btnInterrupt.addActionListener(controller);
+        getContentPane().add(btnInterrupt, "cell 0 2,growy");
+        getContentPane().add(btnManageTasks, "cell 1 2,alignx left,growy");
 
         JButton btnAbout = new JButton("");
         btnAbout.setActionCommand("Open About");
         btnAbout.addActionListener(controller);
+
+        JButton btnSettings = new JButton("");
+        btnSettings.setIcon(new ImageIcon(AppFrame.class
+                .getResource("/optitask/assests/settings.gif")));
+        btnSettings.setActionCommand("Open Settings");
+        btnSettings.addActionListener(controller);
+        getContentPane().add(btnSettings, "cell 3 3,grow");
         btnAbout.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/star.gif")));
-        getContentPane().add(btnAbout, "cell 2 2,grow");
+        getContentPane().add(btnAbout, "cell 4 3,grow");
     }
 
     /**
