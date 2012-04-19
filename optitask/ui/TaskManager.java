@@ -5,7 +5,7 @@ package optitask.ui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Toolkit;
+import java.awt.Image;
 import java.util.LinkedList;
 
 import javax.swing.AbstractCellEditor;
@@ -53,7 +53,9 @@ implements TaskManagerActions {
      * The application controller.
      * @see AppController
      */
-    private AppController controller;
+    private static AppController controller;
+
+    protected static AppPersistence model;
 
     /**
      * Pomodoro Number Editor class. <br />
@@ -139,10 +141,11 @@ implements TaskManagerActions {
         initialize();
     }
 
-    public TaskManager(final AppPersistence model,
+    public TaskManager(final AppPersistence mdl,
             final AppController cntrller) {
         controller = cntrller;
-        tasks = model.getTasks();
+        model = mdl;
+        tasks = getTasksModel();
         initialize();
     }
 
@@ -151,8 +154,7 @@ implements TaskManagerActions {
         setSize(515, 300);
         setModal(true);
         setResizable(false);
-        setIconImage(Toolkit.getDefaultToolkit().getImage(
-                TasksDialog.class.getResource("/optitask/assests/pencil.gif")));
+        setIconImage(getIconImage());
         getContentPane().setLayout(new MigLayout("",
                 "[][10px][][][10px][236px][40px]",
                 "[51px][11px][165px][23px]"));
@@ -189,26 +191,26 @@ implements TaskManagerActions {
         scrollPane.setViewportView(tasksTable);
 
         JButton btnAdd = new JButton("Add");
-        btnAdd.setActionCommand("Add Task");
+        btnAdd.setActionCommand(getAddMessage());
         btnAdd.addActionListener(controller);
         getContentPane().add(btnAdd, "cell 0 3,growx,aligny top");
 
         JButton btnDelete = new JButton("Delete");
-        btnDelete.setActionCommand("Delete Task");
+        btnDelete.setActionCommand(getDeleteMessage());
         btnDelete.addActionListener(controller);
         getContentPane().add(btnDelete, "cell 2 3,growx,aligny top");
 
         JButton btnMoveUp = new JButton("");
-        btnMoveUp.setIcon(new ImageIcon(TasksDialog.class
+        btnMoveUp.setIcon(new ImageIcon(TaskManager.class
                 .getResource("/optitask/assests/upArrow.gif")));
-        btnMoveUp.setActionCommand("Move Up");
+        btnMoveUp.setActionCommand(getMoveUpMessage());
         btnMoveUp.addActionListener(controller);
         getContentPane().add(btnMoveUp, "cell 6 0,growx,aligny bottom");
 
         JButton btnMoveDown = new JButton("");
-        btnMoveDown.setIcon(new ImageIcon(TasksDialog.class
+        btnMoveDown.setIcon(new ImageIcon(TaskManager.class
                 .getResource("/optitask/assests/downArrow.gif")));
-        btnMoveDown.setActionCommand("Move Down");
+        btnMoveDown.setActionCommand(getMoveDownMessage());
         btnMoveDown.addActionListener(controller);
         getContentPane().add(btnMoveDown, "cell 6 2,growx,aligny top");
     }
@@ -309,5 +311,17 @@ implements TaskManagerActions {
     protected abstract AbstractTableModel getTableModel();
 
     protected abstract String getWindowTitle();
+
+    protected abstract Image getIconImage();
+
+    protected abstract String getMoveUpMessage();
+
+    protected abstract String getMoveDownMessage();
+
+    protected abstract String getAddMessage();
+
+    protected abstract String getDeleteMessage();
+
+    protected abstract LinkedList<Task> getTasksModel();
 
 }
