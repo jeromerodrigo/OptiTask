@@ -26,7 +26,7 @@ public class TasksDialog extends TaskManager {
     private static final long serialVersionUID = 2408587468175238769L;
 
     /**
-     * The data model for the tasks table.
+     * The data model for the to do list table.
      * @author Jerome
      * @since 0.8
      * @see TasksDialog#tasksTable
