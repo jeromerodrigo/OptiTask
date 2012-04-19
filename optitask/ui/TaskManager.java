@@ -136,7 +136,7 @@ implements TaskManagerActions {
      * 
      */
     public TaskManager() {
-        // TODO Auto-generated constructor stub
+        initialize();
     }
 
     public TaskManager(final AppPersistence model,
@@ -147,7 +147,7 @@ implements TaskManagerActions {
     }
 
     private void initialize() {
-        setTitle("To Do List");
+        setTitle(getWindowTitle());
         setSize(515, 300);
         setModal(true);
         setResizable(false);
@@ -296,7 +296,6 @@ implements TaskManagerActions {
     @Override
     public void moveUp() {
         swapItems(tasksTable.getSelectedRow(), tasksTable.getSelectedRow() - 1);
-
     }
 
     /* (non-Javadoc)
@@ -305,9 +304,10 @@ implements TaskManagerActions {
     @Override
     public void moveDown() {
         swapItems(tasksTable.getSelectedRow(), tasksTable.getSelectedRow() + 1);
-
     }
 
-    public abstract AbstractTableModel getTableModel();
+    protected abstract AbstractTableModel getTableModel();
+
+    protected abstract String getWindowTitle();
 
 }

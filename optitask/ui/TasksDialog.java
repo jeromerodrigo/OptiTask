@@ -147,6 +147,8 @@ public class TasksDialog extends TaskManager {
 
     };
 
+    private static final String WINDOW_TITLE = "To Do List";
+
     /**
      * Creates the dialog.
      * <B>Not used</B>.
@@ -169,6 +171,11 @@ public class TasksDialog extends TaskManager {
     @Override
     public AbstractTableModel getTableModel() {
         return new TasksDataModel(tasks, tasksTable);
+    }
+
+    @Override
+    protected String getWindowTitle() {
+        return WINDOW_TITLE;
     }
 
 
