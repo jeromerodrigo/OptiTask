@@ -31,7 +31,6 @@ public class ToDoListDialog extends TaskManager {
      * The data model for the to do list table.
      * @author Jerome
      * @since 0.8
-     * @see ToDoListDialog#tasksTable
      */
 
     private class TasksDataModel extends AbstractTableModel {
@@ -161,13 +160,13 @@ public class ToDoListDialog extends TaskManager {
 
     /**
      * Creates and initialises the dialog.
-     * @param model      the persistence module
+     * @param mdl      the persistence module
      * @param cntrller   the application controller
      */
 
-    public ToDoListDialog(final AppPersistence model,
+    public ToDoListDialog(final AppPersistence mdl,
             final AppController cntrller) {
-        super(model, cntrller);
+        super(mdl, cntrller);
     }
 
     @Override
@@ -184,6 +183,31 @@ public class ToDoListDialog extends TaskManager {
     protected Image getIconImage() {
         return Toolkit.getDefaultToolkit().getImage(
                 ToDoListDialog.class.getResource("/optitask/assests/pencil.gif"));
+    }
+
+    @Override
+    protected String getMoveUpMessage() {
+        return "Move Up To Do List";
+    }
+
+    @Override
+    protected String getMoveDownMessage() {
+        return "Move Down To Do List";
+    }
+
+    @Override
+    protected String getAddMessage() {
+        return "Add Task To Do List";
+    }
+
+    @Override
+    protected String getDeleteMessage() {
+        return "Delete Task To Do List";
+    }
+
+    @Override
+    protected LinkedList<Task> getTasksModel() {
+        return model.getToDoList();
     }
 
 

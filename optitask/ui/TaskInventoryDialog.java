@@ -3,6 +3,7 @@
  */
 package optitask.ui;
 
+import java.awt.Image;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
@@ -148,9 +149,9 @@ public class TaskInventoryDialog extends TaskManager {
 
     private static final String WINDOW_TITLE = "Task Inventory";
 
-    public TaskInventoryDialog(final AppPersistence model,
+    public TaskInventoryDialog(final AppPersistence mdl,
             final AppController cntrller) {
-        super(model, cntrller);
+        super(mdl, cntrller);
     }
 
     /* (non-Javadoc)
@@ -167,6 +168,36 @@ public class TaskInventoryDialog extends TaskManager {
     @Override
     protected String getWindowTitle() {
         return WINDOW_TITLE;
+    }
+
+    @Override
+    protected Image getIconImage() {
+        return null;
+    }
+
+    @Override
+    protected String getMoveUpMessage() {
+        return "Move Up Task Inventory";
+    }
+
+    @Override
+    protected String getMoveDownMessage() {
+        return "Move Up Task Inventory";
+    }
+
+    @Override
+    protected String getAddMessage() {
+        return "Add Task Task Inventory";
+    }
+
+    @Override
+    protected String getDeleteMessage() {
+        return "Delete Task Task Inventory";
+    }
+
+    @Override
+    protected LinkedList<Task> getTasksModel() {
+        return model.getTaskInventory();
     }
 
 }
