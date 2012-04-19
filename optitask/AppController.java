@@ -127,6 +127,10 @@ public class AppController implements ActionListener, TableModelListener {
         return model.saveToDoList(tasks);
     }
 
+    private boolean saveTaskInventory(final LinkedList<Task> inv) {
+        return model.saveTaskInventory(inv);
+    }
+
     /**
      * Opens the settings dialog.
      */
@@ -141,7 +145,7 @@ public class AppController implements ActionListener, TableModelListener {
      * Opens the tasks management dialog.
      */
 
-    private void openManageTasks() {
+    private void openToDoList() {
         toDoListDialog = new ToDoListDialog(model, this);
         toDoListDialog.setLocationRelativeTo(view);
         toDoListDialog.setVisible(true);
@@ -210,26 +214,26 @@ public class AppController implements ActionListener, TableModelListener {
 
         } else if (actionCommand.equalsIgnoreCase("Open Manage Tasks")) {
 
-            openManageTasks();
+            openToDoList();
 
-        } else if (actionCommand.equalsIgnoreCase("Add Task")) {
+        } else if (actionCommand.equalsIgnoreCase("Add Task To Do List")) {
 
             toDoListDialog.addTask();
             saveToDoList(toDoListDialog.getTasks());
 
-        } else if (actionCommand.equalsIgnoreCase("Delete Task")) {
+        } else if (actionCommand.equalsIgnoreCase("Delete Task To Do List")) {
 
             toDoListDialog.deleteTask();
             saveToDoList(toDoListDialog.getTasks());
             view.resetCycle();
 
-        } else if (actionCommand.equalsIgnoreCase("Move Up")) {
+        } else if (actionCommand.equalsIgnoreCase("Move Up To Do List")) {
 
             toDoListDialog.moveUp();
             saveToDoList(toDoListDialog.getTasks());
             view.resetCycle();
 
-        } else if (actionCommand.equalsIgnoreCase("Move Down")) {
+        } else if (actionCommand.equalsIgnoreCase("Move Down To Do List")) {
 
             toDoListDialog.moveDown();
             saveToDoList(toDoListDialog.getTasks());
@@ -260,11 +264,40 @@ public class AppController implements ActionListener, TableModelListener {
 
             openTaskInventory();
 
+        } else if (actionCommand.equalsIgnoreCase("Add Task Task Inventory")) {
+
+            taskInventoryDialog.addTask();
+            saveTaskInventory(taskInventoryDialog.getTasks());
+
+        } else if (actionCommand.equalsIgnoreCase("Delete Task Task Inventory")) {
+
+            taskInventoryDialog.deleteTask();
+            saveTaskInventory(taskInventoryDialog.getTasks());
+            view.resetCycle();
+
+        } else if (actionCommand.equalsIgnoreCase("Move Up Task Inventory")) {
+
+            taskInventoryDialog.moveUp();
+            saveTaskInventory(taskInventoryDialog.getTasks());
+            view.resetCycle();
+
+        } else if (actionCommand.equalsIgnoreCase("Move Down Task Inventory")) {
+
+            taskInventoryDialog.moveDown();
+            saveTaskInventory(taskInventoryDialog.getTasks());
+            view.resetCycle();
+
         }
     }
 
     @Override
     public final void tableChanged(final TableModelEvent e) {
-        saveToDoList(toDoListDialog.getTasks());
+
+        if(toDoListDialog.isVisible()) {
+            saveToDoList(toDoListDialog.getTasks());
+        } else if (taskInventoryDialog.isVisible()) {
+            saveTaskInventory(taskInventoryDialog.getTasks());
+        }
+
     }
 }
