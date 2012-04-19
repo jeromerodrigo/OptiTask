@@ -13,7 +13,7 @@ import optitask.ui.AboutDialog;
 import optitask.ui.InterruptDialog;
 import optitask.ui.SettingsDialog;
 import optitask.ui.TaskInventoryDialog;
-import optitask.ui.TasksDialog;
+import optitask.ui.ToDoListDialog;
 import optitask.util.Settings;
 import optitask.util.Statistics;
 import optitask.util.Task;
@@ -38,7 +38,7 @@ public class AppController implements ActionListener, TableModelListener {
     private SettingsDialog settingsDialog;
 
     /** The tasks dialog user interface object. */
-    private TasksDialog tasksDialog;
+    private ToDoListDialog toDoListDialog;
 
     /** The about dialog user interface object. */
     private AboutDialog aboutDialog;
@@ -123,8 +123,8 @@ public class AppController implements ActionListener, TableModelListener {
      *         <code>false</code>, if otherwise.
      */
 
-    private boolean saveTasks(final LinkedList<Task> tasks) {
-        return model.saveTasks(tasks);
+    private boolean saveToDoList(final LinkedList<Task> tasks) {
+        return model.saveToDoList(tasks);
     }
 
     /**
@@ -142,9 +142,9 @@ public class AppController implements ActionListener, TableModelListener {
      */
 
     private void openManageTasks() {
-        tasksDialog = new TasksDialog(model, this);
-        tasksDialog.setLocationRelativeTo(view);
-        tasksDialog.setVisible(true);
+        toDoListDialog = new ToDoListDialog(model, this);
+        toDoListDialog.setLocationRelativeTo(view);
+        toDoListDialog.setVisible(true);
     }
 
     /**
@@ -167,14 +167,6 @@ public class AppController implements ActionListener, TableModelListener {
         taskInventoryDialog = new TaskInventoryDialog(model, this);
         taskInventoryDialog.setLocationRelativeTo(view);
         taskInventoryDialog.setVisible(true);
-    }
-
-    /**
-     * Saves the current tasks in the tasks dialog table.
-     */
-
-    private void saveTasks() {
-        saveTasks(tasksDialog.getTasks());
     }
 
     @Override
@@ -222,25 +214,25 @@ public class AppController implements ActionListener, TableModelListener {
 
         } else if (actionCommand.equalsIgnoreCase("Add Task")) {
 
-            tasksDialog.addTask();
-            saveTasks();
+            toDoListDialog.addTask();
+            saveToDoList(toDoListDialog.getTasks());
 
         } else if (actionCommand.equalsIgnoreCase("Delete Task")) {
 
-            tasksDialog.deleteTask();
-            saveTasks();
+            toDoListDialog.deleteTask();
+            saveToDoList(toDoListDialog.getTasks());
             view.resetCycle();
 
         } else if (actionCommand.equalsIgnoreCase("Move Up")) {
 
-            tasksDialog.moveUp();
-            saveTasks();
+            toDoListDialog.moveUp();
+            saveToDoList(toDoListDialog.getTasks());
             view.resetCycle();
 
         } else if (actionCommand.equalsIgnoreCase("Move Down")) {
 
-            tasksDialog.moveDown();
-            saveTasks();
+            toDoListDialog.moveDown();
+            saveToDoList(toDoListDialog.getTasks());
             view.resetCycle();
 
         } else if (actionCommand.equalsIgnoreCase("Open About")) {
@@ -273,6 +265,6 @@ public class AppController implements ActionListener, TableModelListener {
 
     @Override
     public final void tableChanged(final TableModelEvent e) {
-        saveTasks();
+        saveToDoList(toDoListDialog.getTasks());
     }
 }

@@ -100,7 +100,7 @@ public class CurrentTaskPanel extends JPanel {
      */
 
     public CurrentTaskPanel(final AppPersistence mdl) {
-        tasks = mdl.getTasks();
+        tasks = mdl.getToDoList();
         model = mdl;
         currentIdx = 0;
         initialize();
@@ -155,7 +155,7 @@ public class CurrentTaskPanel extends JPanel {
      */
 
     public final void refresh() {
-        tasks = model.getTasks();
+        tasks = model.getToDoList();
         currentIdx = 0;
         nextTask();
     }
@@ -174,7 +174,7 @@ public class CurrentTaskPanel extends JPanel {
         }
         task.setDone(true);
         tasks.set(currentIdx, task);
-        model.saveTasks(tasks);
+        model.saveToDoList(tasks);
 
         lblTask.setText(lblTask.getText() + " [DONE]");
     }
@@ -194,7 +194,7 @@ public class CurrentTaskPanel extends JPanel {
         }
         task.setCurrentPomodoro(task.getCurrentPomodoro() + 1);
         tasks.set(currentIdx, task);
-        model.saveTasks(tasks);
+        model.saveToDoList(tasks);
 
         if (task.getCurrentPomodoro() == task.getAssignedPomodoros()) {
             markAsDone();
