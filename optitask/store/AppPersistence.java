@@ -23,8 +23,7 @@ import optitask.util.Task;
  * AppPersistence.java <br />
  * Purpose: Manages operations between the application model
  * and the host file system.
- * @author Jerome
- * @version 0.8
+ * @author Jerome Rodrigo
  * @since 0.8
  */
 
@@ -40,7 +39,7 @@ public final class AppPersistence {
      * Stores the constant index value for the tasks.
      * It is used in {@link #list}.
      */
-    private static final int TASKS_INDEX = 0;
+    private static final int TODOLIST_INDEX = 0;
 
     /**
      * Stores the constant index value for the settings.
@@ -53,6 +52,8 @@ public final class AppPersistence {
      * It is used in {@link #list}.
      */
     private static final int STATS_INDEX = 2;
+
+    private static final int TASKINVENTORY_INDEX = 3;
 
     /**
      * Stores one instance of the name of the data file.
@@ -68,11 +69,10 @@ public final class AppPersistence {
         AppPersistence.filename = fName;
 
         list = new ArrayList<Object>();
-        list.add(TASKS_INDEX, new LinkedList<Task>()); // Index 0 stores the
-        // list of tasks
-        list.add(SETTINGS_INDEX, new Settings()); // Index 1 stores the settings
-        list.add(STATS_INDEX, new Statistics()); // Index 2 stores the
-        // statistics
+        list.add(TODOLIST_INDEX, new LinkedList<Task>());
+        list.add(SETTINGS_INDEX, new Settings());
+        list.add(STATS_INDEX, new Statistics());
+        list.add(TASKINVENTORY_INDEX, new LinkedList<Task>());
     }
 
     /**
@@ -94,9 +94,10 @@ public final class AppPersistence {
                 e.printStackTrace();
             }
 
-            writeObject(TASKS_INDEX, new LinkedList<Task>());
+            writeObject(TODOLIST_INDEX, new LinkedList<Task>());
             writeObject(SETTINGS_INDEX, new Settings());
             writeObject(STATS_INDEX, new Statistics());
+            writeObject(TASKINVENTORY_INDEX, new LinkedList<Task>());
         } else {
             try { // Initialise input stream
                 InputStream inFile = new FileInputStream(filename);
@@ -123,7 +124,7 @@ public final class AppPersistence {
      * Adds an object to the {@link #list}, and then writes it to the data file.
      *
      * @param index The identifier for a data object in the {@link #list},
-     *              and possible values are either {@link #TASKS_INDEX},
+     *              and possible values are either {@link #TODOLIST_INDEX},
      *              {@link #SETTINGS_INDEX} or {@link #STATS_INDEX}.
      * @param obj stores the data to be saved to the file
      * @return <code>true</code> if successfully written to file;
@@ -161,13 +162,15 @@ public final class AppPersistence {
      * Gets an object from the {@link #list} at the index specified.
      *
      * @param index The identifier for a data object in the {@link #list},
-     *              and possible values are either {@link #TASKS_INDEX},
-     *              {@link #SETTINGS_INDEX} or {@link #STATS_INDEX}.
+     *              and possible values are either {@link #TODOLIST_INDEX},
+     *              {@link #SETTINGS_INDEX}, {@link #TASKINVENTORY_INDEX}
+     *              or {@link #STATS_INDEX}.
      * @return an object of type {@link Object}; Note the object has to be
      * casted to an usable type to be used.
      * @see #getSettings()
      * @see #getStats()
-     * @see #getTasks()
+     * @see #getToDoList()
+     * @see #getTaskInventory()
      */
 
     private Object getObject(final int index) {
@@ -182,8 +185,8 @@ public final class AppPersistence {
      *         <code>false</code> otherwise.
      */
 
-    public boolean saveTasks(final LinkedList<Task> tasks) {
-        return writeObject(TASKS_INDEX, tasks);
+    public boolean saveToDoList(final LinkedList<Task> tasks) {
+        return writeObject(TODOLIST_INDEX, tasks);
     }
 
     /**
@@ -208,6 +211,10 @@ public final class AppPersistence {
         return writeObject(STATS_INDEX, stats);
     }
 
+    public boolean saveTaskInventory(final LinkedList<Task> inv) {
+        return writeObject(TASKINVENTORY_INDEX, inv);
+    }
+
     /**
      * Gets the settings from the data file.
      * @return a settings object
@@ -223,8 +230,8 @@ public final class AppPersistence {
      */
 
     @SuppressWarnings("unchecked")
-    public LinkedList<Task> getTasks() {
-        return (LinkedList<Task>) getObject(TASKS_INDEX);
+    public LinkedList<Task> getToDoList() {
+        return (LinkedList<Task>) getObject(TODOLIST_INDEX);
     }
 
     /**
@@ -234,6 +241,11 @@ public final class AppPersistence {
 
     public Statistics getStats() {
         return (Statistics) getObject(STATS_INDEX);
+    }
+
+    @SuppressWarnings("unchecked")
+    public LinkedList<Task> getTaskInventory() {
+        return (LinkedList<Task>) getObject(TASKINVENTORY_INDEX);
     }
 
     /**
