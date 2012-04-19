@@ -12,6 +12,7 @@ import javax.swing.event.TableModelListener;
 import optitask.ui.AboutDialog;
 import optitask.ui.InterruptDialog;
 import optitask.ui.SettingsDialog;
+import optitask.ui.TaskInventoryDialog;
 import optitask.ui.TasksDialog;
 import optitask.util.Settings;
 import optitask.util.Statistics;
@@ -43,6 +44,8 @@ public class AppController implements ActionListener, TableModelListener {
     private AboutDialog aboutDialog;
 
     private InterruptDialog interruptDialog;
+
+    private TaskInventoryDialog taskInventoryDialog;
 
     /**
      * Creates the controller object.
@@ -160,6 +163,12 @@ public class AppController implements ActionListener, TableModelListener {
         interruptDialog.setVisible(true);
     }
 
+    private void openTaskInventory() {
+        taskInventoryDialog = new TaskInventoryDialog(model, this);
+        taskInventoryDialog.setLocationRelativeTo(view);
+        taskInventoryDialog.setVisible(true);
+    }
+
     /**
      * Saves the current tasks in the tasks dialog table.
      */
@@ -255,6 +264,10 @@ public class AppController implements ActionListener, TableModelListener {
                     interruptDialog.switchCard(InterruptDialog.INT_PANEL);
                 }
             }
+        } else if (actionCommand.equalsIgnoreCase("Open Task Inventory")) {
+
+            openTaskInventory();
+
         }
     }
 

@@ -84,8 +84,7 @@ public class AppFrame extends JFrame {
         centerThisFrame(this);
         setIconImage(Toolkit.getDefaultToolkit().getImage(
                 AppFrame.class.getResource("/optitask/assests/appIcon.gif")));
-        getContentPane().setLayout(new MigLayout(
-                "", "[40px][10px][30px][][10px]", "[185px][][30px][]"));
+        getContentPane().setLayout(new MigLayout("", "[40px][10px][30px][pref!][pref!]", "[185px][][30px][]"));
 
         timerPanel = new TimerPanel(model, controller);
         getContentPane().add(timerPanel, "cell 0 0 5 1,grow");
@@ -114,6 +113,11 @@ public class AppFrame extends JFrame {
                 .getResource("/optitask/assests/settings.gif")));
         btnSettings.setActionCommand("Open Settings");
         btnSettings.addActionListener(controller);
+
+        JButton btnTaskInventory = new JButton("Task Inventory");
+        btnTaskInventory.setActionCommand("Open Task Inventory");
+        btnTaskInventory.addActionListener(controller);
+        getContentPane().add(btnTaskInventory, "cell 0 3 2 1,grow");
         getContentPane().add(btnSettings, "cell 3 3,grow");
         btnAbout.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/star.gif")));
