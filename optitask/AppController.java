@@ -292,12 +292,12 @@ public class AppController implements ActionListener, TableModelListener {
 
     @Override
     public final void tableChanged(final TableModelEvent e) {
-
+        
         if(toDoListDialog.isVisible()) {
             saveToDoList(toDoListDialog.getTasks());
         } else if (taskInventoryDialog.isVisible()) {
             saveTaskInventory(taskInventoryDialog.getTasks());
         }
-
+        
     }
 }

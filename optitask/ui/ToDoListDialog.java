@@ -150,6 +150,8 @@ public class ToDoListDialog extends TaskManager {
 
     private static final String WINDOW_TITLE = "To Do List";
 
+    private static final int POM_EDITOR_COLUMN = 3;
+
     /**
      * Creates the dialog.
      * <B>Not used</B>.
@@ -208,6 +210,11 @@ public class ToDoListDialog extends TaskManager {
     @Override
     protected LinkedList<Task> getTasksModel() {
         return model.getToDoList();
+    }
+
+    @Override
+    protected int getPomNumberEditorColumn() {
+        return POM_EDITOR_COLUMN;
     }
 
 

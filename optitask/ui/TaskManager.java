@@ -172,7 +172,7 @@ implements TaskManagerActions {
         .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         //Set the appropriate editor for the assigned pomodoros
-        tasksTable.getColumnModel().getColumn(3)
+        tasksTable.getColumnModel().getColumn(getPomNumberEditorColumn())
         .setCellEditor(new PomNumberEditor());
 
         //Set the row height
@@ -323,5 +323,7 @@ implements TaskManagerActions {
     protected abstract String getDeleteMessage();
 
     protected abstract LinkedList<Task> getTasksModel();
+
+    protected abstract int getPomNumberEditorColumn();
 
 }

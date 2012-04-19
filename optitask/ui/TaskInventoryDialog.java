@@ -43,7 +43,7 @@ public class TaskInventoryDialog extends TaskManager {
          * The names for each column.
          */
         private final String[] columnNames = { "Task", "Description",
-                "Current", "Assigned", "Done" };
+                "Assigned", "Done" };
 
         /**
          * The limit where assigned pomodoros is considered as 'too many'.
@@ -85,7 +85,7 @@ public class TaskInventoryDialog extends TaskManager {
             if (tasks.get(row).isDone() && col == 3) {
                 return false;
             }
-            return col > 0 && col < columnNames.length && col != 2;
+            return col > 0 && col < columnNames.length;
         }
 
         @Override
@@ -95,11 +95,9 @@ public class TaskInventoryDialog extends TaskManager {
                 return row + 1;
             case 1:
                 return tasks.get(row).getTaskDesc();
-            case 4:
+            case 3:
                 return tasks.get(row).isDone();
             case 2:
-                return tasks.get(row).getCurrentPomodoro();
-            case 3:
                 return tasks.get(row).getAssignedPomodoros();
             default:
                 return null;
@@ -116,7 +114,7 @@ public class TaskInventoryDialog extends TaskManager {
             case 1:
                 task.setTaskDesc((String) value);
                 break;
-            case 4:
+            case 3:
                 task.setDone((Boolean) value);
 
                 // If a task is 'undone' then reset the current pomodoros
@@ -126,7 +124,7 @@ public class TaskInventoryDialog extends TaskManager {
                 }
 
                 break;
-            case 3:
+            case 2:
                 task.setAssignedPomodoros((Integer) value);
 
                 if ((Integer) value > TOO_MANY_POMS) {
@@ -148,6 +146,8 @@ public class TaskInventoryDialog extends TaskManager {
     };
 
     private static final String WINDOW_TITLE = "Task Inventory";
+
+    private static final int POM_EDITOR_COLUMN = 2;
 
     public TaskInventoryDialog(final AppPersistence mdl,
             final AppController cntrller) {
@@ -198,6 +198,11 @@ public class TaskInventoryDialog extends TaskManager {
     @Override
     protected LinkedList<Task> getTasksModel() {
         return model.getTaskInventory();
+    }
+
+    @Override
+    protected int getPomNumberEditorColumn() {
+        return POM_EDITOR_COLUMN;
     }
 
 }
