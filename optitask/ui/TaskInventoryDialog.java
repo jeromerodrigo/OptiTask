@@ -81,10 +81,6 @@ public class TaskInventoryDialog extends TaskManager {
 
         @Override
         public boolean isCellEditable(final int row, final int col) {
-            // If the task is done, the disable changing the assigned pomodoros
-            if (tasks.get(row).isDone() && col == 3) {
-                return false;
-            }
             return col > 0 && col < columnNames.length;
         }
 
@@ -120,7 +116,6 @@ public class TaskInventoryDialog extends TaskManager {
                 // If a task is 'undone' then reset the current pomodoros
                 if (!(Boolean) value) {
                     task.setCurrentPomodoro(0);
-                    tasksTable.repaint(); // Refresh the table
                 }
 
                 break;
@@ -203,6 +198,11 @@ public class TaskInventoryDialog extends TaskManager {
     @Override
     protected int getPomNumberEditorColumn() {
         return POM_EDITOR_COLUMN;
+    }
+
+    @Override
+    protected String getMoveToMessage() {
+        return "Move To To Do List";
     }
 
 }

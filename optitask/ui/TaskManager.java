@@ -134,6 +134,8 @@ implements TaskManagerActions {
      */
     private static final int MAX_WIDTH = 100;
 
+    private JButton btnMoveTo;
+
     /**
      * 
      */
@@ -147,6 +149,10 @@ implements TaskManagerActions {
         model = mdl;
         tasks = getTasksModel();
         initialize();
+
+        // Runtime initialisation of 'move to' button
+        btnMoveTo.setText(getMoveToMessage());
+        btnMoveTo.setActionCommand(getMoveToMessage());
     }
 
     private void initialize() {
@@ -198,7 +204,12 @@ implements TaskManagerActions {
         JButton btnDelete = new JButton("Delete");
         btnDelete.setActionCommand(getDeleteMessage());
         btnDelete.addActionListener(controller);
-        getContentPane().add(btnDelete, "cell 2 3,growx,aligny top");
+        getContentPane().add(btnDelete, "cell 1 3,growx,aligny top");
+
+        btnMoveTo = new JButton("Move To");
+        btnMoveTo.setActionCommand("Move To");
+        btnMoveTo.addActionListener(controller);
+        getContentPane().add(btnMoveTo, "cell 2 3, growx, aligny top");
 
         JButton btnMoveUp = new JButton("");
         btnMoveUp.setIcon(new ImageIcon(TaskManager.class
@@ -308,6 +319,18 @@ implements TaskManagerActions {
         swapItems(tasksTable.getSelectedRow(), tasksTable.getSelectedRow() + 1);
     }
 
+    @Override
+    public Task getSelectedTask() {
+
+        try {
+            return tasks.get(tasksTable.getSelectedRow());
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+        return null; // Return null if fail
+    }
+
     protected abstract AbstractTableModel getTableModel();
 
     protected abstract String getWindowTitle();
@@ -325,5 +348,7 @@ implements TaskManagerActions {
     protected abstract LinkedList<Task> getTasksModel();
 
     protected abstract int getPomNumberEditorColumn();
+
+    protected abstract String getMoveToMessage();
 
 }

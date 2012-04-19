@@ -28,6 +28,8 @@ public interface TaskManagerActions {
      */
     LinkedList<Task> getTasks();
 
+    Task getSelectedTask();
+
     /**
      * Switches two task items in the list.
      * @param selectedIdx the index of the selected task

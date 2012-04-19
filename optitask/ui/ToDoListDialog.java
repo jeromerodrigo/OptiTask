@@ -123,7 +123,6 @@ public class ToDoListDialog extends TaskManager {
                 // If a task is 'undone' then reset the current pomodoros
                 if (!(Boolean) value) {
                     task.setCurrentPomodoro(0);
-                    tasksTable.repaint(); // Refresh the table
                 }
 
                 break;
@@ -215,6 +214,11 @@ public class ToDoListDialog extends TaskManager {
     @Override
     protected int getPomNumberEditorColumn() {
         return POM_EDITOR_COLUMN;
+    }
+
+    @Override
+    protected String getMoveToMessage() {
+        return "Move To Task Inventory";
     }
 
 

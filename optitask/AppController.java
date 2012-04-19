@@ -273,7 +273,6 @@ public class AppController implements ActionListener, TableModelListener {
 
             taskInventoryDialog.deleteTask();
             saveTaskInventory(taskInventoryDialog.getTasks());
-            view.resetCycle();
 
         } else if (actionCommand.equalsIgnoreCase("Move Up Task Inventory")) {
 
@@ -285,6 +284,33 @@ public class AppController implements ActionListener, TableModelListener {
 
             taskInventoryDialog.moveDown();
             saveTaskInventory(taskInventoryDialog.getTasks());
+
+        } else if (actionCommand.equalsIgnoreCase("Move To To Do List")) {
+
+            Task temp = new Task();
+            temp = taskInventoryDialog.getSelectedTask();
+
+            LinkedList<Task> tempList = model.getToDoList();
+            tempList.add(temp);
+
+            saveToDoList(tempList);
+
+            taskInventoryDialog.deleteTask();
+            saveTaskInventory(taskInventoryDialog.getTasks());
+
+
+        } else if (actionCommand.equalsIgnoreCase("Move To Task Inventory")) {
+
+            Task temp = new Task();
+            temp = toDoListDialog.getSelectedTask();
+
+            LinkedList<Task> tempList = model.getTaskInventory();
+            tempList.add(temp);
+
+            saveTaskInventory(tempList);
+
+            toDoListDialog.deleteTask();
+            saveToDoList(toDoListDialog.getTasks());
             view.resetCycle();
 
         }
@@ -292,12 +318,12 @@ public class AppController implements ActionListener, TableModelListener {
 
     @Override
     public final void tableChanged(final TableModelEvent e) {
-        
+
         if(toDoListDialog.isVisible()) {
             saveToDoList(toDoListDialog.getTasks());
         } else if (taskInventoryDialog.isVisible()) {
             saveTaskInventory(taskInventoryDialog.getTasks());
         }
-        
+
     }
 }
