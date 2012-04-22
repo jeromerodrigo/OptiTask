@@ -73,31 +73,31 @@ public class InterruptDialog extends JDialog {
 
         JPanel externalPanel = new JPanel();
         interruptPanel.add(externalPanel, EXT_PANEL);
-        externalPanel.setLayout(new MigLayout("", "[]", "[]"));
+        externalPanel.setLayout(new MigLayout("", "[grow]", "[]"));
 
         JButton btnStopCurrentTask = new JButton("Stop Current Task");
-        btnStopCurrentTask.setActionCommand("Stop Current Task");
+        btnStopCurrentTask.setActionCommand("Stop");
         btnStopCurrentTask.addActionListener(controller);
-        externalPanel.add(btnStopCurrentTask, "cell 0 0");
+        externalPanel.add(btnStopCurrentTask, "cell 0 0,alignx center");
 
         JPanel internalPanel = new JPanel();
         interruptPanel.add(internalPanel, INT_PANEL);
-        internalPanel.setLayout(new MigLayout("", "[]", "[][][]"));
+        internalPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
 
         JButton btnAddNewTask = new JButton("Add New Task");
         btnAddNewTask.setActionCommand("Add New Task");
         btnAddNewTask.addActionListener(controller);
-        internalPanel.add(btnAddNewTask, "cell 0 0,growx");
+        internalPanel.add(btnAddNewTask, "cell 0 0,alignx center");
 
         JButton btnMoveTaskTo = new JButton("Move Task to Inventory");
         btnMoveTaskTo.setActionCommand("Move Task to Inventory");
         btnMoveTaskTo.addActionListener(controller);
-        internalPanel.add(btnMoveTaskTo, "cell 0 1,growx");
+        internalPanel.add(btnMoveTaskTo, "cell 0 1,alignx center");
 
         JButton btnContinueTaskLater = new JButton("Continue Task Later");
         btnContinueTaskLater.setActionCommand("Continue Task Later");
         btnContinueTaskLater.addActionListener(controller);
-        internalPanel.add(btnContinueTaskLater, "cell 0 2,growx");
+        internalPanel.add(btnContinueTaskLater, "cell 0 2,alignx center");
 
         JPanel blankPanel = new JPanel();
         interruptPanel.add(blankPanel, "blank");

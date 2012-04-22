@@ -79,49 +79,44 @@ public class AppFrame extends JFrame {
     private void initialize() {
         setTitle("OptiTask");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(350, 310);
+        setSize(350, 270);
         setResizable(false);
         centerThisFrame(this);
         setIconImage(Toolkit.getDefaultToolkit().getImage(
                 AppFrame.class.getResource("/optitask/assests/appIcon.gif")));
-        getContentPane().setLayout(new MigLayout("", "[40px][10px][30px][pref!][pref!]", "[185px][][30px][]"));
+        getContentPane().setLayout(new MigLayout("", "[40px][][][]", "[185px][][30px]"));
 
         timerPanel = new TimerPanel(model, controller);
-        getContentPane().add(timerPanel, "cell 0 0 5 1,grow");
+        getContentPane().add(timerPanel, "cell 0 0 4 1,grow");
 
         JSeparator separator = new JSeparator();
-        getContentPane().add(separator, "cell 0 1 5 1,growx,aligny center");
+        getContentPane().add(separator, "cell 0 1 4 1,growx,aligny center");
 
         JButton btnManageTasks = new JButton("To Do List");
         btnManageTasks.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/pencil.gif")));
         btnManageTasks.setActionCommand("Open Manage Tasks");
         btnManageTasks.addActionListener(controller);
+        getContentPane().add(btnManageTasks, "cell 0 2,alignx left,growy");
 
-        JButton btnInterrupt = new JButton("Interrupt");
-        btnInterrupt.setActionCommand("Open Interrupt Dialog");
-        btnInterrupt.addActionListener(controller);
-        getContentPane().add(btnInterrupt, "cell 0 2,growy");
-        getContentPane().add(btnManageTasks, "cell 1 2,alignx left,growy");
-
-        JButton btnAbout = new JButton("");
-        btnAbout.setActionCommand("Open About");
-        btnAbout.addActionListener(controller);
+        JButton btnTaskInventory = new JButton("Task Inventory");
+        btnTaskInventory.setActionCommand("Open Task Inventory");
+        btnTaskInventory.addActionListener(controller);
+        getContentPane().add(btnTaskInventory, "cell 1 2,grow");
 
         JButton btnSettings = new JButton("");
         btnSettings.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/settings.gif")));
         btnSettings.setActionCommand("Open Settings");
         btnSettings.addActionListener(controller);
+        getContentPane().add(btnSettings, "cell 2 2,grow");
 
-        JButton btnTaskInventory = new JButton("Task Inventory");
-        btnTaskInventory.setActionCommand("Open Task Inventory");
-        btnTaskInventory.addActionListener(controller);
-        getContentPane().add(btnTaskInventory, "cell 0 3 2 1,grow");
-        getContentPane().add(btnSettings, "cell 3 3,grow");
+        JButton btnAbout = new JButton("");
+        btnAbout.setActionCommand("Open About");
+        btnAbout.addActionListener(controller);
         btnAbout.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/star.gif")));
-        getContentPane().add(btnAbout, "cell 4 3,grow");
+        getContentPane().add(btnAbout, "cell 3 2,grow");
     }
 
     /**
