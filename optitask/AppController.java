@@ -185,6 +185,10 @@ public class AppController implements ActionListener, TableModelListener {
 
             stopTimer();
 
+            if(interruptDialog.isVisible()) {
+                interruptDialog.dispose();
+            }
+
         } else if (actionCommand.equalsIgnoreCase("Open Settings")) {
 
             openSettings();

@@ -101,8 +101,8 @@ public class TimerPanel extends JPanel {
 
     public final void startTimer() {
         timer.start();
-        btnStart.setText("Stop");
-        btnStart.setActionCommand("Stop");
+        btnStart.setText("Interrupt");
+        btnStart.setActionCommand("Open Interrupt Dialog");
         currentTaskPanel.refresh();
         currentTaskPanel.nextTask();
     }
