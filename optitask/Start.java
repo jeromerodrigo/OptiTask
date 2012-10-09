@@ -6,8 +6,7 @@ import optitask.ui.AppFrame;
 /**
  * Start.java <br />
  * Purpose: Acts as a starting point for the application.
- * @author Jerome
- * @version 0.8
+ * @author Jerome Rodrigo
  * @since 0.8
  */
 

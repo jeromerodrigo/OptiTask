@@ -28,7 +28,7 @@ import optitask.util.Task;
 
 /**
  * @author Jerome Rodrigo
- * @since 0.8.3
+ * @since 0.9.0
  */
 public abstract class TaskManager extends JDialog
 implements TaskManagerActions {

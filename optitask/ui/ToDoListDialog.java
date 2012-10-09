@@ -14,8 +14,7 @@ import optitask.util.Task;
 /**
  * ToDoListDialog.java <br />
  * Purpose: Displays a dialog for the user to manage the tasks.
- * @author Jerome
- * @version 0.8.2
+ * @author Jerome Rodrigo
  * @since 0.8
  */
 

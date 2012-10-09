@@ -11,8 +11,7 @@ import net.miginfocom.swing.MigLayout;
 /**
  * AboutDialog.java <br />
  * Purpose: Displays some information about the application.
- * @author Jerome
- * @version 0.8.2
+ * @author Jerome Rodrigo
  * @since 0.8
  */
 
@@ -26,7 +25,7 @@ public class AboutDialog extends JDialog {
     /**
      * The current version number.
      */
-    private static final String VERSION_NUMBER = "0.8.2";
+    private static final String VERSION_NUMBER = "0.9.0";
 
     /**
      * Create the dialog.

@@ -19,9 +19,8 @@ import java.awt.CardLayout;
 /**
  * InterruptDialog.java <br />
  * Purpose: Display a selection dialog when user is interrupted.
- * @author Jerome
- * @version 0.8.3
- * @since 0.8.3
+ * @author Jerome Rodrigo
+ * @since 0.9.0
  */
 
 public class InterruptDialog extends JDialog {

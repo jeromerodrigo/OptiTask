@@ -18,8 +18,7 @@ import optitask.store.AppPersistence;
 /**
  * AppFrame.java <br />
  * Purpose: Displays the top-level window for components.
- * @author Jerome
- * @version 0.8.2
+ * @author Jerome Rodrigo
  * @since 0.8
  */
 

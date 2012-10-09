@@ -15,8 +15,7 @@ import optitask.util.Task;
 /**
  * CurrentTaskPanel.java <br />
  * Purpose: Displays the current task, and status of the task.
- * @author Jerome
- * @version 0.8.2
+ * @author Jerome Rodrigo
  * @since 0.8
  */
 

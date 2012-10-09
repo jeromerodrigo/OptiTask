@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * Task.java <br />
  * Purpose: Stores the details pertaining to a data unit of a Task.
- * @author Jerome
- * @version 0.8.2
+ * @author Jerome Rodrigo
  * @since 0.8
  */
 

@@ -14,8 +14,9 @@ import optitask.store.AppPersistence;
 import optitask.util.Task;
 
 /**
+ * Displays a dialog to manage the task inventory.
  * @author Jerome Rodrigo
- *
+ * @since 0.9.0
  */
 public class TaskInventoryDialog extends TaskManager {
 

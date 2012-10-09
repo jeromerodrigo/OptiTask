@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * Statistics.java <br />
  * Purpose: Stores the statistics of the application.
- * @author Jerome
- * @version 0.8
+ * @author Jerome Rodrigo
  * @since 0.8
  */
 

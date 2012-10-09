@@ -5,7 +5,7 @@ import javax.swing.JDialog;
 /**
  * StatsDialog.java <br />
  * Purpose: Displays a dialog showing the statistics of the application.
- * @author Jerome
+ * @author Jerome Rodrigo
  */
 
 public class StatsDialog extends JDialog {

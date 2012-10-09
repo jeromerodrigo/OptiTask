@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * Settings.java <br />
  * Purpose: Stores the settings of the application.
- * @author Jerome
- * @version 0.8
+ * @author Jerome Rodrigo
  * @since 0.8
  */
 

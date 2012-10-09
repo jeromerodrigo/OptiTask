@@ -11,8 +11,7 @@ import optitask.store.AppPersistence;
  * TimerPanel.java <br />
  * Purpose: Displays the timer-related components and allows the user to
  * control it.
- * @author Jerome
- * @version 0.8.2
+ * @author Jerome Rodrigo
  * @since 0.8
  */
 
