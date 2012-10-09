@@ -42,12 +42,12 @@ implements TaskManagerActions {
      * The list of tasks.
      * @see Task
      */
-    protected LinkedList<Task> tasks;
+    private LinkedList<Task> tasks;
 
     /**
      * The tasks table.
      */
-    protected JTable tasksTable;
+    private JTable tasksTable;
 
     /**
      * The application controller.
@@ -55,7 +55,12 @@ implements TaskManagerActions {
      */
     private static AppController controller;
 
-    protected static AppPersistence model;
+    
+    /**
+     * The persistence module.
+     * @see AppPersistence
+     */
+    private static AppPersistence model;
 
     /**
      * Pomodoro Number Editor class. <br />
@@ -133,7 +138,10 @@ implements TaskManagerActions {
      * Constant for the width of the third column.
      */
     private static final int MAX_WIDTH = 100;
-
+    
+    /**
+     * Button that allows user to move a task to another list.
+     */
     private JButton btnMoveTo;
 
     /**
@@ -146,7 +154,7 @@ implements TaskManagerActions {
     public TaskManager(final AppPersistence mdl,
             final AppController cntrller) {
         controller = cntrller;
-        model = mdl;
+        setModel(mdl);
         tasks = getTasksModel();
         initialize();
 
@@ -227,6 +235,13 @@ implements TaskManagerActions {
     }
 
     /**
+     * @param tsks the tasks to set
+     */
+    public final void setTasks(final LinkedList<Task> tsks) {
+        tasks = tsks;
+    }
+
+    /**
      * Sets the widths of the columns.
      * @param min the minimum width
      * @param pref the preferred width
@@ -250,7 +265,7 @@ implements TaskManagerActions {
      * @see optitask.ui.TaskManagerActions#addTask()
      */
     @Override
-    public void addTask() {
+    public final void addTask() {
         Task newTask = new Task();
         tasks.add(newTask);
         tasksTable.repaint();
@@ -261,7 +276,7 @@ implements TaskManagerActions {
      * @see optitask.ui.TaskManagerActions#deleteTask()
      */
     @Override
-    public void deleteTask() {
+    public final void deleteTask() {
         int row = -1;
         try {
             row = tasksTable.getSelectedRow();
@@ -284,11 +299,25 @@ implements TaskManagerActions {
         return tasks;
     }
 
+    /**
+     * @return the model
+     */
+    public static AppPersistence getModel() {
+        return model;
+    }
+
+    /**
+     * @param mdl the model to set
+     */
+    public static void setModel(final AppPersistence mdl) {
+        TaskManager.model = mdl;
+    }
+
     /* (non-Javadoc)
      * @see optitask.ui.TaskManagerActions#swapItems(int, int)
      */
     @Override
-    public void swapItems(final int selectedIdx, final int nextIdx) {
+    public final void swapItems(final int selectedIdx, final int nextIdx) {
         Task temp = new Task();
         try {
             temp = tasks.get(selectedIdx); // Temporarily stores selected task
@@ -307,7 +336,7 @@ implements TaskManagerActions {
      * @see optitask.ui.TaskManagerActions#moveUp()
      */
     @Override
-    public void moveUp() {
+    public final void moveUp() {
         swapItems(tasksTable.getSelectedRow(), tasksTable.getSelectedRow() - 1);
     }
 
@@ -315,12 +344,12 @@ implements TaskManagerActions {
      * @see optitask.ui.TaskManagerActions#moveDown()
      */
     @Override
-    public void moveDown() {
+    public final void moveDown() {
         swapItems(tasksTable.getSelectedRow(), tasksTable.getSelectedRow() + 1);
     }
 
     @Override
-    public Task getSelectedTask() {
+    public final Task getSelectedTask() {
 
         try {
             return tasks.get(tasksTable.getSelectedRow());

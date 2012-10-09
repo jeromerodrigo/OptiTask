@@ -84,7 +84,8 @@ public class AppFrame extends JFrame {
         centerThisFrame(this);
         setIconImage(Toolkit.getDefaultToolkit().getImage(
                 AppFrame.class.getResource("/optitask/assests/appIcon.gif")));
-        getContentPane().setLayout(new MigLayout("", "[40px][][][]", "[185px][][30px]"));
+        getContentPane().setLayout(new MigLayout(
+                "", "[40px][][][]", "[185px][][30px]"));
 
         timerPanel = new TimerPanel(model, controller);
         getContentPane().add(timerPanel, "cell 0 0 4 1,grow");

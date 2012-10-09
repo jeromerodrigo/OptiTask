@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import optitask.AppController;
@@ -51,13 +50,17 @@ public class ToDoListDialog extends TaskManager {
          */
         private static final int TOO_MANY_POMS = 6;
 
+        /**
+         * The list of tasks.
+         */
         private final LinkedList<Task> tasks;
-
-        private final JTable tasksTable;
-
-        public TasksDataModel(LinkedList<Task> tsks, JTable tskTbl) {
+        
+        /**
+         * Constructor for the TasksDataModel.
+         * @param tsks the list of tasks
+         */
+        public TasksDataModel(final LinkedList<Task> tsks) {
             tasks = tsks;
-            tasksTable = tskTbl;
         }
 
         @Override
@@ -118,7 +121,7 @@ public class ToDoListDialog extends TaskManager {
                 task.setTaskDesc((String) value);
                 break;
             case 4:
-                task.setDone((Boolean) value);
+                task.setIsDone((Boolean) value);
 
                 // If a task is 'undone' then reset the current pomodoros
                 if (!(Boolean) value) {
@@ -171,53 +174,54 @@ public class ToDoListDialog extends TaskManager {
     }
 
     @Override
-    public AbstractTableModel getTableModel() {
-        return new TasksDataModel(tasks, tasksTable);
+    public final AbstractTableModel getTableModel() {
+        return new TasksDataModel(getTasks());
     }
 
     @Override
-    protected String getWindowTitle() {
+    protected final String getWindowTitle() {
         return WINDOW_TITLE;
     }
 
     @Override
-    protected Image getIconImage() {
+    protected final Image getIconImage() {
         return Toolkit.getDefaultToolkit().getImage(
-                ToDoListDialog.class.getResource("/optitask/assests/pencil.gif"));
+                ToDoListDialog.class.
+                getResource("/optitask/assests/pencil.gif"));
     }
 
     @Override
-    protected String getMoveUpMessage() {
+    protected final String getMoveUpMessage() {
         return "Move Up To Do List";
     }
 
     @Override
-    protected String getMoveDownMessage() {
+    protected final String getMoveDownMessage() {
         return "Move Down To Do List";
     }
 
     @Override
-    protected String getAddMessage() {
+    protected final String getAddMessage() {
         return "Add Task To Do List";
     }
 
     @Override
-    protected String getDeleteMessage() {
+    protected final String getDeleteMessage() {
         return "Delete Task To Do List";
     }
 
     @Override
-    protected LinkedList<Task> getTasksModel() {
-        return model.getToDoList();
+    protected final LinkedList<Task> getTasksModel() {
+        return getModel().getToDoList();
     }
 
     @Override
-    protected int getPomNumberEditorColumn() {
+    protected final int getPomNumberEditorColumn() {
         return POM_EDITOR_COLUMN;
     }
 
     @Override
-    protected String getMoveToMessage() {
+    protected final String getMoveToMessage() {
         return "Move To Task Inventory";
     }
 

@@ -172,7 +172,7 @@ public class CurrentTaskPanel extends JPanel {
         } catch (IndexOutOfBoundsException e) {
             return; // Do nothing
         }
-        task.setDone(true);
+        task.setIsDone(true);
         tasks.set(currentIdx, task);
         model.saveToDoList(tasks);
 

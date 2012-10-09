@@ -50,7 +50,7 @@ public class InterruptDialog extends JDialog {
         initialize();
     }
 
-    public InterruptDialog(AppController cntrllr) {
+    public InterruptDialog(final AppController cntrllr) {
         controller = cntrllr;
         initialize();
     }
@@ -69,10 +69,12 @@ public class InterruptDialog extends JDialog {
                 "[90px,grow][53px,grow][116px,grow]", "[16px][22px][22px]"));
 
         JLabel lblTaskDescription = new JLabel("Task Description:");
-        newTaskPanel.add(lblTaskDescription, "cell 0 0,alignx left,aligny center");
+        newTaskPanel.add(lblTaskDescription, 
+                "cell 0 0,alignx left,aligny center");
 
         JLabel lblPomodorosAssigned = new JLabel("Pomodoros Assigned:");
-        newTaskPanel.add(lblPomodorosAssigned, "cell 2 0,alignx left,aligny center");
+        newTaskPanel.add(lblPomodorosAssigned, 
+                "cell 2 0,alignx left,aligny center");
 
         taskTextField = new JTextField();
         newTaskPanel.add(taskTextField, "cell 0 1 2 1,grow");
@@ -83,7 +85,8 @@ public class InterruptDialog extends JDialog {
         numPomsSpinner.setModel(new SpinnerNumberModel(1, 1, 15, 1));
 
         JLabel lblWhenToDo = new JLabel("Do Task:");
-        newTaskPanel.add(lblWhenToDo, "flowx,cell 0 2,alignx left,aligny center");
+        newTaskPanel.add(lblWhenToDo, 
+                "flowx,cell 0 2,alignx left,aligny center");
         
         btnConfirm = new JButton("Confirm");
         btnConfirm.setActionCommand("Add New Task");
@@ -97,7 +100,8 @@ public class InterruptDialog extends JDialog {
         
         JPanel actionPanel = new JPanel();
         getContentPane().add(actionPanel, "actionPanel");
-        actionPanel.setLayout(new MigLayout("", "[101px,grow][127px,grow]", "[25px,grow]"));
+        actionPanel.setLayout(new MigLayout(
+                "", "[101px,grow][127px,grow]", "[25px,grow]"));
         
         JButton btnStopCurrentTask = new JButton("Stop Current Task");
         actionPanel.add(btnStopCurrentTask, "cell 0 0,alignx center,growy");
@@ -113,24 +117,41 @@ public class InterruptDialog extends JDialog {
 
     }
     
-    private void changeCard(String card) {
+    private void changeCard(final String card) {
         CardLayout cl = (CardLayout) getContentPane().getLayout();
         cl.show(getContentPane(), card);
     }
     
-    public void viewNewTaskForm() {
-        changeCard("newTaskPanel");
-    }    
+    /**
+     * Sets the interruptDialog to display the NewTaskPanel form.
+     */
     
-    public Task getNewTask() {
-        if (taskTextField.getText().isEmpty())
+    public final void viewNewTaskForm() {
+        changeCard("newTaskPanel");
+    }
+    
+    /**
+     * Gets the new task input from the NewTaskPanel form.
+     * @return an instance of {@link #optitask.util.Task}
+     */
+    
+    public final Task getNewTask() {
+        if (taskTextField.getText().isEmpty()) {
             return new Task();
+        }
+            
         Task newTask = new Task(taskTextField.getText(), false, 
                 Integer.parseInt(numPomsSpinner.getValue().toString()), 0);
         return newTask;
     }
     
-    public String getNewTaskLocation() {
+    /**
+     * Gets the designated location for the new task to be saved. 
+     * Can be either the To Do List or Task Inventory.
+     * @return string representation of the new task save location
+     */
+    
+    public final String getNewTaskLocation() {
         return moveToComboBox.getSelectedItem().toString();
     }
 

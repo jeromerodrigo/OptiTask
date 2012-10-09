@@ -25,7 +25,7 @@ public final class Task implements Serializable {
     /**
      * A flag to determine if the task is done, or not.
      */
-    private boolean isDone;
+    private boolean isTaskDone;
 
     /**
      * The total number of pomodoros needed to complete the task.
@@ -56,7 +56,7 @@ public final class Task implements Serializable {
     public Task(final String desc, final boolean done,
             final int aPoms, final int cPom) {
         taskDesc = desc;
-        isDone = done;
+        isTaskDone = done;
         assignedPomodoros = aPoms;
         currentPomodoro = cPom;
     }
@@ -65,14 +65,14 @@ public final class Task implements Serializable {
      * @return the isDone
      */
     public boolean isDone() {
-        return isDone;
+        return isTaskDone;
     }
 
     /**
      * @param done the isDone to set
      */
-    public void setDone(final boolean done) {
-        isDone = done;
+    public void setIsDone(final boolean done) {
+        isTaskDone = done;
     }
 
     /**
@@ -120,7 +120,7 @@ public final class Task implements Serializable {
     @Override
     public String toString() {
         return "Description: " + taskDesc
-                + " Is Done: " + isDone
+                + " Is Done: " + isTaskDone
                 + " Assigned Pomodoros: " + assignedPomodoros
                 + " Current: " + currentPomodoro;
     }

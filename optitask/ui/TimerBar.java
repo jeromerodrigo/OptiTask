@@ -268,7 +268,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
      */
 
     private static void playSound() {
-        new SoundPlayer().run();
+        new SoundPlayer().start();
     }
 
     /**

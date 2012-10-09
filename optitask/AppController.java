@@ -177,28 +177,20 @@ public class AppController implements ActionListener, TableModelListener {
         String actionCommand = e.getActionCommand();
 
         if (actionCommand.equalsIgnoreCase("Start")) {
-
             startTimer();
-
         } else if (actionCommand.equalsIgnoreCase("Stop")) {
-
             stopTimer();
-
-            if(interruptDialog.isVisible()) {
+            if (interruptDialog.isVisible()) {
                 interruptDialog.dispose();
             }
-
         } else if (actionCommand.equalsIgnoreCase("Do New Task")) {
-            
             interruptDialog.viewNewTaskForm();
-            
-        } else if (actionCommand.equalsIgnoreCase("Add New Task")) {
-            
+        } else if (actionCommand.equalsIgnoreCase("Add New Task")) {            
             stopTimer();
             
             LinkedList<Task> tasks;
             
-            if(interruptDialog.getNewTaskLocation().equalsIgnoreCase("Now")) {
+            if (interruptDialog.getNewTaskLocation().equalsIgnoreCase("Now")) {
                 tasks = model.getToDoList();
                 tasks.addFirst(interruptDialog.getNewTask());
                 model.saveToDoList(tasks);
@@ -208,15 +200,12 @@ public class AppController implements ActionListener, TableModelListener {
                 model.saveTaskInventory(tasks);
             }
             
-            if(interruptDialog.isVisible()) {
+            if (interruptDialog.isVisible()) {
                 interruptDialog.dispose();
-            }
-            
+            }            
             
         } else if (actionCommand.equalsIgnoreCase("Open Settings")) {
-
             openSettings();
-
         } else if (actionCommand.equalsIgnoreCase("Save Settings")) {
 
             if (settingsDialog.getSettings() == null) {
@@ -230,78 +219,49 @@ public class AppController implements ActionListener, TableModelListener {
                         "Notification", JOptionPane.INFORMATION_MESSAGE);
             }
 
-
         } else if (actionCommand.equalsIgnoreCase("Default Settings")) {
-
             settingsDialog.setSettings(new Settings());
-
         } else if (actionCommand.equalsIgnoreCase("Toggle Increment")) {
-
             settingsDialog.setEnabledIncrementSettings(!settingsDialog
                     .isEnabledIncrementSettings());
-
         } else if (actionCommand.equalsIgnoreCase("Open Manage Tasks")) {
-
             openToDoList();
-
         } else if (actionCommand.equalsIgnoreCase("Add Task To Do List")) {
-
             toDoListDialog.addTask();
             saveToDoList(toDoListDialog.getTasks());
-
         } else if (actionCommand.equalsIgnoreCase("Delete Task To Do List")) {
-
             toDoListDialog.deleteTask();
             saveToDoList(toDoListDialog.getTasks());
             view.resetCycle();
-
         } else if (actionCommand.equalsIgnoreCase("Move Up To Do List")) {
-
             toDoListDialog.moveUp();
             saveToDoList(toDoListDialog.getTasks());
             view.resetCycle();
-
         } else if (actionCommand.equalsIgnoreCase("Move Down To Do List")) {
-
             toDoListDialog.moveDown();
             saveToDoList(toDoListDialog.getTasks());
             view.resetCycle();
-
         } else if (actionCommand.equalsIgnoreCase("Open About")) {
-
             openAbout();
-
         } else if (actionCommand.equalsIgnoreCase("Open Interrupt Dialog")) {
-
             openInterrupt();
-
         } else if (actionCommand.equalsIgnoreCase("Open Task Inventory")) {
-
             openTaskInventory();
-
         } else if (actionCommand.equalsIgnoreCase("Add Task Task Inventory")) {
-
             taskInventoryDialog.addTask();
             saveTaskInventory(taskInventoryDialog.getTasks());
-
-        } else if (actionCommand.equalsIgnoreCase("Delete Task Task Inventory")) {
-
+        } else if (actionCommand.equalsIgnoreCase(
+                "Delete Task Task Inventory")) {
             taskInventoryDialog.deleteTask();
             saveTaskInventory(taskInventoryDialog.getTasks());
-
         } else if (actionCommand.equalsIgnoreCase("Move Up Task Inventory")) {
-
             taskInventoryDialog.moveUp();
             saveTaskInventory(taskInventoryDialog.getTasks());
             view.resetCycle();
-
         } else if (actionCommand.equalsIgnoreCase("Move Down Task Inventory")) {
-
             taskInventoryDialog.moveDown();
             saveTaskInventory(taskInventoryDialog.getTasks());
-
         } else if (actionCommand.equalsIgnoreCase("Move To To Do List")) {
-
             Task temp = new Task();
             temp = taskInventoryDialog.getSelectedTask();
 
@@ -312,7 +272,6 @@ public class AppController implements ActionListener, TableModelListener {
 
             taskInventoryDialog.deleteTask();
             saveTaskInventory(taskInventoryDialog.getTasks());
-
 
         } else if (actionCommand.equalsIgnoreCase("Move To Task Inventory")) {
 
@@ -334,7 +293,7 @@ public class AppController implements ActionListener, TableModelListener {
     @Override
     public final void tableChanged(final TableModelEvent e) {
 
-        if(toDoListDialog.isVisible()) {
+        if (toDoListDialog.isVisible()) {
             saveToDoList(toDoListDialog.getTasks());
         } else if (taskInventoryDialog.isVisible()) {
             saveTaskInventory(taskInventoryDialog.getTasks());

@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import optitask.AppController;
@@ -51,12 +50,13 @@ public class TaskInventoryDialog extends TaskManager {
         private static final int TOO_MANY_POMS = 6;
 
         private final LinkedList<Task> tasks;
-
-        private final JTable tasksTable;
-
-        public TasksDataModel(LinkedList<Task> tsks, JTable tskTbl) {
+        
+        /**
+         * Constructor for the TasksDataModel.
+         * @param tsks the list of tasks
+         */
+        public TasksDataModel(final LinkedList<Task> tsks) {
             tasks = tsks;
-            tasksTable = tskTbl;
         }
 
         @Override
@@ -111,7 +111,7 @@ public class TaskInventoryDialog extends TaskManager {
                 task.setTaskDesc((String) value);
                 break;
             case 3:
-                task.setDone((Boolean) value);
+                task.setIsDone((Boolean) value);
 
                 // If a task is 'undone' then reset the current pomodoros
                 if (!(Boolean) value) {
@@ -153,55 +153,55 @@ public class TaskInventoryDialog extends TaskManager {
      * @see optitask.ui.TaskManager#getTableModel()
      */
     @Override
-    protected AbstractTableModel getTableModel() {
-        return new TasksDataModel(tasks, tasksTable);
+    protected final AbstractTableModel getTableModel() {
+        return new TasksDataModel(getTasks());
     }
 
     /* (non-Javadoc)
      * @see optitask.ui.TaskManager#getWindowTitle()
      */
     @Override
-    protected String getWindowTitle() {
+    protected final String getWindowTitle() {
         return WINDOW_TITLE;
     }
 
     @Override
-    protected Image getIconImage() {
+    protected final Image getIconImage() {
         return null;
     }
 
     @Override
-    protected String getMoveUpMessage() {
+    protected final String getMoveUpMessage() {
         return "Move Up Task Inventory";
     }
 
     @Override
-    protected String getMoveDownMessage() {
+    protected final String getMoveDownMessage() {
         return "Move Up Task Inventory";
     }
 
     @Override
-    protected String getAddMessage() {
+    protected final String getAddMessage() {
         return "Add Task Task Inventory";
     }
 
     @Override
-    protected String getDeleteMessage() {
+    protected final String getDeleteMessage() {
         return "Delete Task Task Inventory";
     }
 
     @Override
-    protected LinkedList<Task> getTasksModel() {
-        return model.getTaskInventory();
+    protected final LinkedList<Task> getTasksModel() {
+        return getModel().getTaskInventory();
     }
 
     @Override
-    protected int getPomNumberEditorColumn() {
+    protected final int getPomNumberEditorColumn() {
         return POM_EDITOR_COLUMN;
     }
 
     @Override
-    protected String getMoveToMessage() {
+    protected final String getMoveToMessage() {
         return "Move To To Do List";
     }
 
