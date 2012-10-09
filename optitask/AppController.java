@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -189,6 +188,31 @@ public class AppController implements ActionListener, TableModelListener {
                 interruptDialog.dispose();
             }
 
+        } else if (actionCommand.equalsIgnoreCase("Do New Task")) {
+            
+            interruptDialog.viewNewTaskForm();
+            
+        } else if (actionCommand.equalsIgnoreCase("Add New Task")) {
+            
+            stopTimer();
+            
+            LinkedList<Task> tasks;
+            
+            if(interruptDialog.getNewTaskLocation().equalsIgnoreCase("Now")) {
+                tasks = model.getToDoList();
+                tasks.addFirst(interruptDialog.getNewTask());
+                model.saveToDoList(tasks);
+            } else {
+                tasks = model.getTaskInventory();
+                tasks.addFirst(interruptDialog.getNewTask());
+                model.saveTaskInventory(tasks);
+            }
+            
+            if(interruptDialog.isVisible()) {
+                interruptDialog.dispose();
+            }
+            
+            
         } else if (actionCommand.equalsIgnoreCase("Open Settings")) {
 
             openSettings();
@@ -251,19 +275,6 @@ public class AppController implements ActionListener, TableModelListener {
 
             openInterrupt();
 
-        } else if (actionCommand.equalsIgnoreCase("Change Interruption Type")) {
-            // Interrupt dialog card change handler
-            JComboBox<String> cmbBox = (JComboBox<String>) e.getSource();
-
-            if (cmbBox.getSelectedIndex() == -1) {
-                return;
-            } else {
-                if (cmbBox.getSelectedItem().equals("External")) {
-                    interruptDialog.switchCard(InterruptDialog.EXT_PANEL);
-                } else if (cmbBox.getSelectedItem().equals("Internal")) {
-                    interruptDialog.switchCard(InterruptDialog.INT_PANEL);
-                }
-            }
         } else if (actionCommand.equalsIgnoreCase("Open Task Inventory")) {
 
             openTaskInventory();

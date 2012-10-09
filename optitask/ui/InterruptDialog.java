@@ -1,16 +1,20 @@
 package optitask.ui;
 
-import java.awt.CardLayout;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 import optitask.AppController;
+import optitask.util.Task;
+
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JPanel;
+import java.awt.CardLayout;
 
 /**
  * InterruptDialog.java <br />
@@ -28,12 +32,16 @@ public class InterruptDialog extends JDialog {
     private static final long serialVersionUID = -4306038905970650449L;
 
     private AppController controller;
+    
+    private JTextField taskTextField;
 
-    public static final String INT_PANEL = "intPanel";
+    private JPanel newTaskPanel;
 
-    public static final String EXT_PANEL = "extPanel";
+    private JButton btnConfirm;
 
-    private JPanel interruptPanel;
+    private JComboBox moveToComboBox;
+
+    private JSpinner numPomsSpinner;
 
     /**
      * Create the dialog.
@@ -45,68 +53,85 @@ public class InterruptDialog extends JDialog {
     public InterruptDialog(AppController cntrllr) {
         controller = cntrllr;
         initialize();
-        switchCard("blank");
     }
 
     private void initialize() {
         setResizable(false);
         setTitle("Interrupt Task");
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setModal(true);
-        setBounds(100, 100, 300, 170);
-        getContentPane().setLayout(new MigLayout(
-                "", "[grow][grow]", "[][grow]"));
+        setBounds(100, 100, 400, 120);
+        getContentPane().setLayout(new CardLayout(0, 0));
+        
+        newTaskPanel = new JPanel();
+        getContentPane().add(newTaskPanel, "newTaskPanel");
+        newTaskPanel.setLayout(new MigLayout("", 
+                "[90px,grow][53px,grow][116px,grow]", "[16px][22px][22px]"));
 
-        JLabel lblInterruptionType = new JLabel("Interruption Type:");
-        getContentPane().add(lblInterruptionType, "cell 0 0,alignx leading");
+        JLabel lblTaskDescription = new JLabel("Task Description:");
+        newTaskPanel.add(lblTaskDescription, "cell 0 0,alignx left,aligny center");
 
-        JComboBox<String> interruptTypeComboBox = new JComboBox<String>();
-        interruptTypeComboBox.setActionCommand("Change Interruption Type");
-        interruptTypeComboBox.addActionListener(controller);
-        interruptTypeComboBox.setModel(new DefaultComboBoxModel<String>(
-                new String[] {"Internal", "External"}));
-        interruptTypeComboBox.setSelectedIndex(-1);
-        getContentPane().add(interruptTypeComboBox, "cell 1 0,growx");
+        JLabel lblPomodorosAssigned = new JLabel("Pomodoros Assigned:");
+        newTaskPanel.add(lblPomodorosAssigned, "cell 2 0,alignx left,aligny center");
 
-        interruptPanel = new JPanel();
-        getContentPane().add(interruptPanel, "cell 0 1 2 1,grow");
-        interruptPanel.setLayout(new CardLayout(0, 0));
+        taskTextField = new JTextField();
+        newTaskPanel.add(taskTextField, "cell 0 1 2 1,grow");
+        taskTextField.setColumns(10);
 
-        JPanel externalPanel = new JPanel();
-        interruptPanel.add(externalPanel, EXT_PANEL);
-        externalPanel.setLayout(new MigLayout("", "[grow]", "[]"));
+        numPomsSpinner = new JSpinner();
+        newTaskPanel.add(numPomsSpinner, "cell 2 1,grow");
+        numPomsSpinner.setModel(new SpinnerNumberModel(1, 1, 15, 1));
 
+        JLabel lblWhenToDo = new JLabel("Do Task:");
+        newTaskPanel.add(lblWhenToDo, "flowx,cell 0 2,alignx left,aligny center");
+        
+        btnConfirm = new JButton("Confirm");
+        btnConfirm.setActionCommand("Add New Task");
+        btnConfirm.addActionListener(controller);
+        newTaskPanel.add(btnConfirm, "cell 2 2,alignx center,growy");
+        
+        moveToComboBox = new JComboBox();
+        newTaskPanel.add(moveToComboBox, "cell 0 2,grow");
+        moveToComboBox.setModel(new DefaultComboBoxModel(
+                new String[] {"Now", "Later"}));
+        
+        JPanel actionPanel = new JPanel();
+        getContentPane().add(actionPanel, "actionPanel");
+        actionPanel.setLayout(new MigLayout("", "[101px,grow][127px,grow]", "[25px,grow]"));
+        
         JButton btnStopCurrentTask = new JButton("Stop Current Task");
+        actionPanel.add(btnStopCurrentTask, "cell 0 0,alignx center,growy");
         btnStopCurrentTask.setActionCommand("Stop");
+        
+        JButton btnDoNewTask = new JButton("Do New Task");
+        actionPanel.add(btnDoNewTask, "cell 1 0,alignx center,growy");
+        btnDoNewTask.setActionCommand("Do New Task");
+        btnDoNewTask.addActionListener(controller);
         btnStopCurrentTask.addActionListener(controller);
-        externalPanel.add(btnStopCurrentTask, "cell 0 0,alignx center");
-
-        JPanel internalPanel = new JPanel();
-        interruptPanel.add(internalPanel, INT_PANEL);
-        internalPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
-
-        JButton btnAddNewTask = new JButton("Add New Task");
-        btnAddNewTask.setActionCommand("Add New Task");
-        btnAddNewTask.addActionListener(controller);
-        internalPanel.add(btnAddNewTask, "cell 0 0,alignx center");
-
-        JButton btnMoveTaskTo = new JButton("Move Task to Inventory");
-        btnMoveTaskTo.setActionCommand("Move Task to Inventory");
-        btnMoveTaskTo.addActionListener(controller);
-        internalPanel.add(btnMoveTaskTo, "cell 0 1,alignx center");
-
-        JButton btnContinueTaskLater = new JButton("Continue Task Later");
-        btnContinueTaskLater.setActionCommand("Continue Task Later");
-        btnContinueTaskLater.addActionListener(controller);
-        internalPanel.add(btnContinueTaskLater, "cell 0 2,alignx center");
-
-        JPanel blankPanel = new JPanel();
-        interruptPanel.add(blankPanel, "blank");
+        
+        changeCard("actionPanel");
 
     }
-
-    public void switchCard(String card) {
-        CardLayout cl = (CardLayout) interruptPanel.getLayout();
-        cl.show(interruptPanel, card);
+    
+    private void changeCard(String card) {
+        CardLayout cl = (CardLayout) getContentPane().getLayout();
+        cl.show(getContentPane(), card);
+    }
+    
+    public void viewNewTaskForm() {
+        changeCard("newTaskPanel");
+    }    
+    
+    public Task getNewTask() {
+        if (taskTextField.getText().isEmpty())
+            return new Task();
+        Task newTask = new Task(taskTextField.getText(), false, 
+                Integer.parseInt(numPomsSpinner.getValue().toString()), 0);
+        return newTask;
+    }
+    
+    public String getNewTaskLocation() {
+        return moveToComboBox.getSelectedItem().toString();
     }
 
 }
