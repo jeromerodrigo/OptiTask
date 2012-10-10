@@ -1,12 +1,10 @@
 package optitask.ui;
 
-import java.awt.Color;
 import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -20,6 +18,7 @@ import net.miginfocom.swing.MigLayout;
 import optitask.AppController;
 import optitask.store.AppPersistence;
 import optitask.util.Settings;
+import optitask.util.UIToolkit;
 
 /**
  * SettingsDialog.java <br />
@@ -143,7 +142,7 @@ public class SettingsDialog extends JDialog {
         shortBreakTimeSpinner = new JSpinner();
         lblShortBreak.setLabelFor(shortBreakTimeSpinner);
         shortBreakTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 30, 1));
-        preventKeyboardInputJSpinner(shortBreakTimeSpinner);
+        UIToolkit.preventKeyboardInputJSpinner(shortBreakTimeSpinner);
         getContentPane().add(shortBreakTimeSpinner, "cell 2 0,grow");
 
         JPanel longBreakTimePanel = new JPanel();
@@ -162,7 +161,7 @@ public class SettingsDialog extends JDialog {
         longBreakAfterSpinner = new JSpinner();
         longBreakTimePanel.add(longBreakAfterSpinner, "cell 1 0,grow");
         longBreakAfterSpinner.setModel(new SpinnerNumberModel(1, 1, 10, 1));
-        preventKeyboardInputJSpinner(longBreakAfterSpinner);
+        UIToolkit.preventKeyboardInputJSpinner(longBreakAfterSpinner);
 
         lblLongBreak = new JLabel("Long Break Time:");
         longBreakTimePanel.add(lblLongBreak, "cell 0 1,grow");
@@ -171,7 +170,7 @@ public class SettingsDialog extends JDialog {
         longBreakTimeSpinner = new JSpinner();
         longBreakTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 60, 1));
         longBreakTimePanel.add(longBreakTimeSpinner, "cell 1 1,grow");
-        preventKeyboardInputJSpinner(longBreakTimeSpinner);
+        UIToolkit.preventKeyboardInputJSpinner(longBreakTimeSpinner);
 
         JLabel lblToggleLongBreak = new JLabel("Toggle Long Break:");
         longBreakTimePanel.add(lblToggleLongBreak, "cell 0 2,grow");
@@ -195,7 +194,7 @@ public class SettingsDialog extends JDialog {
         pomodoroTimeSpinner = new JSpinner();
         lblTaskDuration.setLabelFor(pomodoroTimeSpinner);
         pomodoroTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 60, 1));
-        preventKeyboardInputJSpinner(pomodoroTimeSpinner);
+        UIToolkit.preventKeyboardInputJSpinner(pomodoroTimeSpinner);
         getContentPane().add(pomodoroTimeSpinner, "cell 2 1,grow");
 
         JButton btnDefault = new JButton("Default");
@@ -304,15 +303,4 @@ public class SettingsDialog extends JDialog {
         return (long) minutes * MILLI_MULT * MINUTE_IN_SECONDS;
     }
 
-    /**
-     * Prevents keyboard input for a {@link JSpinner}.
-     * @param spinner the JSpinner
-     */
-
-    private void preventKeyboardInputJSpinner(final JSpinner spinner) {
-        JFormattedTextField tf = ((JSpinner.DefaultEditor) spinner.getEditor())
-                .getTextField();
-        tf.setEditable(false);
-        tf.setBackground(Color.WHITE);
-    }
 }

@@ -12,7 +12,6 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -25,6 +24,7 @@ import net.miginfocom.swing.MigLayout;
 import optitask.AppController;
 import optitask.store.AppPersistence;
 import optitask.util.Task;
+import optitask.util.UIToolkit;
 
 /**
  * @author Jerome Rodrigo
@@ -93,7 +93,7 @@ implements TaskManagerActions {
          */
         public PomNumberEditor() {
             spinner.setModel(new SpinnerNumberModel(1, 1, MAX, 1));
-            preventKeyboardInputJSpinner(spinner);
+            UIToolkit.preventKeyboardInputJSpinner(spinner);
         }
 
         @Override
@@ -107,19 +107,6 @@ implements TaskManagerActions {
                 final int row, final int column) {
             spinner.setValue(value);
             return spinner;
-        }
-
-        /**
-         * Prevents keyboard input for a {@link JSpinner}.
-         * @param spinr the JSpinner
-         */
-
-        private void preventKeyboardInputJSpinner(final JSpinner spinr) {
-            JFormattedTextField tf = (
-                    (JSpinner.DefaultEditor) spinr.getEditor())
-                    .getTextField();
-            tf.setEditable(false);
-            tf.setBackground(Color.WHITE);
         }
 
     }

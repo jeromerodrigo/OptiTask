@@ -1,9 +1,6 @@
 package optitask.ui;
 
-import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.Window;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +11,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import net.miginfocom.swing.MigLayout;
 import optitask.AppController;
 import optitask.store.AppPersistence;
+import optitask.util.UIToolkit;
 
 /**
  * AppFrame.java <br />
@@ -80,7 +78,7 @@ public class AppFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(350, 270);
         setResizable(false);
-        centerThisFrame(this);
+        UIToolkit.centerThisFrame(this);
         setIconImage(Toolkit.getDefaultToolkit().getImage(
                 AppFrame.class.getResource("/optitask/assests/appIcon.gif")));
         getContentPane().setLayout(new MigLayout(
@@ -144,20 +142,6 @@ public class AppFrame extends JFrame {
 
     public final void resetCycle() {
         timerPanel.resetCycle();
-    }
-
-    /**
-     * Centering frame method provided by Vipin Kumar Rajput, 2010.
-     * <a href="http://www.esblog.in/2010/09/
-     * centering-a-swing-window-on-screen/">
-     * Centering a Window</a>
-     * @param w an instance of a window frame
-     */
-
-    private void centerThisFrame(final Window w) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        w.setLocation(screenSize.width / 2 - (w.getWidth() / 2),
-                screenSize.height / 2 - (w.getHeight() / 2));
     }
 
     /**

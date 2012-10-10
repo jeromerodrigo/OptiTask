@@ -158,6 +158,21 @@ public class CurrentTaskPanel extends JPanel {
         currentIdx = 0;
         nextTask();
     }
+    
+    /**
+     * Gets the current task.
+     * @return a task
+     */
+    
+    private Task getCurrentTask() {
+        Task task = new Task();
+        try {
+            task = tasks.get(currentIdx);
+        } catch (IndexOutOfBoundsException e) {
+            return null; // Do nothing
+        }
+        return task;
+    }
 
     /**
      * Gets the current {@link Task} and sets its
@@ -165,12 +180,7 @@ public class CurrentTaskPanel extends JPanel {
      */
 
     private void markAsDone() {
-        Task task = new Task();
-        try {
-            task = tasks.get(currentIdx);
-        } catch (IndexOutOfBoundsException e) {
-            return; // Do nothing
-        }
+        Task task = getCurrentTask();
         task.setIsDone(true);
         tasks.set(currentIdx, task);
         model.saveToDoList(tasks);
@@ -185,12 +195,7 @@ public class CurrentTaskPanel extends JPanel {
      */
 
     public final void incrementPomodoro() {
-        Task task = new Task();
-        try {
-            task = tasks.get(currentIdx);
-        } catch (IndexOutOfBoundsException e) {
-            return; // Do nothing
-        }
+        Task task = getCurrentTask();
         task.setCurrentPomodoro(task.getCurrentPomodoro() + 1);
         tasks.set(currentIdx, task);
         model.saveToDoList(tasks);
