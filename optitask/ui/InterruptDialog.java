@@ -30,16 +30,34 @@ public class InterruptDialog extends JDialog {
      */
     private static final long serialVersionUID = -4306038905970650449L;
 
+    /**
+     * The application controller.
+     */
     private AppController controller;
     
+    /**
+     * Text field for the new task.
+     */
     private JTextField taskTextField;
 
+    /**
+     * Container for the new task form components.
+     */
     private JPanel newTaskPanel;
 
+    /**
+     * A confirmation button.
+     */
     private JButton btnConfirm;
 
+    /**
+     * Used to select which list to move the task to.
+     */
     private JComboBox moveToComboBox;
 
+    /**
+     * Used to select number of pomodoros for the new task.
+     */
     private JSpinner numPomsSpinner;
 
     /**
@@ -49,11 +67,20 @@ public class InterruptDialog extends JDialog {
         initialize();
     }
 
+    /**
+     * Constructs an InterruptDialog.
+     * @param cntrllr the application controller
+     */
+    
     public InterruptDialog(final AppController cntrllr) {
         controller = cntrllr;
         initialize();
     }
 
+    /**
+     * Initializes the UI components.
+     */
+    
     private void initialize() {
         setResizable(false);
         setTitle("Interrupt Task");
@@ -115,6 +142,11 @@ public class InterruptDialog extends JDialog {
         changeCard("actionPanel");
 
     }
+    
+    /**
+     * Changes the cardLayout to display the specified card.
+     * @param card the name of the card
+     */
     
     private void changeCard(final String card) {
         CardLayout cl = (CardLayout) getContentPane().getLayout();

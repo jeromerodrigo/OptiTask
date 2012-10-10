@@ -53,20 +53,24 @@ public final class AppPersistence {
      */
     private static final int STATS_INDEX = 2;
 
+    /**
+     * Stores the contant index value for the task inventory.
+     * Is it used in {@link #list}.
+     */
     private static final int TASKINVENTORY_INDEX = 3;
 
     /**
      * Stores one instance of the name of the data file.
      * @see #AppPersistence(String)
      */
-    private static String filename = "";
+    private String filename = "";
 
     /**
      * Creates an instance of the persistence module.
      * @param fName the name of the data file
      */
     public AppPersistence(final String fName) {
-        AppPersistence.filename = fName;
+        filename = fName;
 
         list = new ArrayList<Object>();
         list.add(TODOLIST_INDEX, new LinkedList<Task>());
@@ -211,6 +215,12 @@ public final class AppPersistence {
         return writeObject(STATS_INDEX, stats);
     }
 
+    /**
+     * Saves the task inventory to the data file.
+     * @param inv the task inventory list
+     * @return <code>true</code> if successfully written to file;
+     *         <code>false</code> otherwise.
+     */
     public boolean saveTaskInventory(final LinkedList<Task> inv) {
         return writeObject(TASKINVENTORY_INDEX, inv);
     }
@@ -243,6 +253,11 @@ public final class AppPersistence {
         return (Statistics) getObject(STATS_INDEX);
     }
 
+    /**
+     * Gets the task inventory list from the data file.
+     * @return a list of tasks object
+     */
+    
     @SuppressWarnings("unchecked")
     public LinkedList<Task> getTaskInventory() {
         return (LinkedList<Task>) getObject(TASKINVENTORY_INDEX);

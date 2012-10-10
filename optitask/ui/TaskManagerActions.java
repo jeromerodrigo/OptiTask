@@ -28,6 +28,10 @@ public interface TaskManagerActions {
      */
     LinkedList<Task> getTasks();
 
+    /**
+     * Gets the currently selected task.
+     * @return the selected task
+     */
     Task getSelectedTask();
 
     /**

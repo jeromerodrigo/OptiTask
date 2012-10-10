@@ -35,18 +35,18 @@ public class CurrentTaskPanel extends JPanel {
      * The list of tasks.
      * @see Task
      */
-    private static LinkedList<Task> tasks;
+    private LinkedList<Task> tasks;
 
     /**
      * Stores the current index. Used in {@link #tasks}.
      */
-    private static int currentIdx;
+    private int currentIdx;
 
     /**
      * Stores a reference to the persistence module.
      * @see AppPersistence
      */
-    private static AppPersistence model;
+    private AppPersistence model;
 
     /**
      * Label to display the status of the task.

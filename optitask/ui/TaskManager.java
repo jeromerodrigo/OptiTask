@@ -53,7 +53,7 @@ implements TaskManagerActions {
      * The application controller.
      * @see AppController
      */
-    private static AppController controller;
+    private AppController controller;
 
     
     /**
@@ -151,6 +151,12 @@ implements TaskManagerActions {
         initialize();
     }
 
+    /**
+     * Constructs an abstract TaskManager.
+     * @param mdl the persistence module
+     * @param cntrller the application controller
+     */
+    
     public TaskManager(final AppPersistence mdl,
             final AppController cntrller) {
         controller = cntrller;
@@ -163,6 +169,10 @@ implements TaskManagerActions {
         btnMoveTo.setActionCommand(getMoveToMessage());
     }
 
+    /**
+     * Initializes the UI components.
+     */
+    
     private void initialize() {
         setTitle(getWindowTitle());
         setSize(515, 300);
@@ -359,25 +369,76 @@ implements TaskManagerActions {
 
         return null; // Return null if fail
     }
+    
+    /**
+     * Gets the table model.
+     * @return the table model
+     */
 
     protected abstract AbstractTableModel getTableModel();
 
+    /**
+     * Gets the title string for the current window.
+     * @return the window title string
+     */
+    
     protected abstract String getWindowTitle();
 
+    /**
+     * Gets the icon for the current window.
+     * @return window icon
+     */
+    
     protected abstract Image getIconImage();
 
+    /**
+     * Gets the appropriate action event message for moving up a task.
+     * @return the move up message
+     */
+    
     protected abstract String getMoveUpMessage();
 
+    /**
+     * Gets the appropriate action event message for moving down a task.
+     * @return the move down message
+     */
+    
     protected abstract String getMoveDownMessage();
 
+    /**
+     * Gets the adding a task action event message.
+     * @return the add task message
+     */
+    
     protected abstract String getAddMessage();
 
+    /**
+     * Gets the delete a task action event message.
+     * @return the delete task message
+     */
+    
     protected abstract String getDeleteMessage();
 
+    /**
+     * Gets the tasks model.
+     * @return list of tasks
+     */
+    
     protected abstract LinkedList<Task> getTasksModel();
 
+    /**
+     * Gets the column to initialize the pomodoro editor.
+     * @return the column number
+     */
+    
     protected abstract int getPomNumberEditorColumn();
 
+    /**
+     * Gets the appropriate action event message for moving a task to
+     * another list.
+     * @return the move task message
+     */
+    
     protected abstract String getMoveToMessage();
 
 }

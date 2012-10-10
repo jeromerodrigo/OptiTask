@@ -45,8 +45,10 @@ ChangeListener {
     /** The about dialog user interface object. */
     private AboutDialog aboutDialog;
 
+    /** The interruption dialog object. */
     private InterruptDialog interruptDialog;
 
+    /** The task inventory dialog user interface object. */
     private TaskInventoryDialog taskInventoryDialog;
 
     /**
@@ -129,6 +131,12 @@ ChangeListener {
         return model.saveToDoList(tasks);
     }
 
+    /**
+     * Saves the tasks to the task inventory file.
+     * @param inv list of tasks
+     * @return <code>true</code> if settings successfully saved;
+     *         <code>false</code>, if otherwise.
+     */
     private boolean saveTaskInventory(final LinkedList<Task> inv) {
         return model.saveTaskInventory(inv);
     }
@@ -163,11 +171,19 @@ ChangeListener {
         aboutDialog.setVisible(true);
     }
 
+    /**
+     * Opens the interrupt dialog.
+     */
+    
     private void openInterrupt() {
         interruptDialog = new InterruptDialog(this);
         interruptDialog.setLocationRelativeTo(view);
         interruptDialog.setVisible(true);
     }
+    
+    /**
+     * Opens the task inventory dialog.
+     */
 
     private void openTaskInventory() {
         taskInventoryDialog = new TaskInventoryDialog(model, this);
@@ -305,7 +321,7 @@ ChangeListener {
     }
 
     @Override
-    public void stateChanged(ChangeEvent e) {
+    public final void stateChanged(final ChangeEvent e) {
         Object source = e.getSource();
         if (source instanceof JProgressBar) {
             JProgressBar timerBar = (JProgressBar) source;

@@ -149,8 +149,14 @@ public class ToDoListDialog extends TaskManager {
 
     };
 
+    /**
+     * Title of the window.
+     */
     private static final String WINDOW_TITLE = "To Do List";
 
+    /**
+     * The column which holds the pomodoro editor in the JTable.
+     */
     private static final int POM_EDITOR_COLUMN = 3;
 
     /**

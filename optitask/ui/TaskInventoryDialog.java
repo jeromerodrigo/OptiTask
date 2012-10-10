@@ -50,6 +50,9 @@ public class TaskInventoryDialog extends TaskManager {
          */
         private static final int TOO_MANY_POMS = 6;
 
+        /**
+         * The list of tasks.
+         */
         private final LinkedList<Task> tasks;
         
         /**
@@ -141,10 +144,22 @@ public class TaskInventoryDialog extends TaskManager {
 
     };
 
+    /**
+     * The title of the window.
+     */
     private static final String WINDOW_TITLE = "Task Inventory";
 
+    /**
+     * The column for the pomodoro editor.
+     */
     private static final int POM_EDITOR_COLUMN = 2;
 
+    /**
+     * Constructs a TaskInventoryDialog.
+     * @param mdl the persistence module
+     * @param cntrller the application controller
+     */
+    
     public TaskInventoryDialog(final AppPersistence mdl,
             final AppController cntrller) {
         super(mdl, cntrller);
