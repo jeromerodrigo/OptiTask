@@ -60,7 +60,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
      * This variable determines how many times the timer has iterated,
      * or completed its cycle.
      */
-    private static int currentCycle = 0;
+    private int currentCycle = 0;
 
     /**
      * Flag whether the current cycle is a long break cycle.
@@ -70,12 +70,12 @@ public class TimerBar extends JProgressBar implements ActionListener {
     /**
      * The swing timer.
      */
-    private static Timer timer;
+    private Timer timer;
 
     /**
      * The current task panel.
      */
-    private static CurrentTaskPanel taskPanel;
+    private CurrentTaskPanel taskPanel;
 
     /**
      * The constant for number of seconds in 1 hour.
@@ -218,11 +218,11 @@ public class TimerBar extends JProgressBar implements ActionListener {
 
         if (eBreakTime == 0) {
             setString(getElapsedTime(ePomodoroTime));
-            setValue((int) ePomodoroTime);
+            setValue((int) ePomodoroTime - 1);
             ePomodoroTime--;
         }
 
-        if (ePomodoroTime == -1) {
+        if (ePomodoroTime == -2) {
             setString(getElapsedTime(eBreakTime));
             setValue((int) eBreakTime);
             eBreakTime++;

@@ -90,6 +90,7 @@ public class TimerPanel extends JPanel {
         add(currentTaskPanel, "cell 0 1 2 1,grow");
 
         timer = new TimerBar(model, currentTaskPanel);
+        timer.addChangeListener(controller);
         add(timer, "cell 1 0,grow");
 
     }

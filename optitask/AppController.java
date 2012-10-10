@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
@@ -24,7 +27,8 @@ import optitask.util.Task;
  * @since 0.8
  */
 
-public class AppController implements ActionListener, TableModelListener {
+public class AppController implements ActionListener, TableModelListener,
+ChangeListener {
 
     /** Stores the reference to the application persistence module. */
     private final optitask.store.AppPersistence model;
@@ -298,5 +302,17 @@ public class AppController implements ActionListener, TableModelListener {
             saveTaskInventory(taskInventoryDialog.getTasks());
         }
 
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        Object source = e.getSource();
+        if (source instanceof JProgressBar) {
+            JProgressBar timerBar = (JProgressBar) source;
+            if (timerBar.getPercentComplete() == 1.0) {
+                view.stopTimer();
+            }
+        }
+        
     }
 }
