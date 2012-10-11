@@ -18,7 +18,11 @@ import javax.swing.JSpinner;
  */
 public final class UIToolkit {
     
-    public UIToolkit() {
+    /**
+     * Prevents instantiation of this class.
+     */
+    
+    private UIToolkit() {
         
     }
     

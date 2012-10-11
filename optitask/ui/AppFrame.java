@@ -144,6 +144,11 @@ public class AppFrame extends JFrame {
         timerPanel.resetCycle();
     }
     
+    /**
+     * Resets the button to the 'Start' state.
+     * @see TimerPanel
+     */
+    
     public final void resetButtonState() {
         timerPanel.resetButtonState();
     }

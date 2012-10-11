@@ -68,6 +68,9 @@ public final class AppPersistence {
      */
     private final String filename;
     
+    /**
+     * Message shown for an IOException.
+     */
     private static final String IOEXCEPTIONMSG = "IOException";
 
     /**
@@ -87,21 +90,21 @@ public final class AppPersistence {
     /**
      * @return the list
      */
-    public final List<Object> getList() {
+    public List<Object> getList() {
         return list;
     }
 
     /**
-     * @param list the list to set
+     * @param lst the list to set
      */
-    public final void setList(List<Object> list) {
-        this.list = list;
+    public void setList(final List<Object> lst) {
+        list = lst;
     }
 
     /**
      * @return the filename
      */
-    public final String getFilename() {
+    public String getFilename() {
         return filename;
     }
 
@@ -127,15 +130,18 @@ public final class AppPersistence {
                 try {
                     list = (ArrayList<Object>) input.readObject();
                 } catch (ClassNotFoundException e) {
-                    Logger.getAnonymousLogger().log(Level.SEVERE, "ClassNotFoundException", e);
+                    Logger.getAnonymousLogger().log(Level.SEVERE, 
+                            "ClassNotFoundException", e);
                 } catch (IOException e) {
-                    Logger.getAnonymousLogger().log(Level.SEVERE, IOEXCEPTIONMSG, e);
+                    Logger.getAnonymousLogger().log(Level.SEVERE, 
+                            IOEXCEPTIONMSG, e);
                 } finally {
                     input.close();
                 }
 
             } catch (IOException e) {
-                Logger.getAnonymousLogger().log(Level.SEVERE, IOEXCEPTIONMSG, e);
+                Logger.getAnonymousLogger().log(Level.SEVERE, 
+                        IOEXCEPTIONMSG, e);
             }
             
         } else {
@@ -179,7 +185,8 @@ public final class AppPersistence {
                 out.writeObject(list);
                 isSaved = true;
             } catch (IOException e) {
-                Logger.getAnonymousLogger().log(Level.SEVERE, IOEXCEPTIONMSG, e);
+                Logger.getAnonymousLogger().log(Level.SEVERE, 
+                        IOEXCEPTIONMSG, e);
                 isSaved = false;
             } finally {
                 out.close();

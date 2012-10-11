@@ -117,6 +117,10 @@ public class TimerPanel extends JPanel {
         currentTaskPanel.refresh();
     }
     
+    /**
+     * Resets the button to the 'Start' state.
+     */
+    
     public final void resetButtonState() {
         btnStart.setText("Start");
         btnStart.setActionCommand("Start");

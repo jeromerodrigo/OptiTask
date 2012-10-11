@@ -85,8 +85,8 @@ public class TaskInventoryDialog extends TaskManager {
 
         @Override
         public boolean isCellEditable(final int row, final int col) {
-            if (tasks.get(row).isDone() && (col == 2 ||
-                    col == 1)) {
+            if (tasks.get(row).isDone() && (col == 2 
+                    || col == 1)) {
                 return false;
             }
             return col > 0 && col < columnNames.length;

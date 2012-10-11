@@ -312,7 +312,7 @@ ChangeListener {
     }
 
     @Override
-    public final void tableChanged(final TableModelEvent evt){
+    public final void tableChanged(final TableModelEvent evt) {
         
         if (toDoListDialog != null) {
             saveToDoList(toDoListDialog.getTasks());
