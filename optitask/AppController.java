@@ -11,7 +11,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import optitask.store.AppPersistence;
 import optitask.ui.AboutDialog;
+import optitask.ui.AppFrame;
 import optitask.ui.InterruptDialog;
 import optitask.ui.SettingsDialog;
 import optitask.ui.TaskInventoryDialog;
@@ -31,10 +33,10 @@ public class AppController implements ActionListener, TableModelListener,
 ChangeListener {
 
     /** Stores the reference to the application persistence module. */
-    private final optitask.store.AppPersistence model;
+    private final AppPersistence model;
 
     /** Stores the reference to the main user interface. */
-    private final optitask.ui.AppFrame view;
+    private final AppFrame view;
 
     /** The settings dialog user interface object. */
     private SettingsDialog settingsDialog;
@@ -57,8 +59,8 @@ ChangeListener {
      * @param frame the user interface
      */
 
-    public AppController(final optitask.store.AppPersistence persistence,
-            final optitask.ui.AppFrame frame) {
+    public AppController(final AppPersistence persistence,
+            final AppFrame frame) {
         model = persistence;
         view = frame;
     }
@@ -297,7 +299,7 @@ ChangeListener {
             Task temp = new Task();
             temp = toDoListDialog.getSelectedTask();
 
-            LinkedList<Task> tempList = model.getTaskInventory();
+            final LinkedList<Task> tempList = model.getTaskInventory();
             tempList.add(temp);
 
             saveTaskInventory(tempList);
@@ -310,11 +312,11 @@ ChangeListener {
     }
 
     @Override
-    public final void tableChanged(final TableModelEvent e) {
-
-        if (toDoListDialog.isVisible()) {
+    public final void tableChanged(final TableModelEvent evt){
+        
+        if (toDoListDialog != null) {
             saveToDoList(toDoListDialog.getTasks());
-        } else if (taskInventoryDialog.isVisible()) {
+        } else if (taskInventoryDialog != null) {
             saveTaskInventory(taskInventoryDialog.getTasks());
         }
 
@@ -326,7 +328,7 @@ ChangeListener {
         if (source instanceof JProgressBar) {
             JProgressBar timerBar = (JProgressBar) source;
             if (timerBar.getPercentComplete() == 1.0) {
-                view.stopTimer();
+                view.resetButtonState();
             }
         }
         

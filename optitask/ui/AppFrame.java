@@ -143,6 +143,10 @@ public class AppFrame extends JFrame {
     public final void resetCycle() {
         timerPanel.resetCycle();
     }
+    
+    public final void resetButtonState() {
+        timerPanel.resetButtonState();
+    }
 
     /**
      * Sets the Nimbus look and feel for the user interface.

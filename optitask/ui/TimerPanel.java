@@ -113,9 +113,13 @@ public class TimerPanel extends JPanel {
 
     public final void stopTimer() {
         timer.stop();
+        resetButtonState();
+        currentTaskPanel.refresh();
+    }
+    
+    public final void resetButtonState() {
         btnStart.setText("Start");
         btnStart.setActionCommand("Start");
-        currentTaskPanel.refresh();
     }
 
     /**
