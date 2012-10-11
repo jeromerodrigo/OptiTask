@@ -1,6 +1,9 @@
 package optitask.ui;
 
 import java.awt.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,20 +35,20 @@ public class AppFrame extends JFrame {
      * @see #AppFrame(optitask.store.AppPersistence)
      * @see AppPersistence
      */
-    private AppPersistence model;
+    private transient AppPersistence model;
 
     /**
      * Stores an instance of the controller.
      * It is instantiated in {@link #AppFrame(optitask.store.AppPersistence)}.
      * @see AppController
      */
-    private AppController controller;
+    private transient AppController controller;
 
     /**
      * Component of the frame which displays the timer and its controls.
      * @see TimerPanel
      */
-    private TimerPanel timerPanel;
+    private transient TimerPanel timerPanel;
 
     /**
      * Creates the frame.
@@ -53,6 +56,7 @@ public class AppFrame extends JFrame {
      */
 
     public AppFrame() {
+        super();
         setNimbusLookAndFeel();
         initialize();
     }
@@ -63,6 +67,7 @@ public class AppFrame extends JFrame {
      */
 
     public AppFrame(final AppPersistence mdl) {
+        super();
         model = mdl;
         controller = new AppController(mdl, this);
         setNimbusLookAndFeel();
@@ -87,29 +92,29 @@ public class AppFrame extends JFrame {
         timerPanel = new TimerPanel(model, controller);
         getContentPane().add(timerPanel, "cell 0 0 4 1,grow");
 
-        JSeparator separator = new JSeparator();
+        final JSeparator separator = new JSeparator();
         getContentPane().add(separator, "cell 0 1 4 1,growx,aligny center");
 
-        JButton btnManageTasks = new JButton("To Do List");
+        final JButton btnManageTasks = new JButton("To Do List");
         btnManageTasks.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/pencil.gif")));
         btnManageTasks.setActionCommand("Open Manage Tasks");
         btnManageTasks.addActionListener(controller);
         getContentPane().add(btnManageTasks, "cell 0 2,alignx left,growy");
 
-        JButton btnTaskInventory = new JButton("Task Inventory");
+        final JButton btnTaskInventory = new JButton("Task Inventory");
         btnTaskInventory.setActionCommand("Open Task Inventory");
         btnTaskInventory.addActionListener(controller);
         getContentPane().add(btnTaskInventory, "cell 1 2,grow");
 
-        JButton btnSettings = new JButton("");
+        final JButton btnSettings = new JButton("");
         btnSettings.setIcon(new ImageIcon(AppFrame.class
                 .getResource("/optitask/assests/settings.gif")));
         btnSettings.setActionCommand("Open Settings");
         btnSettings.addActionListener(controller);
         getContentPane().add(btnSettings, "cell 2 2,grow");
 
-        JButton btnAbout = new JButton("");
+        final JButton btnAbout = new JButton("");
         btnAbout.setActionCommand("Open About");
         btnAbout.addActionListener(controller);
         btnAbout.setIcon(new ImageIcon(AppFrame.class
@@ -168,7 +173,8 @@ public class AppFrame extends JFrame {
         } catch (Exception e) {
             // If Nimbus is not available, you can set the GUI to another look
             // and feel.
-            e.printStackTrace();
+            Logger.getAnonymousLogger().log(Level.WARNING, 
+                    "Nimbus UI not found!");
         }
     }
 }

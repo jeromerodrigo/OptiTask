@@ -3,6 +3,7 @@ package optitask;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
@@ -10,6 +11,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 
 import optitask.store.AppPersistence;
 import optitask.ui.AboutDialog;
@@ -33,25 +35,22 @@ public class AppController implements ActionListener, TableModelListener,
 ChangeListener {
 
     /** Stores the reference to the application persistence module. */
-    private final AppPersistence model;
+    private transient final AppPersistence model;
 
     /** Stores the reference to the main user interface. */
-    private final AppFrame view;
+    private transient final AppFrame view;
 
     /** The settings dialog user interface object. */
-    private SettingsDialog settingsDialog;
+    private transient SettingsDialog settingsDialog;
 
     /** The tasks dialog user interface object. */
-    private ToDoListDialog toDoListDialog;
-
-    /** The about dialog user interface object. */
-    private AboutDialog aboutDialog;
+    private transient ToDoListDialog toDoListDialog;
 
     /** The interruption dialog object. */
-    private InterruptDialog interruptDialog;
+    private transient InterruptDialog interruptDialog;
 
     /** The task inventory dialog user interface object. */
-    private TaskInventoryDialog taskInventoryDialog;
+    private transient TaskInventoryDialog taskInvDialog;
 
     /**
      * Creates the controller object.
@@ -63,22 +62,6 @@ ChangeListener {
             final AppFrame frame) {
         model = persistence;
         view = frame;
-    }
-
-    /**
-     * Invokes the user interface to start the timer.
-     */
-
-    private void startTimer() {
-        view.startTimer();
-    }
-
-    /**
-     * Invokes the user interface to stop the timer.
-     */
-
-    private void stopTimer() {
-        view.stopTimer();
     }
 
     /**
@@ -129,7 +112,7 @@ ChangeListener {
      *         <code>false</code>, if otherwise.
      */
 
-    private boolean saveToDoList(final LinkedList<Task> tasks) {
+    private boolean saveToDoList(final List<Task> tasks) {
         return model.saveToDoList(tasks);
     }
 
@@ -139,7 +122,7 @@ ChangeListener {
      * @return <code>true</code> if settings successfully saved;
      *         <code>false</code>, if otherwise.
      */
-    private boolean saveTaskInventory(final LinkedList<Task> inv) {
+    private boolean saveTaskInventory(final List<Task> inv) {
         return model.saveTaskInventory(inv);
     }
 
@@ -168,7 +151,7 @@ ChangeListener {
      */
 
     private void openAbout() {
-        aboutDialog = new AboutDialog();
+        final AboutDialog aboutDialog = new AboutDialog();
         aboutDialog.setLocationRelativeTo(view);
         aboutDialog.setVisible(true);
     }
@@ -188,35 +171,35 @@ ChangeListener {
      */
 
     private void openTaskInventory() {
-        taskInventoryDialog = new TaskInventoryDialog(model, this);
-        taskInventoryDialog.setLocationRelativeTo(view);
-        taskInventoryDialog.setVisible(true);
+        taskInvDialog = new TaskInventoryDialog(model, this);
+        taskInvDialog.setLocationRelativeTo(view);
+        taskInvDialog.setVisible(true);
     }
 
     @Override
-    public final void actionPerformed(final ActionEvent e) {
-        String actionCommand = e.getActionCommand();
+    public final void actionPerformed(final ActionEvent evt) {
+        final String actionCommand = evt.getActionCommand();
 
         if (actionCommand.equalsIgnoreCase("Start")) {
-            startTimer();
+            view.startTimer();
         } else if (actionCommand.equalsIgnoreCase("Stop")) {
-            stopTimer();
+            view.stopTimer();
             if (interruptDialog.isVisible()) {
                 interruptDialog.dispose();
             }
         } else if (actionCommand.equalsIgnoreCase("Do New Task")) {
             interruptDialog.viewNewTaskForm();
         } else if (actionCommand.equalsIgnoreCase("Add New Task")) {            
-            stopTimer();
+            view.stopTimer();
             
             LinkedList<Task> tasks;
             
             if (interruptDialog.getNewTaskLocation().equalsIgnoreCase("Now")) {
-                tasks = model.getToDoList();
+                tasks = (LinkedList<Task>) model.getToDoList();
                 tasks.addFirst(interruptDialog.getNewTask());
                 model.saveToDoList(tasks);
             } else {
-                tasks = model.getTaskInventory();
+                tasks = (LinkedList<Task>) model.getTaskInventory();
                 tasks.addFirst(interruptDialog.getNewTask());
                 model.saveTaskInventory(tasks);
             }
@@ -269,37 +252,37 @@ ChangeListener {
         } else if (actionCommand.equalsIgnoreCase("Open Task Inventory")) {
             openTaskInventory();
         } else if (actionCommand.equalsIgnoreCase("Add Task Task Inventory")) {
-            taskInventoryDialog.addTask();
-            saveTaskInventory(taskInventoryDialog.getTasks());
+            taskInvDialog.addTask();
+            saveTaskInventory(taskInvDialog.getTasks());
         } else if (actionCommand.equalsIgnoreCase(
                 "Delete Task Task Inventory")) {
-            taskInventoryDialog.deleteTask();
-            saveTaskInventory(taskInventoryDialog.getTasks());
+            taskInvDialog.deleteTask();
+            saveTaskInventory(taskInvDialog.getTasks());
         } else if (actionCommand.equalsIgnoreCase("Move Up Task Inventory")) {
-            taskInventoryDialog.moveUp();
-            saveTaskInventory(taskInventoryDialog.getTasks());
+            taskInvDialog.moveUp();
+            saveTaskInventory(taskInvDialog.getTasks());
             view.resetCycle();
         } else if (actionCommand.equalsIgnoreCase("Move Down Task Inventory")) {
-            taskInventoryDialog.moveDown();
-            saveTaskInventory(taskInventoryDialog.getTasks());
+            taskInvDialog.moveDown();
+            saveTaskInventory(taskInvDialog.getTasks());
         } else if (actionCommand.equalsIgnoreCase("Move To To Do List")) {
             Task temp = new Task();
-            temp = taskInventoryDialog.getSelectedTask();
+            temp = taskInvDialog.getSelectedTask();
 
-            LinkedList<Task> tempList = model.getToDoList();
+            final LinkedList<Task> tempList = (LinkedList<Task>) model.getToDoList();
             tempList.add(temp);
 
             saveToDoList(tempList);
 
-            taskInventoryDialog.deleteTask();
-            saveTaskInventory(taskInventoryDialog.getTasks());
+            taskInvDialog.deleteTask();
+            saveTaskInventory(taskInvDialog.getTasks());
 
         } else if (actionCommand.equalsIgnoreCase("Move To Task Inventory")) {
 
             Task temp = new Task();
             temp = toDoListDialog.getSelectedTask();
 
-            final LinkedList<Task> tempList = model.getTaskInventory();
+            final LinkedList<Task> tempList = (LinkedList<Task>) model.getTaskInventory();
             tempList.add(temp);
 
             saveTaskInventory(tempList);
@@ -313,20 +296,24 @@ ChangeListener {
 
     @Override
     public final void tableChanged(final TableModelEvent evt) {
+        final Object source = evt.getSource();
         
-        if (toDoListDialog != null) {
-            saveToDoList(toDoListDialog.getTasks());
-        } else if (taskInventoryDialog != null) {
-            saveTaskInventory(taskInventoryDialog.getTasks());
+        if (source instanceof AbstractTableModel) {
+            final AbstractTableModel tableModel = (AbstractTableModel) source;
+            if (tableModel.getClass().toString().contains("ToDoListDialog")) {
+                saveToDoList(toDoListDialog.getTasks());
+            } else if (tableModel.getClass().toString().
+                    contains("TaskInventoryDialog")) {
+                saveTaskInventory(taskInvDialog.getTasks());
+            }
         }
-
     }
 
     @Override
-    public final void stateChanged(final ChangeEvent e) {
-        Object source = e.getSource();
+    public final void stateChanged(final ChangeEvent evt) {
+        final Object source = evt.getSource();
         if (source instanceof JProgressBar) {
-            JProgressBar timerBar = (JProgressBar) source;
+            final JProgressBar timerBar = (JProgressBar) source;
             if (timerBar.getPercentComplete() >= 1.0) {
                 view.resetButtonState();
             }

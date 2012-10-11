@@ -31,6 +31,7 @@ public class AboutDialog extends JDialog {
      * Create the dialog.
      */
     public AboutDialog() {
+        super();
         setIconImage(Toolkit.getDefaultToolkit().getImage(
                 AboutDialog.class.getResource("/optitask/assests/star.gif")));
         setModal(true);
@@ -41,20 +42,20 @@ public class AboutDialog extends JDialog {
         getContentPane().setLayout(new MigLayout("", "[324px]",
                 "[28px][14px][14px][50px]"));
 
-        JLabel lblTitle = new JLabel("<html><h1>OptiTask Pomodoro Timer</h1>"
+        final JLabel lblTitle = new JLabel("<html><h1>OptiTask Pomodoro Timer</h1>"
                 + "<hr /></html>");
         getContentPane().add(lblTitle, "cell 0 0,grow");
 
-        JLabel lblCopy = new JLabel(
+        final JLabel lblCopy = new JLabel(
                 "<html>\r\nCopyright &copy; 2012 "
                         + "by Jerome Rodrigo.\r\n</html>");
         getContentPane().add(lblCopy, "cell 0 1,growx,aligny top");
 
-        JLabel lblVersion = new JLabel(
+        final JLabel lblVersion = new JLabel(
                 "<html>\r\n<b>Version:</b> " + VERSION_NUMBER + "\r\n</html>");
         getContentPane().add(lblVersion, "cell 0 2,growx,aligny top");
 
-        JLabel lblCredit = new JLabel(
+        final JLabel lblCredit = new JLabel(
                 "<html>\r\nDeveloped based on the Pomodoro Technique &reg;"
                         + " <br />\r\nby Francesco Cirillo <br />"
                         + "\r\n<a href=\"http://www.pomodorotechnique.com/\">"

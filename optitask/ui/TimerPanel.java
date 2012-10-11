@@ -26,30 +26,32 @@ public class TimerPanel extends JPanel {
      * The application persistence module.
      * @see AppPersistence
      */
-    private AppPersistence model;
+    private transient AppPersistence model;
 
     /**
      * The application controller.
      * @see AppController
      */
-    private AppController controller;
+    private transient AppController controller;
 
     /**
      * The start button.
      */
-    private JButton btnStart;
+    private transient JButton btnStart;
 
     /**
      * The timer bar displays the timer and its controls.
      * @see TimerBar
      */
-    private TimerBar timer;
+    private transient TimerBar timer;
 
     /**
      * The current task panel displays the current task and status information.
      * @see CurrentTaskPanel
      */
-    private CurrentTaskPanel currentTaskPanel;
+    private transient CurrentTaskPanel currentTaskPanel;
+    
+    private static final String START = "Start";
 
     /**
      * Creates the panel.
@@ -57,6 +59,7 @@ public class TimerPanel extends JPanel {
      */
 
     public TimerPanel() {
+        super();
         initialize();
     }
 
@@ -67,6 +70,7 @@ public class TimerPanel extends JPanel {
      */
 
     public TimerPanel(final AppPersistence mdl, final AppController cntrller) {
+        super();
         controller = cntrller;
         model = mdl;
         initialize();
@@ -79,8 +83,8 @@ public class TimerPanel extends JPanel {
     private void initialize() {
         setSize(330, 180);
 
-        btnStart = new JButton("Start");
-        btnStart.setActionCommand("Start");
+        btnStart = new JButton(START);
+        btnStart.setActionCommand(START);
         btnStart.addActionListener(controller);
         setLayout(new MigLayout("", "[70px][240px]", "[50px][110px]"));
         add(btnStart, "cell 0 0,grow");
@@ -122,8 +126,8 @@ public class TimerPanel extends JPanel {
      */
     
     public final void resetButtonState() {
-        btnStart.setText("Start");
-        btnStart.setActionCommand("Start");
+        btnStart.setText(START);
+        btnStart.setActionCommand(START);
     }
 
     /**

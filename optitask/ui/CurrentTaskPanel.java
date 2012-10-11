@@ -1,6 +1,9 @@
 package optitask.ui;
 
 import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,29 +32,31 @@ public class CurrentTaskPanel extends JPanel {
     /**
      * Label to display the current task.
      */
-    private JLabel lblTask;
+    private transient JLabel lblTask;
 
     /**
      * The list of tasks.
      * @see Task
      */
-    private LinkedList<Task> tasks;
+    private transient List<Task> tasks;
 
     /**
      * Stores the current index. Used in {@link #tasks}.
      */
-    private int currentIdx;
+    private transient int currentIdx;
 
     /**
      * Stores a reference to the persistence module.
      * @see AppPersistence
      */
-    private AppPersistence model;
+    private transient AppPersistence model;
 
     /**
      * Label to display the status of the task.
      */
-    private JLabel lblStatus;
+    private transient JLabel lblStatus;
+    
+    private static final String GREEN = "Green"; 
 
     /**
      * A constant used to set the status label to display nothing.
@@ -90,6 +95,7 @@ public class CurrentTaskPanel extends JPanel {
      * <B>Not used</B>.
      */
     public CurrentTaskPanel() {
+        super();
         initialize();
     }
 
@@ -99,7 +105,8 @@ public class CurrentTaskPanel extends JPanel {
      */
 
     public CurrentTaskPanel(final AppPersistence mdl) {
-        tasks = mdl.getToDoList();
+        super();
+        tasks = (LinkedList<Task>) mdl.getToDoList();
         model = mdl;
         currentIdx = 0;
         initialize();
@@ -114,7 +121,7 @@ public class CurrentTaskPanel extends JPanel {
         setSize(320, 100);
         setLayout(new MigLayout("", "[302px]", "[63px][14px]"));
 
-        JPanel panel = new JPanel();
+        final JPanel panel = new JPanel();
         panel.setBorder(new TitledBorder(UIManager
                 .getBorder("TitledBorder.border"), "Current Task",
                 TitledBorder.CENTER, TitledBorder.TOP, null, null));
@@ -154,7 +161,7 @@ public class CurrentTaskPanel extends JPanel {
      */
 
     public final void refresh() {
-        tasks = model.getToDoList();
+        tasks = (LinkedList<Task>) model.getToDoList();
         currentIdx = 0;
         nextTask();
     }
@@ -165,11 +172,11 @@ public class CurrentTaskPanel extends JPanel {
      */
     
     private Task getCurrentTask() {
-        Task task = new Task();
+        Task task = null;
         try {
             task = tasks.get(currentIdx);
         } catch (IndexOutOfBoundsException e) {
-            return null; // Do nothing
+            Logger.getAnonymousLogger().log(Level.WARNING, "No more tasks!");
         }
         return task;
     }
@@ -180,8 +187,8 @@ public class CurrentTaskPanel extends JPanel {
      */
 
     private void markAsDone() {
-        Task task = getCurrentTask();
-        task.setIsDone(true);
+        final Task task = getCurrentTask();
+        task.setTaskDone(true);
         tasks.set(currentIdx, task);
         model.saveToDoList(tasks);
 
@@ -195,7 +202,7 @@ public class CurrentTaskPanel extends JPanel {
      */
 
     public final void incrementPomodoro() {
-        Task task = getCurrentTask();
+        final Task task = getCurrentTask();
         task.setCurrentPomodoro(task.getCurrentPomodoro() + 1);
         tasks.set(currentIdx, task);
         model.saveToDoList(tasks);
@@ -218,21 +225,21 @@ public class CurrentTaskPanel extends JPanel {
             break;
         case SHORT_BREAK:
             lblStatus.setText(wrapWithHtml(
-                    getHtmlColoredString("Green", "Short Break")));
+                    getHtmlColoredString(GREEN, "Short Break")));
             break;
         case LONG_BREAK:
             lblStatus.setText(wrapWithHtml(
-                    getHtmlColoredString("Green", "Long Break")));
+                    getHtmlColoredString(GREEN, "Long Break")));
             break;
         case WORKING_THEN_SBRK:
             lblStatus.setText(wrapWithHtml(
                     getHtmlColoredString("red", "Working") + " --> "
-                            + getHtmlColoredString("Green", "Short Break")));
+                            + getHtmlColoredString(GREEN, "Short Break")));
             break;
         case WORKING_THEN_LBRK:
             lblStatus.setText(wrapWithHtml(
                     getHtmlColoredString("red", "Working") + " --> "
-                            + getHtmlColoredString("Green", "Long Break")));
+                            + getHtmlColoredString(GREEN, "Long Break")));
             break;
         default:
             lblStatus.setText(null);

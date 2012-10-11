@@ -7,6 +7,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.ImageIcon;
@@ -30,7 +33,7 @@ import optitask.util.UIToolkit;
  * @author Jerome Rodrigo
  * @since 0.9.0
  */
-public abstract class TaskManager extends JDialog
+public abstract class AbstractTaskManager extends JDialog
 implements TaskManagerActions {
 
     /**
@@ -42,18 +45,18 @@ implements TaskManagerActions {
      * The list of tasks.
      * @see Task
      */
-    private LinkedList<Task> tasks;
+    private List<Task> tasks;
 
     /**
      * The tasks table.
      */
-    private JTable tasksTable;
+    private transient JTable tasksTable;
 
     /**
      * The application controller.
      * @see AppController
      */
-    private AppController controller;
+    private transient AppController controller;
 
     
     /**
@@ -81,7 +84,7 @@ implements TaskManagerActions {
         /**
          * The JSpinner.
          */
-        private final JSpinner spinner = new JSpinner();
+        private transient final JSpinner spinner = new JSpinner();
 
         /**
          * The maximum value for the JSpinner.
@@ -92,6 +95,7 @@ implements TaskManagerActions {
          * Creates the number editor.
          */
         public PomNumberEditor() {
+            super();
             spinner.setModel(new SpinnerNumberModel(1, 1, MAX, 1));
             UIToolkit.preventKeyboardInputJSpinner(spinner);
         }
@@ -129,12 +133,13 @@ implements TaskManagerActions {
     /**
      * Button that allows user to move a task to another list.
      */
-    private JButton btnMoveTo;
+    private transient JButton btnMoveTo;
 
     /**
      * 
      */
-    public TaskManager() {
+    public AbstractTaskManager() {
+        super();
         initialize();
     }
 
@@ -144,11 +149,12 @@ implements TaskManagerActions {
      * @param cntrller the application controller
      */
     
-    public TaskManager(final AppPersistence mdl,
+    public AbstractTaskManager(final AppPersistence mdl,
             final AppController cntrller) {
+        super();
         controller = cntrller;
         setModel(mdl);
-        tasks = getTasksModel();
+        tasks = (LinkedList<Task>) getTasksModel();
         initialize();
 
         // Runtime initialisation of 'move to' button
@@ -170,7 +176,7 @@ implements TaskManagerActions {
                 "[][10px][][][10px][236px][40px]",
                 "[51px][11px][165px][23px]"));
 
-        JScrollPane scrollPane = new JScrollPane();
+        final JScrollPane scrollPane = new JScrollPane();
         getContentPane().add(scrollPane, "cell 0 0 6 3,grow");
 
         tasksTable = new JTable(getTableModel());
@@ -201,12 +207,12 @@ implements TaskManagerActions {
 
         scrollPane.setViewportView(tasksTable);
 
-        JButton btnAdd = new JButton("Add");
+        final JButton btnAdd = new JButton("Add");
         btnAdd.setActionCommand(getAddMessage());
         btnAdd.addActionListener(controller);
         getContentPane().add(btnAdd, "cell 0 3,growx,aligny top");
 
-        JButton btnDelete = new JButton("Delete");
+        final JButton btnDelete = new JButton("Delete");
         btnDelete.setActionCommand(getDeleteMessage());
         btnDelete.addActionListener(controller);
         getContentPane().add(btnDelete, "cell 1 3,growx,aligny top");
@@ -216,15 +222,15 @@ implements TaskManagerActions {
         btnMoveTo.addActionListener(controller);
         getContentPane().add(btnMoveTo, "cell 2 3, growx, aligny top");
 
-        JButton btnMoveUp = new JButton("");
-        btnMoveUp.setIcon(new ImageIcon(TaskManager.class
+        final JButton btnMoveUp = new JButton("");
+        btnMoveUp.setIcon(new ImageIcon(AbstractTaskManager.class
                 .getResource("/optitask/assests/upArrow.gif")));
         btnMoveUp.setActionCommand(getMoveUpMessage());
         btnMoveUp.addActionListener(controller);
         getContentPane().add(btnMoveUp, "cell 6 0,growx,aligny bottom");
 
-        JButton btnMoveDown = new JButton("");
-        btnMoveDown.setIcon(new ImageIcon(TaskManager.class
+        final JButton btnMoveDown = new JButton("");
+        btnMoveDown.setIcon(new ImageIcon(AbstractTaskManager.class
                 .getResource("/optitask/assests/downArrow.gif")));
         btnMoveDown.setActionCommand(getMoveDownMessage());
         btnMoveDown.addActionListener(controller);
@@ -234,7 +240,7 @@ implements TaskManagerActions {
     /**
      * @param tsks the tasks to set
      */
-    public final void setTasks(final LinkedList<Task> tsks) {
+    public final void setTasks(final List<Task> tsks) {
         tasks = tsks;
     }
 
@@ -263,7 +269,7 @@ implements TaskManagerActions {
      */
     @Override
     public final void addTask() {
-        Task newTask = new Task();
+        final Task newTask = new Task();
         tasks.add(newTask);
         tasksTable.repaint();
 
@@ -292,7 +298,7 @@ implements TaskManagerActions {
      * @see optitask.ui.TaskManagerActions#getTasks()
      */
     @Override
-    public final LinkedList<Task> getTasks() {
+    public final List<Task> getTasks() {
         return tasks;
     }
 
@@ -307,7 +313,7 @@ implements TaskManagerActions {
      * @param mdl the model to set
      */
     public static void setModel(final AppPersistence mdl) {
-        TaskManager.model = mdl;
+        AbstractTaskManager.model = mdl;
     }
 
     /* (non-Javadoc)
@@ -347,14 +353,16 @@ implements TaskManagerActions {
 
     @Override
     public final Task getSelectedTask() {
+        Task task = new Task();
 
         try {
-            return tasks.get(tasksTable.getSelectedRow());
+            task = tasks.get(tasksTable.getSelectedRow());
         } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
+            Logger.getAnonymousLogger().log(Level.WARNING, 
+                    "No more tasks to select!");
         }
 
-        return null; // Return null if fail
+        return task; 
     }
     
     /**
@@ -411,7 +419,7 @@ implements TaskManagerActions {
      * @return list of tasks
      */
     
-    protected abstract LinkedList<Task> getTasksModel();
+    protected abstract List<Task> getTasksModel();
 
     /**
      * Gets the column to initialize the pomodoro editor.

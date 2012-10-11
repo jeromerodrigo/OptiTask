@@ -66,7 +66,7 @@ public final class AppPersistence {
      * Stores one instance of the name of the data file.
      * @see #AppPersistence(String)
      */
-    private final String filename;
+    private transient final String filename;
     
     /**
      * Message shown for an IOException.
@@ -149,7 +149,8 @@ public final class AppPersistence {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getAnonymousLogger().log(Level.SEVERE, 
+                        IOEXCEPTIONMSG, e);
             }
 
             writeObject(TODOLIST_INDEX, new LinkedList<Task>());
@@ -226,7 +227,7 @@ public final class AppPersistence {
      *         <code>false</code> otherwise.
      */
 
-    public boolean saveToDoList(final LinkedList<Task> tasks) {
+    public boolean saveToDoList(final List<Task> tasks) {
         return writeObject(TODOLIST_INDEX, tasks);
     }
 
@@ -258,7 +259,7 @@ public final class AppPersistence {
      * @return <code>true</code> if successfully written to file;
      *         <code>false</code> otherwise.
      */
-    public boolean saveTaskInventory(final LinkedList<Task> inv) {
+    public boolean saveTaskInventory(final List<Task> inv) {
         return writeObject(TASKINV_INDEX, inv);
     }
 
@@ -277,7 +278,7 @@ public final class AppPersistence {
      */
 
     @SuppressWarnings("unchecked")
-    public LinkedList<Task> getToDoList() {
+    public List<Task> getToDoList() {
         return (LinkedList<Task>) getObject(TODOLIST_INDEX);
     }
 
@@ -296,7 +297,7 @@ public final class AppPersistence {
      */
     
     @SuppressWarnings("unchecked")
-    public LinkedList<Task> getTaskInventory() {
+    public List<Task> getTaskInventory() {
         return (LinkedList<Task>) getObject(TASKINV_INDEX);
     }
 

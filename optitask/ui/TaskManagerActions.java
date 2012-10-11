@@ -1,6 +1,6 @@
 package optitask.ui;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import optitask.util.Task;
 
@@ -26,7 +26,7 @@ public interface TaskManagerActions {
      * Gets the list of tasks.
      * @return the list of tasks
      */
-    LinkedList<Task> getTasks();
+    List<Task> getTasks();
 
     /**
      * Gets the currently selected task.

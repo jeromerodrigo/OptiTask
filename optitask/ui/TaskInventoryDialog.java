@@ -4,7 +4,7 @@
 package optitask.ui;
 
 import java.awt.Image;
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
@@ -18,7 +18,7 @@ import optitask.util.Task;
  * @author Jerome Rodrigo
  * @since 0.9.0
  */
-public class TaskInventoryDialog extends TaskManager {
+public class TaskInventoryDialog extends AbstractTaskManager {
 
     /**
      * 
@@ -42,7 +42,7 @@ public class TaskInventoryDialog extends TaskManager {
         /**
          * The names for each column.
          */
-        private final String[] columnNames = { "Task", "Description",
+        private transient final String[] columnNames = { "Task", "Description",
                 "Assigned", "Done" };
 
         /**
@@ -53,13 +53,14 @@ public class TaskInventoryDialog extends TaskManager {
         /**
          * The list of tasks.
          */
-        private final LinkedList<Task> tasks;
+        private transient final List<Task> tasks;
         
         /**
          * Constructor for the TasksDataModel.
          * @param tsks the list of tasks
          */
-        public TasksDataModel(final LinkedList<Task> tsks) {
+        public TasksDataModel(final List<Task> tsks) {
+            super();
             tasks = tsks;
         }
 
@@ -79,47 +80,60 @@ public class TaskInventoryDialog extends TaskManager {
         }
 
         @Override
-        public Class<?> getColumnClass(final int c) {
-            return getValueAt(0, c).getClass();
+        public Class<?> getColumnClass(final int col) {
+            return getValueAt(0, col).getClass();
         }
 
         @Override
         public boolean isCellEditable(final int row, final int col) {
+            boolean editable;
+            
             if (tasks.get(row).isDone() && (col == 2 
                     || col == 1)) {
-                return false;
-            }
-            return col > 0 && col < columnNames.length;
+                editable = false;
+            } else {
+                editable = col > 0 && col < columnNames.length;
+            }            
+            
+            return editable;
         }
 
         @Override
         public Object getValueAt(final int row, final int col) {
+            Object obj;
+            
             switch (col) {
             case 0:
-                return row + 1;
+                obj = row + 1;
+                break;
             case 1:
-                return tasks.get(row).getTaskDesc();
+                obj = tasks.get(row).getTaskDesc();
+                break;
             case 3:
-                return tasks.get(row).isDone();
+                obj = tasks.get(row).isDone();
+                break;
             case 2:
-                return tasks.get(row).getAssignedPomodoros();
+                obj = tasks.get(row).getAssignedPomodoros();
+                break;
             default:
-                return null;
+                obj = new Object();
             }
+            
+            return obj;
         }
 
         @Override
         public void setValueAt(final Object value,
                 final int row, final int col) {
             assert (col > 0 && col < columnNames.length);
-            Task task = tasks.get(row);
+            final Task task = tasks.get(row);
 
             switch (col) {
             case 1:
                 task.setTaskDesc((String) value);
                 break;
             case 3:
-                task.setIsDone((Boolean) value);
+                task.setTaskDone((Boolean) value);
 
                 // If a task is 'undone' then reset the current pomodoros
                 if (!(Boolean) value) {
@@ -211,8 +225,8 @@ public class TaskInventoryDialog extends TaskManager {
     }
 
     @Override
-    protected final LinkedList<Task> getTasksModel() {
-        return getModel().getTaskInventory();
+    protected final List<Task> getTasksModel() {
+        return (List<Task>) getModel().getTaskInventory();
     }
 
     @Override

@@ -32,10 +32,10 @@ public final class UIToolkit {
      */
 
     public static void preventKeyboardInputJSpinner(final JSpinner spinner) {
-        JFormattedTextField tf = ((JSpinner.DefaultEditor) spinner.getEditor())
+        final JFormattedTextField textField = ((JSpinner.DefaultEditor) spinner.getEditor())
                 .getTextField();
-        tf.setEditable(false);
-        tf.setBackground(Color.WHITE);
+        textField.setEditable(false);
+        textField.setBackground(Color.WHITE);
     }
     
     /**
@@ -43,12 +43,12 @@ public final class UIToolkit {
      * <a href="http://www.esblog.in/2010/09/
      * centering-a-swing-window-on-screen/">
      * Centering a Window</a>
-     * @param w an instance of a window frame
+     * @param window an instance of a window frame
      */
 
-    public static void centerThisFrame(final Window w) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        w.setLocation(screenSize.width / 2 - (w.getWidth() / 2),
-                screenSize.height / 2 - (w.getHeight() / 2));
+    public static void centerThisFrame(final Window window) {
+        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setLocation(screenSize.width / 2 - (window.getWidth() / 2),
+                screenSize.height / 2 - (window.getHeight() / 2));
     }
 }

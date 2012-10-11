@@ -38,51 +38,51 @@ public class SettingsDialog extends JDialog {
      * Stores a reference to the persistence module.
      * @see AppPersistence
      */
-    private AppPersistence model;
+    private transient AppPersistence model;
 
     /**
      * Stores a reference to the application controller.
      * @see AppController
      */
-    private AppController controller;
+    private transient AppController controller;
 
     /**
      * Allows the user to input the short break time.
      */
-    private JSpinner shortBreakTimeSpinner;
+    private transient JSpinner shortBreakSpinner;
 
     /**
      * Allows the user to input the interval until a long break.
      */
-    private JSpinner longBreakAfterSpinner;
+    private transient JSpinner lBrkAfterSpinner;
 
     /**
      * Allows the user to input the pomodoro duration.
      */
-    private JSpinner pomodoroTimeSpinner;
+    private transient JSpinner pomTimeSpinner;
 
     /**
      * Allows the user to input the long break time.
      */
-    private JSpinner longBreakTimeSpinner;
+    private transient JSpinner lBreakTimeSpinner;
 
     /**
      * Allows the user to input if a long break should occur
      * using a JCheckBox.
      */
-    private JCheckBox willLongBreakCheckBox;
+    private transient JCheckBox wLBreakChkBox;
 
     /**
      * Displays the label for the long break.
      * @see #setEnabledIncrementSettings(boolean)
      */
-    private JLabel lblLongBreak;
+    private transient JLabel lblLongBreak;
 
     /**
      * Displays the label for the long break after value.
      * @see #setEnabledIncrementSettings(boolean)
      */
-    private JLabel lblLongBreakAfter;
+    private transient JLabel lblLongBreakAfter;
 
     /**
      * Constant multiplier for conversion between milliseconds.
@@ -100,6 +100,7 @@ public class SettingsDialog extends JDialog {
      */
 
     public SettingsDialog() {
+        super();
         initialize();
     }
 
@@ -111,6 +112,7 @@ public class SettingsDialog extends JDialog {
 
     public SettingsDialog(final AppPersistence mdl,
             final AppController cntrller) {
+        super();
         controller = cntrller;
         model = mdl;
         initialize();
@@ -136,84 +138,84 @@ public class SettingsDialog extends JDialog {
                 "[135px][53px][50px][64px]",
                 "[26px][26px][151px][2px][39px]"));
 
-        JLabel lblShortBreak = new JLabel("Short Break Time:");
+        final JLabel lblShortBreak = new JLabel("Short Break Time:");
         getContentPane().add(lblShortBreak, "cell 0 0,grow");
 
-        shortBreakTimeSpinner = new JSpinner();
-        lblShortBreak.setLabelFor(shortBreakTimeSpinner);
-        shortBreakTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 30, 1));
-        UIToolkit.preventKeyboardInputJSpinner(shortBreakTimeSpinner);
-        getContentPane().add(shortBreakTimeSpinner, "cell 2 0,grow");
+        shortBreakSpinner = new JSpinner();
+        lblShortBreak.setLabelFor(shortBreakSpinner);
+        shortBreakSpinner.setModel(new SpinnerNumberModel(1, 1, 30, 1));
+        UIToolkit.preventKeyboardInputJSpinner(shortBreakSpinner);
+        getContentPane().add(shortBreakSpinner, "cell 2 0,grow");
 
-        JPanel longBreakTimePanel = new JPanel();
-        longBreakTimePanel.setBorder(new TitledBorder(UIManager
+        final JPanel lBrkTimePanel = new JPanel();
+        lBrkTimePanel.setBorder(new TitledBorder(UIManager
                 .getBorder("TitledBorder.border"), "Long Break Settings",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        getContentPane().add(longBreakTimePanel, "cell 0 2 4 1,grow");
-        longBreakTimePanel.setLayout(new MigLayout("",
+        getContentPane().add(lBrkTimePanel, "cell 0 2 4 1,grow");
+        lBrkTimePanel.setLayout(new MigLayout("",
                 "[137.00px][50px][69px]",
                 "[26px][26px][25px]"));
 
         lblLongBreakAfter = new JLabel("Long Break After:");
-        longBreakTimePanel.add(lblLongBreakAfter, "cell 0 0,grow");
-        lblLongBreakAfter.setLabelFor(longBreakAfterSpinner);
+        lBrkTimePanel.add(lblLongBreakAfter, "cell 0 0,grow");
+        lblLongBreakAfter.setLabelFor(lBrkAfterSpinner);
 
-        longBreakAfterSpinner = new JSpinner();
-        longBreakTimePanel.add(longBreakAfterSpinner, "cell 1 0,grow");
-        longBreakAfterSpinner.setModel(new SpinnerNumberModel(1, 1, 10, 1));
-        UIToolkit.preventKeyboardInputJSpinner(longBreakAfterSpinner);
+        lBrkAfterSpinner = new JSpinner();
+        lBrkTimePanel.add(lBrkAfterSpinner, "cell 1 0,grow");
+        lBrkAfterSpinner.setModel(new SpinnerNumberModel(1, 1, 10, 1));
+        UIToolkit.preventKeyboardInputJSpinner(lBrkAfterSpinner);
 
         lblLongBreak = new JLabel("Long Break Time:");
-        longBreakTimePanel.add(lblLongBreak, "cell 0 1,grow");
-        lblLongBreak.setLabelFor(longBreakTimeSpinner);
+        lBrkTimePanel.add(lblLongBreak, "cell 0 1,grow");
+        lblLongBreak.setLabelFor(lBreakTimeSpinner);
 
-        longBreakTimeSpinner = new JSpinner();
-        longBreakTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 60, 1));
-        longBreakTimePanel.add(longBreakTimeSpinner, "cell 1 1,grow");
-        UIToolkit.preventKeyboardInputJSpinner(longBreakTimeSpinner);
+        lBreakTimeSpinner = new JSpinner();
+        lBreakTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 60, 1));
+        lBrkTimePanel.add(lBreakTimeSpinner, "cell 1 1,grow");
+        UIToolkit.preventKeyboardInputJSpinner(lBreakTimeSpinner);
 
-        JLabel lblToggleLongBreak = new JLabel("Toggle Long Break:");
-        longBreakTimePanel.add(lblToggleLongBreak, "cell 0 2,grow");
+        final JLabel lblToggleLBrk = new JLabel("Toggle Long Break:");
+        lBrkTimePanel.add(lblToggleLBrk, "cell 0 2,grow");
 
-        willLongBreakCheckBox = new JCheckBox("");
-        willLongBreakCheckBox.setActionCommand("Toggle Increment");
-        willLongBreakCheckBox.addActionListener(controller);
-        longBreakTimePanel.add(willLongBreakCheckBox,
+        wLBreakChkBox = new JCheckBox("");
+        wLBreakChkBox.setActionCommand("Toggle Increment");
+        wLBreakChkBox.addActionListener(controller);
+        lBrkTimePanel.add(wLBreakChkBox,
                 "cell 2 2,growx,aligny bottom");
 
-        JLabel lblMinutes3 = new JLabel("minutes");
-        longBreakTimePanel.add(lblMinutes3,
+        final JLabel lblMinutes3 = new JLabel("minutes");
+        lBrkTimePanel.add(lblMinutes3,
                 "cell 2 1,alignx left,aligny center");
 
-        JLabel lblCycles = new JLabel("pomodoros");
-        longBreakTimePanel.add(lblCycles, "cell 2 0,growx,aligny center");
+        final JLabel lblCycles = new JLabel("pomodoros");
+        lBrkTimePanel.add(lblCycles, "cell 2 0,growx,aligny center");
 
-        JLabel lblTaskDuration = new JLabel("Pomodoro Time:");
+        final JLabel lblTaskDuration = new JLabel("Pomodoro Time:");
         getContentPane().add(lblTaskDuration, "cell 0 1,grow");
 
-        pomodoroTimeSpinner = new JSpinner();
-        lblTaskDuration.setLabelFor(pomodoroTimeSpinner);
-        pomodoroTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 60, 1));
-        UIToolkit.preventKeyboardInputJSpinner(pomodoroTimeSpinner);
-        getContentPane().add(pomodoroTimeSpinner, "cell 2 1,grow");
+        pomTimeSpinner = new JSpinner();
+        lblTaskDuration.setLabelFor(pomTimeSpinner);
+        pomTimeSpinner.setModel(new SpinnerNumberModel(1, 1, 60, 1));
+        UIToolkit.preventKeyboardInputJSpinner(pomTimeSpinner);
+        getContentPane().add(pomTimeSpinner, "cell 2 1,grow");
 
-        JButton btnDefault = new JButton("Default");
+        final JButton btnDefault = new JButton("Default");
         btnDefault.setActionCommand("Default Settings");
         btnDefault.addActionListener(controller);
         getContentPane().add(btnDefault, "cell 2 4,alignx center,growy");
 
-        JButton btnSave = new JButton("Save");
+        final JButton btnSave = new JButton("Save");
         btnSave.setActionCommand("Save Settings");
         btnSave.addActionListener(controller);
         getContentPane().add(btnSave, "cell 3 4,alignx center,growy");
 
-        JSeparator separator = new JSeparator();
+        final JSeparator separator = new JSeparator();
         getContentPane().add(separator, "cell 0 3 4 1,growx,aligny top");
 
-        JLabel lblMinutes1 = new JLabel("minutes");
+        final JLabel lblMinutes1 = new JLabel("minutes");
         getContentPane().add(lblMinutes1, "cell 3 0,growx,aligny center");
 
-        JLabel lblMinutes2 = new JLabel("minutes");
+        final JLabel lblMinutes2 = new JLabel("minutes");
         getContentPane().add(lblMinutes2, "cell 3 1,growx,aligny center");
 
         setSettings(model.getSettings());
@@ -226,21 +228,21 @@ public class SettingsDialog extends JDialog {
 
     public final Settings getSettings() {
         Settings set = new Settings();
-        set.setShortBreak(minutesToMilliseconds((Integer) shortBreakTimeSpinner
+        set.setShortBreak(minutesToMilliseconds((Integer) shortBreakSpinner
                 .getValue()));
-        set.setIncrementInterval((Integer) longBreakAfterSpinner.getValue());
-        set.setLongBreak((minutesToMilliseconds((Integer) longBreakTimeSpinner
-                .getValue())));
-        set.setPomodoroTime(minutesToMilliseconds((Integer) pomodoroTimeSpinner
+        set.setIncrementInterval((Integer) lBrkAfterSpinner.getValue());
+        set.setLongBreak(minutesToMilliseconds((Integer) lBreakTimeSpinner
                 .getValue()));
-        set.setWillLongBreak(willLongBreakCheckBox.isSelected());
+        set.setPomodoroTime(minutesToMilliseconds((Integer) pomTimeSpinner
+                .getValue()));
+        set.setWillLongBreak(wLBreakChkBox.isSelected());
 
         // Long break value cannot be equal or less than short break
-        if (set.getLongBreak() > set.getShortBreak()) {
-            return set;
-        } else {
-            return null;
+        if (set.getLongBreak() <= set.getShortBreak()) {
+            set = new Settings();
         }
+        
+        return set;
     }
 
     /**
@@ -249,14 +251,14 @@ public class SettingsDialog extends JDialog {
      */
 
     public final void setSettings(final Settings settings) {
-        shortBreakTimeSpinner.setValue(millisecondsToMinutes(settings
+        shortBreakSpinner.setValue(millisecondsToMinutes(settings
                 .getShortBreak()));
-        longBreakAfterSpinner.setValue(settings.getIncrementInterval());
-        pomodoroTimeSpinner.setValue(millisecondsToMinutes(settings
+        lBrkAfterSpinner.setValue(settings.getIncrementInterval());
+        pomTimeSpinner.setValue(millisecondsToMinutes(settings
                 .getPomodoroTime()));
-        longBreakTimeSpinner.setValue(millisecondsToMinutes(settings
+        lBreakTimeSpinner.setValue(millisecondsToMinutes(settings
                 .getLongBreak()));
-        willLongBreakCheckBox.setSelected(settings.isWillLongBreak());
+        wLBreakChkBox.setSelected(settings.isWillLongBreak());
     }
 
     /**
@@ -266,8 +268,8 @@ public class SettingsDialog extends JDialog {
      */
 
     public final void setEnabledIncrementSettings(final boolean bEnabled) {
-        longBreakAfterSpinner.setEnabled(bEnabled);
-        longBreakTimeSpinner.setEnabled(bEnabled);
+        lBrkAfterSpinner.setEnabled(bEnabled);
+        lBreakTimeSpinner.setEnabled(bEnabled);
         lblLongBreak.setEnabled(bEnabled);
         lblLongBreakAfter.setEnabled(bEnabled);
     }
@@ -279,8 +281,8 @@ public class SettingsDialog extends JDialog {
      */
 
     public final boolean isEnabledIncrementSettings() {
-        return longBreakAfterSpinner.isEnabled()
-                && longBreakTimeSpinner.isEnabled();
+        return lBrkAfterSpinner.isEnabled()
+                && lBreakTimeSpinner.isEnabled();
     }
 
     /**

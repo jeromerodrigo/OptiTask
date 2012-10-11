@@ -24,7 +24,7 @@ public final class Task implements Serializable {
     /**
      * A flag to determine if the task is done, or not.
      */
-    private boolean isTaskDone;
+    private boolean isTaskDone; // NOPMD by Jerome on 10/11/12 10:46 PM
 
     /**
      * The total number of pomodoros needed to complete the task.
@@ -70,7 +70,7 @@ public final class Task implements Serializable {
     /**
      * @param done the isDone to set
      */
-    public void setIsDone(final boolean done) {
+    public void setTaskDone(final boolean done) {
         isTaskDone = done;
     }
 

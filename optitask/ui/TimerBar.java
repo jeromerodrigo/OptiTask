@@ -2,6 +2,8 @@ package optitask.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -32,7 +34,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
      * The application persistence module.
      * @see AppPersistence
      */
-    private AppPersistence model;
+    private transient AppPersistence model;
 
     /**
      * The pomodoro time.
@@ -60,7 +62,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
      * This variable determines how many times the timer has iterated,
      * or completed its cycle.
      */
-    private int currentCycle = 0;
+    private transient int currentCycle = 0;
 
     /**
      * Flag whether the current cycle is a long break cycle.
@@ -70,12 +72,12 @@ public class TimerBar extends JProgressBar implements ActionListener {
     /**
      * The swing timer.
      */
-    private Timer timer;
+    private transient Timer timer;
 
     /**
      * The current task panel.
      */
-    private CurrentTaskPanel taskPanel;
+    private transient CurrentTaskPanel taskPanel;
 
     /**
      * The constant for number of seconds in 1 hour.
@@ -98,6 +100,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
      */
 
     public TimerBar() {
+        super();
     }
 
     /**
@@ -200,14 +203,14 @@ public class TimerBar extends JProgressBar implements ActionListener {
      */
 
     private String getElapsedTime(final long elapsedTime) {
-        String format = String.format("%%0%dd", 2);
+        final String format = String.format("%%0%dd", 2);
         return String.format(format, elapsedTime / HOUR_MULT) + ":"
         + String.format(format, (elapsedTime % HOUR_MULT) / MIN_MULT) + ":"
         + String.format(format, elapsedTime % MIN_MULT);
     }
 
     @Override
-    public final void actionPerformed(final ActionEvent e) {
+    public final void actionPerformed(final ActionEvent evt) {
         
         if (ePomodoroTime == pomodoroTime) {
             ePomodoroTime--; // To ensure progress is not 100% at start
@@ -289,7 +292,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
         /**
          * The sound file path.
          */
-        private static String notifyUrl;
+        private transient final String notifyUrl;
 
         /**
          * The sound clip.
@@ -310,6 +313,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
          */
 
         public SoundPlayer(final String url) {
+            super();
             notifyUrl = url;
         }
 
@@ -317,7 +321,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
         public void run() {
             try {
                 clip = AudioSystem.getClip();
-                AudioInputStream inputStream = AudioSystem
+                final AudioInputStream inputStream = AudioSystem
                         .getAudioInputStream(TimerBar.class
                                 .getResourceAsStream(notifyUrl));
                 clip.open(inputStream);
@@ -333,7 +337,8 @@ public class TimerBar extends JProgressBar implements ActionListener {
 
                 });
             } catch (Exception e) {
-                e.printStackTrace();
+                Logger.getAnonymousLogger().log(Level.SEVERE, 
+                        "SEVERE Exception");
             }
         }
 
