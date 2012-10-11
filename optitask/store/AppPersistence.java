@@ -14,6 +14,9 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import optitask.util.Settings;
 import optitask.util.Statistics;
@@ -33,7 +36,7 @@ public final class AppPersistence {
      * Stores all application data in an ArrayList form.
      * @see #AppPersistence(String)
      */
-    private ArrayList<Object> list;
+    private List<Object> list;
 
     /**
      * Stores the constant index value for the tasks.
@@ -57,13 +60,15 @@ public final class AppPersistence {
      * Stores the contant index value for the task inventory.
      * Is it used in {@link #list}.
      */
-    private static final int TASKINVENTORY_INDEX = 3;
+    private static final int TASKINV_INDEX = 3;
 
     /**
      * Stores one instance of the name of the data file.
      * @see #AppPersistence(String)
      */
-    private String filename = "";
+    private final String filename;
+    
+    private static final String IOEXCEPTIONMSG = "IOException";
 
     /**
      * Creates an instance of the persistence module.
@@ -76,7 +81,28 @@ public final class AppPersistence {
         list.add(TODOLIST_INDEX, new LinkedList<Task>());
         list.add(SETTINGS_INDEX, new Settings());
         list.add(STATS_INDEX, new Statistics());
-        list.add(TASKINVENTORY_INDEX, new LinkedList<Task>());
+        list.add(TASKINV_INDEX, new LinkedList<Task>());
+    }
+
+    /**
+     * @return the list
+     */
+    public final List<Object> getList() {
+        return list;
+    }
+
+    /**
+     * @param list the list to set
+     */
+    public final void setList(List<Object> list) {
+        this.list = list;
+    }
+
+    /**
+     * @return the filename
+     */
+    public final String getFilename() {
+        return filename;
     }
 
     /**
@@ -90,8 +116,30 @@ public final class AppPersistence {
     @SuppressWarnings("unchecked")
     private void readData() {
 
-        File file = new File(filename);
-        if (!file.exists()) {
+        final File file = new File(filename);
+        if (file.exists()) {
+            
+            try { // Initialise input stream
+                final InputStream inFile = new FileInputStream(filename);
+                final InputStream inBuffer = new BufferedInputStream(inFile);
+                final ObjectInput input = new ObjectInputStream(inBuffer);
+
+                try {
+                    list = (ArrayList<Object>) input.readObject();
+                } catch (ClassNotFoundException e) {
+                    Logger.getAnonymousLogger().log(Level.SEVERE, "ClassNotFoundException", e);
+                } catch (IOException e) {
+                    Logger.getAnonymousLogger().log(Level.SEVERE, IOEXCEPTIONMSG, e);
+                } finally {
+                    input.close();
+                }
+
+            } catch (IOException e) {
+                Logger.getAnonymousLogger().log(Level.SEVERE, IOEXCEPTIONMSG, e);
+            }
+            
+        } else {
+            
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -101,26 +149,8 @@ public final class AppPersistence {
             writeObject(TODOLIST_INDEX, new LinkedList<Task>());
             writeObject(SETTINGS_INDEX, new Settings());
             writeObject(STATS_INDEX, new Statistics());
-            writeObject(TASKINVENTORY_INDEX, new LinkedList<Task>());
-        } else {
-            try { // Initialise input stream
-                InputStream inFile = new FileInputStream(filename);
-                InputStream inBuffer = new BufferedInputStream(inFile);
-                ObjectInput in = new ObjectInputStream(inBuffer);
-
-                try {
-                    list = (ArrayList<Object>) in.readObject();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    in.close();
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            writeObject(TASKINV_INDEX, new LinkedList<Task>());
+            
         }
     }
 
@@ -141,22 +171,22 @@ public final class AppPersistence {
         list.set(index, obj);
 
         try { // Initialise output stream
-            OutputStream outFile = new FileOutputStream(filename);
-            OutputStream outBuffer = new BufferedOutputStream(outFile);
-            ObjectOutput out = new ObjectOutputStream(outBuffer);
+            final OutputStream outFile = new FileOutputStream(filename);
+            final OutputStream outBuffer = new BufferedOutputStream(outFile);
+            final ObjectOutput out = new ObjectOutputStream(outBuffer);
 
             try {
                 out.writeObject(list);
                 isSaved = true;
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.getAnonymousLogger().log(Level.SEVERE, IOEXCEPTIONMSG, e);
                 isSaved = false;
             } finally {
                 out.close();
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getAnonymousLogger().log(Level.SEVERE, IOEXCEPTIONMSG, e);
         }
 
         return isSaved;
@@ -167,7 +197,7 @@ public final class AppPersistence {
      *
      * @param index The identifier for a data object in the {@link #list},
      *              and possible values are either {@link #TODOLIST_INDEX},
-     *              {@link #SETTINGS_INDEX}, {@link #TASKINVENTORY_INDEX}
+     *              {@link #SETTINGS_INDEX}, {@link #TASKINV_INDEX}
      *              or {@link #STATS_INDEX}.
      * @return an object of type {@link Object}; Note the object has to be
      * casted to an usable type to be used.
@@ -222,7 +252,7 @@ public final class AppPersistence {
      *         <code>false</code> otherwise.
      */
     public boolean saveTaskInventory(final LinkedList<Task> inv) {
-        return writeObject(TASKINVENTORY_INDEX, inv);
+        return writeObject(TASKINV_INDEX, inv);
     }
 
     /**
@@ -260,7 +290,7 @@ public final class AppPersistence {
     
     @SuppressWarnings("unchecked")
     public LinkedList<Task> getTaskInventory() {
-        return (LinkedList<Task>) getObject(TASKINVENTORY_INDEX);
+        return (LinkedList<Task>) getObject(TASKINV_INDEX);
     }
 
     /**
@@ -271,7 +301,7 @@ public final class AppPersistence {
      */
 
     public boolean destroyFile() {
-        File file = new File(filename);
+        final File file = new File(filename);
         return file.delete();
     }
 }
