@@ -292,7 +292,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
         /**
          * The sound file path.
          */
-        private transient final String notifyUrl;
+        private final transient String notifyUrl;
 
         /**
          * The sound clip.

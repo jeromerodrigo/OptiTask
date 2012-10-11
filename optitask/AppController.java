@@ -35,10 +35,10 @@ public class AppController implements ActionListener, TableModelListener,
 ChangeListener {
 
     /** Stores the reference to the application persistence module. */
-    private transient final AppPersistence model;
+    private final transient AppPersistence model;
 
     /** Stores the reference to the main user interface. */
-    private transient final AppFrame view;
+    private final transient AppFrame view;
 
     /** The settings dialog user interface object. */
     private transient SettingsDialog settingsDialog;
@@ -269,7 +269,8 @@ ChangeListener {
             Task temp = new Task();
             temp = taskInvDialog.getSelectedTask();
 
-            final LinkedList<Task> tempList = (LinkedList<Task>) model.getToDoList();
+            final LinkedList<Task> tempList = 
+                    (LinkedList<Task>) model.getToDoList();
             tempList.add(temp);
 
             saveToDoList(tempList);
@@ -282,7 +283,8 @@ ChangeListener {
             Task temp = new Task();
             temp = toDoListDialog.getSelectedTask();
 
-            final LinkedList<Task> tempList = (LinkedList<Task>) model.getTaskInventory();
+            final LinkedList<Task> tempList = 
+                    (LinkedList<Task>) model.getTaskInventory();
             tempList.add(temp);
 
             saveTaskInventory(tempList);

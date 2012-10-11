@@ -84,7 +84,7 @@ implements TaskManagerActions {
         /**
          * The JSpinner.
          */
-        private transient final JSpinner spinner = new JSpinner();
+        private final transient JSpinner spinner = new JSpinner();
 
         /**
          * The maximum value for the JSpinner.

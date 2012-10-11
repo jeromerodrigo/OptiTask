@@ -56,6 +56,9 @@ public class CurrentTaskPanel extends JPanel {
      */
     private transient JLabel lblStatus;
     
+    /**
+     * String constant for the literal 'Green'.
+     */
     private static final String GREEN = "Green"; 
 
     /**

@@ -51,6 +51,9 @@ public class TimerPanel extends JPanel {
      */
     private transient CurrentTaskPanel currentTaskPanel;
     
+    /**
+     * String constant for the literal 'Start'.
+     */
     private static final String START = "Start";
 
     /**

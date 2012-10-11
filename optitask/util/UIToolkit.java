@@ -32,7 +32,8 @@ public final class UIToolkit {
      */
 
     public static void preventKeyboardInputJSpinner(final JSpinner spinner) {
-        final JFormattedTextField textField = ((JSpinner.DefaultEditor) spinner.getEditor())
+        final JFormattedTextField textField = 
+                ((JSpinner.DefaultEditor) spinner.getEditor())
                 .getTextField();
         textField.setEditable(false);
         textField.setBackground(Color.WHITE);
@@ -47,7 +48,8 @@ public final class UIToolkit {
      */
 
     public static void centerThisFrame(final Window window) {
-        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        final Dimension screenSize = Toolkit.
+                getDefaultToolkit().getScreenSize();
         window.setLocation(screenSize.width / 2 - (window.getWidth() / 2),
                 screenSize.height / 2 - (window.getHeight() / 2));
     }

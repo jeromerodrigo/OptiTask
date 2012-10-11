@@ -42,7 +42,8 @@ public class AboutDialog extends JDialog {
         getContentPane().setLayout(new MigLayout("", "[324px]",
                 "[28px][14px][14px][50px]"));
 
-        final JLabel lblTitle = new JLabel("<html><h1>OptiTask Pomodoro Timer</h1>"
+        final JLabel lblTitle = new JLabel(
+                "<html><h1>OptiTask Pomodoro Timer</h1>"
                 + "<hr /></html>");
         getContentPane().add(lblTitle, "cell 0 0,grow");
 

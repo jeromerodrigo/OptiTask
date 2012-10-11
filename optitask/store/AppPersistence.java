@@ -66,7 +66,7 @@ public final class AppPersistence {
      * Stores one instance of the name of the data file.
      * @see #AppPersistence(String)
      */
-    private transient final String filename;
+    private final transient String filename;
     
     /**
      * Message shown for an IOException.

@@ -42,7 +42,7 @@ public class TaskInventoryDialog extends AbstractTaskManager {
         /**
          * The names for each column.
          */
-        private transient final String[] columnNames = { "Task", "Description",
+        private final transient String[] columnNames = { "Task", "Description",
                 "Assigned", "Done" };
 
         /**
@@ -53,7 +53,7 @@ public class TaskInventoryDialog extends AbstractTaskManager {
         /**
          * The list of tasks.
          */
-        private transient final List<Task> tasks;
+        private final transient List<Task> tasks;
         
         /**
          * Constructor for the TasksDataModel.
