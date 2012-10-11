@@ -85,7 +85,8 @@ public class ToDoListDialog extends TaskManager {
         @Override
         public boolean isCellEditable(final int row, final int col) {
             // If the task is done, the disable changing the assigned pomodoros
-            if (tasks.get(row).isDone() && col == 3) {
+            if (tasks.get(row).isDone() && (col == 3 || 
+                    col == 2 || col == 1)) {
                 return false;
             }
             return col > 0 && col < columnNames.length && col != 2;

@@ -85,6 +85,10 @@ public class TaskInventoryDialog extends TaskManager {
 
         @Override
         public boolean isCellEditable(final int row, final int col) {
+            if (tasks.get(row).isDone() && (col == 2 ||
+                    col == 1)) {
+                return false;
+            }
             return col > 0 && col < columnNames.length;
         }
 
@@ -193,7 +197,7 @@ public class TaskInventoryDialog extends TaskManager {
 
     @Override
     protected final String getMoveDownMessage() {
-        return "Move Up Task Inventory";
+        return "Move Down Task Inventory";
     }
 
     @Override
