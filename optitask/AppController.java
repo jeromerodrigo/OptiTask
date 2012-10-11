@@ -327,7 +327,7 @@ ChangeListener {
         Object source = e.getSource();
         if (source instanceof JProgressBar) {
             JProgressBar timerBar = (JProgressBar) source;
-            if (timerBar.getPercentComplete() == 1.0) {
+            if (timerBar.getPercentComplete() >= 1.0) {
                 view.resetButtonState();
             }
         }

@@ -208,7 +208,9 @@ public class TimerBar extends JProgressBar implements ActionListener {
 
     @Override
     public final void actionPerformed(final ActionEvent e) {
+        
         if (ePomodoroTime == pomodoroTime) {
+            ePomodoroTime--; // To ensure progress is not 100% at start
             if (isLongBreakNow) {
                 taskPanel.setStatus(CurrentTaskPanel.WORKING_THEN_LBRK);
             } else {
@@ -218,11 +220,15 @@ public class TimerBar extends JProgressBar implements ActionListener {
 
         if (eBreakTime == 0) {
             setString(getElapsedTime(ePomodoroTime));
-            setValue((int) ePomodoroTime - 1);
+            setValue((int) ePomodoroTime);
             ePomodoroTime--;
         }
 
-        if (ePomodoroTime == -2) {
+        /*
+         * Counts down to -1 to give an extra second so that 00:00:01 can
+         * be displayed.
+         */
+        if (ePomodoroTime == -1) {
             setString(getElapsedTime(eBreakTime));
             setValue((int) eBreakTime);
             eBreakTime++;
@@ -238,7 +244,7 @@ public class TimerBar extends JProgressBar implements ActionListener {
             }
         }
 
-        if (eBreakTime >= breakTime + 1) {
+        if (eBreakTime > breakTime) {
             timer.stop();
             playSound();
             setString("Done!");
