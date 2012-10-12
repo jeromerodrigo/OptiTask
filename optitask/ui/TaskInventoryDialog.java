@@ -49,6 +49,21 @@ public class TaskInventoryDialog extends AbstractTaskManager {
          * The limit where assigned pomodoros is considered as 'too many'.
          */
         private static final int TOO_MANY_POMS = 6;
+        
+        /**
+         * The column number for Task Description.
+         */
+        private static final int DESC_COL = 1;
+        
+        /**
+         * The column number for Assigned Pomodoros.
+         */
+        private static final int ASSPOM_COL = 2;
+        
+        /**
+         * The column number for Task Done.
+         */
+        private static final int ISDONE_COL = 3;
 
         /**
          * The list of tasks.
@@ -109,10 +124,10 @@ public class TaskInventoryDialog extends AbstractTaskManager {
             case 1:
                 obj = tasks.get(row).getTaskDesc();
                 break;
-            case 3:
+            case ISDONE_COL:
                 obj = tasks.get(row).isDone();
                 break;
-            case 2:
+            case ASSPOM_COL:
                 obj = tasks.get(row).getAssignedPomodoros();
                 break;
             default:
@@ -132,7 +147,7 @@ public class TaskInventoryDialog extends AbstractTaskManager {
             case 1:
                 task.setTaskDesc((String) value);
                 break;
-            case 3:
+            case ISDONE_COL:
                 task.setTaskDone((Boolean) value);
 
                 // If a task is 'undone' then reset the current pomodoros
@@ -141,7 +156,7 @@ public class TaskInventoryDialog extends AbstractTaskManager {
                 }
 
                 break;
-            case 2:
+            case ASSPOM_COL:
                 task.setAssignedPomodoros((Integer) value);
 
                 if ((Integer) value > TOO_MANY_POMS) {

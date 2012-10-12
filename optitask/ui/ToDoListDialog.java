@@ -48,6 +48,26 @@ public class ToDoListDialog extends AbstractTaskManager {
          * The limit where assigned pomodoros is considered as 'too many'.
          */
         private static final int TOO_MANY_POMS = 6;
+        
+        /**
+         * The column number for Task Description.
+         */
+        private static final int DESC_COL = 1;
+        
+        /**
+         * The column number for Current Pomodoros.
+         */
+        private static final int CURPOM_COL = 2;
+        
+        /**
+         * The column number for Assigned Pomodoros.
+         */
+        private static final int ASSPOM_COL = 3;
+        
+        /**
+         * The column number for Task Done.
+         */
+        private static final int ISDONE_COL = 4;
 
         /**
          * The list of tasks.
@@ -89,11 +109,12 @@ public class ToDoListDialog extends AbstractTaskManager {
             
             // If the task is done, the disable changing the assigned pomodoros
             if (tasks.get(row).isDone() 
-                    && 
-                    (col == 3 || col == 2 || col == 1)) {
+                    && (col == ASSPOM_COL || col == CURPOM_COL 
+                    || col == DESC_COL)) {
                 editable = false;
             } else {
-                editable = col > 0 && col < columnNames.length && col != 2;
+                editable = col > 0 && col < columnNames.length 
+                        && col != CURPOM_COL;
             }
             
             return editable;
@@ -107,16 +128,16 @@ public class ToDoListDialog extends AbstractTaskManager {
             case 0:
                 obj = row + 1;
                 break;
-            case 1:
+            case DESC_COL:
                 obj = tasks.get(row).getTaskDesc();
                 break;
-            case 4:
+            case ISDONE_COL:
                 obj = tasks.get(row).isDone();
                 break;
-            case 2:
+            case CURPOM_COL:
                 obj = tasks.get(row).getCurrentPomodoro();
                 break;
-            case 3:
+            case ASSPOM_COL:
                 obj = tasks.get(row).getAssignedPomodoros();
                 break;
             default:
@@ -136,7 +157,7 @@ public class ToDoListDialog extends AbstractTaskManager {
             case 1:
                 task.setTaskDesc((String) value);
                 break;
-            case 4:
+            case ISDONE_COL:
                 task.setTaskDone((Boolean) value);
 
                 // If a task is 'undone' then reset the current pomodoros
@@ -145,7 +166,7 @@ public class ToDoListDialog extends AbstractTaskManager {
                 }
 
                 break;
-            case 3:
+            case ASSPOM_COL:
                 task.setAssignedPomodoros((Integer) value);
 
                 if ((Integer) value > TOO_MANY_POMS) {
