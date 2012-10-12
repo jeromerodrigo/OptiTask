@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
@@ -227,7 +228,7 @@ public class SettingsDialog extends JDialog {
      */
 
     public final Settings getSettings() {
-        Settings set = new Settings();
+        final Settings set = new Settings();
         set.setShortBreak(minutesToMilliseconds((Integer) shortBreakSpinner
                 .getValue()));
         set.setIncrementInterval((Integer) lBrkAfterSpinner.getValue());
@@ -237,9 +238,21 @@ public class SettingsDialog extends JDialog {
                 .getValue()));
         set.setWillLongBreak(wLBreakChkBox.isSelected());
 
+        final long lBreak = set.getLongBreak();
+        final long sBreak = set.getShortBreak();
+        
         // Long break value cannot be equal or less than short break
-        if (set.getLongBreak() <= set.getShortBreak()) {
-            set = new Settings();
+        if (lBreak <= sBreak) {
+            JOptionPane.showMessageDialog(this, 
+                    "Long Break value cannot be <= to Short Break!",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+            
+            // Reset breaks with original file values
+            shortBreakSpinner.setValue(
+                    millisecondsToMinutes(model.getSettings().getShortBreak()));
+            lBreakTimeSpinner.setValue(
+                    millisecondsToMinutes(model.getSettings().getLongBreak()));
+            set.setLongBreak(model.getSettings().getLongBreak());
         }
         
         return set;
