@@ -121,7 +121,7 @@ public class TaskInventoryDialog extends AbstractTaskManager {
             case 0:
                 obj = row + 1;
                 break;
-            case 1:
+            case DESC_COL:
                 obj = tasks.get(row).getTaskDesc();
                 break;
             case ISDONE_COL:
@@ -144,7 +144,7 @@ public class TaskInventoryDialog extends AbstractTaskManager {
             final Task task = tasks.get(row);
 
             switch (col) {
-            case 1:
+            case DESC_COL:
                 task.setTaskDesc((String) value);
                 break;
             case ISDONE_COL:
